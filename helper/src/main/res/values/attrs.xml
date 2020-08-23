@@ -7,5 +7,6 @@
     <attr name="showDivider" format="boolean"/>
     <attr name="showIndicator" format="boolean"/>
     <attr name="showTitle" format="boolean"/>
+    <attr name="swipeEnabled" format="boolean"/>
   </declare-styleable>
 </resources>

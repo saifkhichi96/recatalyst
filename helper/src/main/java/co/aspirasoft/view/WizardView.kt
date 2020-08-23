@@ -5,12 +5,15 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import co.aspirasoft.R
-import kotlinx.android.synthetic.main.view_wizard.view.*
+import params.com.stepview.StatusViewScroller
 
 /**
  * WizardView allows creation of a UI with multiple steps.
@@ -20,7 +23,7 @@ import kotlinx.android.synthetic.main.view_wizard.view.*
  * intros, sign up forms, etc.
  *
  * @author saifkhichi96
- * @version 1.0.0
+ * @version 1.1.0
  */
 class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
     : LinearLayout(context, attrs, defStyleInt) {
@@ -28,6 +31,14 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    private val backButton: Button get() = findViewById(R.id.backButton)
+    private val contentView: ViewPager get() = findViewById(R.id.contentView)
+    private val divider: View get() = findViewById(R.id.divider)
+    private val nextButton: Button get() = findViewById(R.id.nextButton)
+    private val stepsView: StatusViewScroller get() = findViewById(R.id.stepsView)
+    private val titleView: TextView get() = findViewById(R.id.titleView)
+    private val wizardIcon: ImageView get() = findViewById(R.id.wizardIcon)
 
     var icon: Drawable? = null
         set(value) {
@@ -51,7 +62,7 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
     var isTitleShown: Boolean = true
         set(value) {
             field = value
-            wizardTitle.visibility = if (value) View.VISIBLE else View.GONE
+            titleView.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
     var nextLabel: String = "Next"
@@ -63,13 +74,19 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
     var submitLabel: String = "Submit"
 
     init {
-        View.inflate(context, R.layout.view_wizard, this)
         context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.WizardView,
                 0, 0).apply {
 
             try {
+                val swipeEnabled = getBoolean(R.styleable.WizardView_swipeEnabled, false)
+                if (swipeEnabled) {
+                    View.inflate(context, R.layout.view_wizard, this@WizardView)
+                } else {
+                    View.inflate(context, R.layout.view_wizard_noswipe, this@WizardView)
+                }
+
                 icon = getDrawable(R.styleable.WizardView_icon)
 
                 isDividerShown = getBoolean(R.styleable.WizardView_showDivider, true)
@@ -128,6 +145,7 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
                     contentView.currentItem = currentPosition
                 }
 
+                backButton.isEnabled = !isFirstStep
                 nextButton.text = if (isLastStep) submitLabel else nextLabel
             }
 
@@ -138,6 +156,10 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
             if (isCurrentInputValid) {
                 onNextClicked()
             }
+        }
+
+        backButton.setOnClickListener {
+            onBackPressed()
         }
     }
 
@@ -162,7 +184,7 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
 
     private fun selectPosition(position: Int) {
         stepsView.statusView.currentCount = position + 1
-        wizardTitle.text = mSteps[position].title
+        titleView.text = mSteps[position].title
     }
 
     class WizardStepAdapter(manager: FragmentManager, private val steps: List<WizardViewStep>)

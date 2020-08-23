@@ -1,4 +1,4 @@
-package co.aspirasoft.sams
+package co.aspirasoft.catalyst
 
 import android.app.Application
 import com.google.firebase.database.FirebaseDatabase
@@ -55,6 +55,20 @@ class MyApplication : Application() {
         // the refTo* functions return a reference to resources
         // in the Firebase database
         private val db get() = FirebaseDatabase.getInstance()
+
+        fun refToUsers() = db.getReference("users")
+        fun refToUser(uid: String) = refToUsers().child(uid)
+        fun refToUserAccount(uid: String) = refToUser(uid).child("account")
+        fun refToUserConnections(uid: String) = refToUser(uid).child("connects/")
+        fun refToUserConnectionRequests(uid: String) = refToUser(uid).child("requests/")
+        fun refToUserInvites(uid: String) = refToUser(uid).child("invites")
+
+        fun refToProjects(uid: String) = refToUser(uid).child("projects")
+        fun refToProject(uid: String, pid: String) = refToProjects(uid).child(pid)
+        fun refToProjectMessages(uid: String, pid: String) = refToProject(uid, pid).child("chats")
+        fun refToProjectTeam(uid: String, pid: String) = refToProject(uid, pid).child("team")
+
+        fun refToNews(uid: String, pid: String) = refToProject(uid, pid).child("news")
         fun refToAttendance(schoolId: String, classId: String) = db.getReference("$schoolId/classes/$classId/attendance/")
         fun refToClasses(schoolId: String) = db.getReference("$schoolId/classes/")
         fun refToClassNoticeBoard(schoolId: String, classId: String) = db.getReference("$schoolId/classes/$classId/notices/")

@@ -152,6 +152,16 @@
   <string name="student_class_head">You are enrolled in</string>
   <string name="teacher_class_head">You are assigned to</string>
 
+  <!-- Onboarding and Intro -->
+  <string name="explain_connections">People in your network are called connections.\n\nConnections allow you to add
+    members to your project teams, where you can work together on your projects.
+  </string>
+  <string name="connection_requests">Adding a Connection</string>
+  <string name="explain_connection_requests">To connect with another user, you need to know the email address associated
+    with their account, which you can use to send a connection request.\n\nOnce they accept the request, you can start
+    collaborating.
+  </string>
+
 
   <!-- Input Explanations -->
   <string name="helper_sign_up_email">To verify your identity, you must use the same email address to sign up on

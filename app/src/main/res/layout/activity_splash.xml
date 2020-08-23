@@ -1,29 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/splashScreen"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="?attr/colorPrimaryDark"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:theme="@style/AppTheme.Dark"
-              tools:context=".SplashActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/splashScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_happy_fisher"
+    android:theme="@style/AppTheme.Dark">
 
   <androidx.appcompat.widget.AppCompatImageView
-      android:id="@+id/logo"
-      android:layout_width="128dp"
-      android:layout_height="128dp"
-      android:scaleType="fitCenter"
-      app:srcCompat="@drawable/logo"/>
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scaleType="centerCrop"
+      android:alpha="0.35"
+      app:srcCompat="@drawable/splash_bg"/>
 
-  <com.google.android.material.textview.MaterialTextView
-      android:id="@+id/version"
-      style="@style/TextAppearance.MaterialComponents.Headline5"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="16dp"
-      android:text="@string/app_name"/>
+  <View android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_gradient"
+        android:alpha="0.75"/>
 
-</LinearLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:orientation="vertical">
+
+    <!-- Logo -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="192dp"
+        android:layout_height="192dp"
+        android:layout_margin="8dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/logo"
+        app:tint="@color/white"/>
+
+    <!-- App Name -->
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextAppearance.MaterialComponents.Headline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/app_name"
+        app:textAllCaps="true"
+        android:textColor="@color/white"/>
+
+    <!-- Tagline -->
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.75"
+        android:gravity="center"
+        android:text="@string/tagline_1"
+        android:textColor="@color/white"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.75"
+        android:gravity="center"
+        android:text="@string/tagline_2"
+        android:textColor="@color/white"/>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:layout_margin="8dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:indeterminate="true"/>
+
+  </LinearLayout>
+
+</RelativeLayout>

@@ -1,13 +1,30 @@
 <resources>
+
   <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorSecondary">@color/colorPrimaryLight</item>
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
   <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorSecondary">@color/colorPrimaryLight</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorSecondary">@color/colorPrimaryLight</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light">
+    <item name="colorPrimary">@color/colorPrimaryLight</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorSecondary">@color/colorPrimary</item>
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 

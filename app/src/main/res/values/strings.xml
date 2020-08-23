@@ -1,5 +1,7 @@
 <resources>
-  <string name="app_name">SAMS</string>
+  <string name="app_name">RECatalyst</string>
+  <string name="tagline_1">The Ultimate Requirements Engineering</string>
+  <string name="tagline_2">Solution for Software Projects</string>
   <string name="required_asterisk"><![CDATA[<font color=\'#cc0029\'>*</font>]]></string>
   <string name="accepted" translatable="false">Accepted</string>
   <string name="pending" translatable="false">Pending</string>

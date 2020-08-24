@@ -20,7 +20,7 @@ object ViewUtils {
     }
 
     fun showError(v: View, message: String) {
-        Snackbar.make(v, message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(v, message, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(v.context.getColor(R.color.colorWarning))
                 .setTextColor(Color.WHITE)
                 .show()

@@ -55,7 +55,7 @@ class SingleInputForm : BottomSheetDialogFragment() {
 
     private fun onOk() {
         onOk?.let { callback ->
-            callback(inputField.text ?: "")
+            callback(inputField.text?.trim() ?: "")
         }
     }
 

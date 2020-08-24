@@ -16,7 +16,7 @@ import java.util.concurrent.Executor
  *
  * @param error Exception specifying cause of failure, or null if task successful
  */
-class DummyTask(private val error: Exception?) : Task<Void?>() {
+class DummyTask<T>(private val error: Exception? = null, private val result: T? = null) : Task<T?>() {
 
     override fun isComplete(): Boolean {
         return true
@@ -26,41 +26,41 @@ class DummyTask(private val error: Exception?) : Task<Void?>() {
         return error
     }
 
-    override fun addOnFailureListener(listener: OnFailureListener): Task<Void?> {
+    override fun addOnFailureListener(listener: OnFailureListener): Task<T?> {
         exception?.let { listener.onFailure(it) }
         return this
     }
 
-    override fun addOnFailureListener(executor: Executor, listener: OnFailureListener): Task<Void?> {
+    override fun addOnFailureListener(executor: Executor, listener: OnFailureListener): Task<T?> {
         return addOnFailureListener(listener)
     }
 
-    override fun addOnFailureListener(activity: Activity, listener: OnFailureListener): Task<Void?> {
+    override fun addOnFailureListener(activity: Activity, listener: OnFailureListener): Task<T?> {
         return addOnFailureListener(listener)
     }
 
-    override fun getResult(): Void? {
+    override fun getResult(): T? {
+        return result
+    }
+
+    override fun <X : Throwable?> getResult(p0: Class<X>): T? {
         return null
     }
 
-    override fun <X : Throwable?> getResult(p0: Class<X>): Void? {
-        return null
-    }
-
-    override fun addOnSuccessListener(listener: OnSuccessListener<in Void?>): Task<Void?> {
+    override fun addOnSuccessListener(listener: OnSuccessListener<in T?>): Task<T?> {
         if (isSuccessful) listener.onSuccess(null)
         return this
     }
 
-    override fun addOnSuccessListener(executor: Executor, listener: OnSuccessListener<in Void?>): Task<Void?> {
+    override fun addOnSuccessListener(executor: Executor, listener: OnSuccessListener<in T?>): Task<T?> {
         return addOnSuccessListener(listener)
     }
 
-    override fun addOnSuccessListener(activity: Activity, listener: OnSuccessListener<in Void?>): Task<Void?> {
+    override fun addOnSuccessListener(activity: Activity, listener: OnSuccessListener<in T?>): Task<T?> {
         return addOnSuccessListener(listener)
     }
 
-    override fun addOnCompleteListener(listener: OnCompleteListener<Void?>): Task<Void?> {
+    override fun addOnCompleteListener(listener: OnCompleteListener<T?>): Task<T?> {
         listener.onComplete(this)
         return this
     }

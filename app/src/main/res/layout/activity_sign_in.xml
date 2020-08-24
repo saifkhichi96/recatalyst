@@ -1,96 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInActivity">
+    android:background="@drawable/gradient_happy_fisher"
+    android:theme="@style/AppTheme.Dark"
+    tools:context=".activities.SignInActivity">
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@android:color/transparent"
-      android:gravity="center"
-      app:elevation="0dp">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_margin="8dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/logo"
-        android:tint="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/titleLabel"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_sign_in"
-        android:textColor="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll"/>
-
-  </com.google.android.material.appbar.AppBarLayout>
-
-  <androidx.core.widget.NestedScrollView
+  <androidx.appcompat.widget.AppCompatImageView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+      android:scaleType="centerCrop"
+      android:alpha="0.35"
+      app:srcCompat="@drawable/splash_bg"/>
 
-    <LinearLayout
-        android:layout_width="320dp"
+  <View android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_gradient"
+        android:alpha="0.75"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:padding="@dimen/activity_horizontal_margin">
+
+    <!-- Logo -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_margin="8dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/logo"
+        app:tint="?attr/colorSecondary"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="-48dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/hint_email">
 
-      <com.google.android.material.textfield.TextInputLayout
-          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/emailField"
+          style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp"
-          android:hint="@string/hint_email">
+          android:inputType="textEmailAddress"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-      </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/hint_password"
+        app:passwordToggleEnabled="true">
 
-      <com.google.android.material.textfield.TextInputLayout
-          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/passwordField"
+          style="@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/hint_password"
-          app:passwordToggleEnabled="true">
+          android:inputType="textPassword"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-      </com.google.android.material.textfield.TextInputLayout>
+    <!-- Sign In Button -->
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:id="@+id/signInButton"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="end"
+        android:text="@string/label_sign_in"
+        android:textColor="?attr/colorPrimary"
+        app:backgroundTint="?attr/colorAccent"
+        app:cornerRadius="16dp"/>
 
-      <com.google.android.material.button.MaterialButton
-          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-          android:id="@+id/signInButton"
-          android:layout_width="42dp"
-          android:layout_height="52dp"
-          android:layout_gravity="end"
-          android:padding="0dp"
-          app:cornerRadius="21dp"
-          app:icon="@drawable/ic_action_next"
-          app:iconSize="42dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signUpButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:layout_gravity="end"
+        android:padding="0dp"
+        android:text="@string/label_create_account"
+        android:textAllCaps="false"
+        android:textColor="?attr/colorPrimary"/>
 
-    </LinearLayout>
+  </LinearLayout>
 
-  </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

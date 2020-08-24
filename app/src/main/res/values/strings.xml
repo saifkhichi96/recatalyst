@@ -74,8 +74,7 @@
 
   <!-- Button Labels -->
   <string name="label_add">Add</string>
-  <string name="label_announcements">Announcements</string>
-  <string name="label_class_teacher">Class Teacher</string>
+  <string name="label_back">Back</string>
   <string name="label_change_password">Change Password</string>
   <string name="label_change_photo">Change Photo</string>
   <string name="label_create">Create</string>
@@ -105,7 +104,7 @@
   <string name="label_staff_invited">%d Pending</string>
   <string name="label_staff_joined">%d Joined</string>
   <string name="label_tos">Terms of Service</string>
-  <string name="label_total_marks">Total Marks</string>
+  <string name="label_understood">Got It!</string>
 
 
   <!-- Section Headings -->

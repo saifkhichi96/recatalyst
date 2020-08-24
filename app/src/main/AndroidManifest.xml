@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="co.aspirasoft.sams"
+          package="co.aspirasoft.catalyst"
           tools:ignore="LockedOrientationActivity">
 
   <uses-permission android:name="android.permission.INTERNET"/>
@@ -31,7 +31,7 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".SignInActivity"
+    <activity android:name=".activities.SignInActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".sign_up.SignUpActivity"
@@ -105,7 +105,7 @@
 
     <provider
         android:name="androidx.core.content.FileProvider"
-        android:authorities="co.aspirasoft.sams.fileprovider"
+        android:authorities="co.aspirasoft.catalyst.fileprovider"
         android:exported="false"
         android:grantUriPermissions="true">
       <meta-data

@@ -58,10 +58,10 @@ class MyApplication : Application() {
 
         fun refToUsers() = db.getReference("users")
         fun refToUser(uid: String) = refToUsers().child(uid)
-        fun refToUserAccount(uid: String) = refToUser(uid).child("account")
-        fun refToUserConnections(uid: String) = refToUser(uid).child("connects/")
-        fun refToUserConnectionRequests(uid: String) = refToUser(uid).child("requests/")
-        fun refToUserInvites(uid: String) = refToUser(uid).child("invites")
+        fun refToUserAccount(uid: String) = refToUser(uid).child("account/")
+        fun refToUserConnections(uid: String) = refToUser(uid).child("connections/")
+        fun refToUserConnectionsIncoming(uid: String) = refToUser(uid).child("incoming_request/")
+        fun refToUserConnectionsOutgoing(uid: String) = refToUser(uid).child("outgoing_request/")
 
         fun refToProjects(uid: String) = refToUser(uid).child("projects")
         fun refToProject(uid: String, pid: String) = refToProjects(uid).child(pid)

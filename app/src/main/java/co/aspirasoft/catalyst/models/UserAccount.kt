@@ -21,8 +21,6 @@ data class UserAccount(var id: String, var name: String, var email: String, @Tra
     // no-arg constructor needed for Firebase
     constructor() : this("", "", "", "")
 
-    val type: String get() = this::class.simpleName ?: "PersonalAccount"
-
     init {
         email = email.toLowerCase(Locale.getDefault())
     }

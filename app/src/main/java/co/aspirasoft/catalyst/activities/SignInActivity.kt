@@ -71,7 +71,7 @@ class SignInActivity : SilentSignInActivity() {
      * Opens the sign-up screen.
      */
     private fun signUp() {
-
+        startActivity(Intent(this, SignUpActivity::class.java))
     }
 
     /**

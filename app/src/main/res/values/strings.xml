@@ -2,7 +2,7 @@
   <string name="app_name">RECatalyst</string>
   <string name="tagline_1">The Ultimate Requirements Engineering</string>
   <string name="tagline_2">Solution for Software Projects</string>
-  <string name="required_asterisk"><![CDATA[<font color=\'#cc0029\'>*</font>]]></string>
+  <string name="slogan">Let us manage your projects for you.</string>
   <string name="accepted" translatable="false">Accepted</string>
   <string name="pending" translatable="false">Pending</string>
   <string name="format_date" translatable="false">%02d:%02d</string>
@@ -152,6 +152,14 @@
   <string name="teacher_class_head">You are assigned to</string>
 
   <!-- Onboarding and Intro -->
+  <string name="sign_up_introduction">We are excited to have you on board! Let\'s start with the basics.\n\nHow should
+    we address
+    you?
+  </string>
+  <string name="sign_up_create_password">One last step before you are all set to begin.\n\nSecure your account with a
+    strong
+    password.
+  </string>
   <string name="explain_connections">People in your network are called connections.\n\nConnections allow you to add
     members to your project teams, where you can work together on your projects.
   </string>

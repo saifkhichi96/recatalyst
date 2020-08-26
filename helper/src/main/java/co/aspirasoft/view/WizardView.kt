@@ -62,7 +62,7 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
     var isTitleShown: Boolean = true
         set(value) {
             field = value
-            titleView.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            titleView.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     var nextLabel: String = "Next"
@@ -131,8 +131,6 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
         this.mSteps = steps
         stepsView.statusView.stepCount = steps.size
 
-        selectPosition(0)
-
         val adapter = WizardStepAdapter(supportFragmentManager, steps)
         contentView.adapter = adapter
         contentView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -145,12 +143,16 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
                     contentView.currentItem = currentPosition
                 }
 
-                backButton.isEnabled = !isFirstStep
+                backButton.visibility = if (isFirstStep) View.GONE else View.VISIBLE
                 nextButton.text = if (isLastStep) submitLabel else nextLabel
             }
 
             override fun onPageScrollStateChanged(i: Int) {}
         })
+
+        selectPosition(0)
+        backButton.visibility = View.GONE
+        nextButton.text = if (steps.size == 1) submitLabel else nextLabel
 
         nextButton.setOnClickListener {
             if (isCurrentInputValid) {

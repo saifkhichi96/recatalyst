@@ -1,4 +1,4 @@
-package co.aspirasoft.sams.sign_up
+package co.aspirasoft.catalyst.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,33 +6,38 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.text.HtmlCompat
-import co.aspirasoft.sams.R
-import co.aspirasoft.sams.model.Teacher
+import co.aspirasoft.catalyst.R
 import co.aspirasoft.util.InputUtils.isNotBlank
+import co.aspirasoft.util.InputUtils.markRequired
 import co.aspirasoft.util.InputUtils.showError
 import co.aspirasoft.view.WizardViewStep
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class CreateAccountStep : WizardViewStep("Welcome to SAMS") {
+/**
+ * Last step of the sign up process.
+ *
+ * In this step, users create a password to secure their account. Input
+ * is validated before submitting the sign up request.
+ *
+ * @author saifkhichi96
+ * @since 1.0.0
+ */
+class CreatePasswordStep : WizardViewStep("") {
 
-    private lateinit var signUpWelcomeMessage: TextView
     private lateinit var passwordField: TextInputEditText
     private lateinit var passwordRepeatField: TextInputEditText
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.signup_step_create_account, container, false)
+        val v = inflater.inflate(R.layout.signup_step_create_password, container, false)
 
         // Get UI references
-        signUpWelcomeMessage = v.findViewById(R.id.signUpMessage)
         passwordField = v.findViewById(R.id.passwordField)
         passwordRepeatField = v.findViewById(R.id.passwordRepeatField)
 
         // Mark required fields
-        markRequired(passwordField.parent.parent as TextInputLayout)
-        markRequired(passwordRepeatField.parent.parent as TextInputLayout)
+        (passwordField.parent.parent as TextInputLayout).markRequired()
+        (passwordRepeatField.parent.parent as TextInputLayout).markRequired()
 
         // Validate passwords as they are typed
         passwordField.addTextChangedListener(object : TextWatcher {
@@ -54,19 +59,6 @@ class CreateAccountStep : WizardViewStep("Welcome to SAMS") {
         return v
     }
 
-    override fun onStart() {
-        super.onStart()
-        activity?.let {
-            it as SignUpActivity
-            signUpWelcomeMessage.text = String.format(
-                    it.getString(R.string.sign_up_welcome_msg),
-                    if (it.accountType == Teacher::class) getString(R.string.respected) else getString(R.string.dear), // Greeting
-                    it.accountType.simpleName, // Account Type
-                    if (it.accountType == Teacher::class) getString(R.string.school) else getString(R.string.class_teacher) // Greeting
-            )
-        }
-    }
-
     private fun checkPasswordValid(): Boolean {
         passwordField.showError(null)
         if (passwordField.text.isNullOrBlank() || passwordField.text.toString() != passwordRepeatField.text.toString()) {
@@ -82,22 +74,9 @@ class CreateAccountStep : WizardViewStep("Welcome to SAMS") {
                 passwordRepeatField.isNotBlank(true) &&
                 checkPasswordValid()) {
             val password = passwordField.text.toString().trim()
-
-            data.apply {
-                put(R.id.passwordField, password)
-            }
+            data.put(R.id.passwordField, password)
             true
         } else false
-    }
-
-    /**
-     * Appends a red asterisk to the [field]'s hint to mark it as required.
-     */
-    private fun markRequired(field: TextInputLayout) {
-        field.hint = HtmlCompat.fromHtml(
-                "${field.hint} ${getString(R.string.required_asterisk)}",
-                HtmlCompat.FROM_HTML_MODE_COMPACT
-        )
     }
 
 }

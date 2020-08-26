@@ -1,5 +1,7 @@
 package co.aspirasoft.util
 
+import androidx.core.text.HtmlCompat
+import co.aspirasoft.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -16,7 +18,7 @@ object InputUtils {
     fun TextInputEditText.isNotBlank(isErrorEnabled: Boolean = false): Boolean {
         this.showError(null)
         return if (this.text.isNullOrBlank()) {
-            if (isErrorEnabled) this.showError("${this.hint} is required.")
+            if (isErrorEnabled) this.showError("This field is required.")
             false
         } else true
     }
@@ -44,6 +46,16 @@ object InputUtils {
         val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
         val matcher: Matcher = pattern.matcher(this)
         return matcher.matches()
+    }
+
+    /**
+     * Appends a red asterisk to the [TextInputLayout]'s hint to mark it as required.
+     */
+    fun TextInputLayout.markRequired() {
+        this.hint = HtmlCompat.fromHtml(
+                "${this.hint} ${context.getString(R.string.required_asterisk)}",
+                HtmlCompat.FROM_HTML_MODE_COMPACT
+        )
     }
 
 }

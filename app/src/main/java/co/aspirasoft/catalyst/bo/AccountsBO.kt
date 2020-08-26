@@ -2,7 +2,6 @@ package co.aspirasoft.catalyst.bo
 
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.models.UserAccount
-import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 
@@ -63,11 +62,6 @@ object AccountsBO {
         } catch (ex: Exception) {
             throw RuntimeException(ex.message)
         }
-    }
-
-    suspend fun sendSignUpInvitation(senderId: String, inviteeEmail: String, actionCode: ActionCodeSettings) {
-        auth.sendSignInLinkToEmail(inviteeEmail, actionCode).await()
-        // TODO: InvitesDao.sendTeamInvitation(inviteeEmail, senderId, OnCompleteListener { })
     }
 
 }

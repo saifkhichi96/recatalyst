@@ -1,10 +1,10 @@
-package co.aspirasoft.sams.core
+package co.aspirasoft.catalyst.activities.abs
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import co.aspirasoft.sams.MyApplication
-import co.aspirasoft.sams.model.User
+import co.aspirasoft.catalyst.MyApplication
+import co.aspirasoft.catalyst.models.UserAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -12,20 +12,15 @@ import com.google.firebase.auth.FirebaseUser
  * SecureActivity is an abstract activity which restricts usage to signed in users.
  *
  * Extend this class to make an activity secure. A `secured` activity will only be
- * allowed to open if a [FirebaseUser] is authenticated and the [User] instance of
- * signed in user is passed to the activity intent with [MyApplication.EXTRA_USER] tag
- * and the unique [schoolId] to which this user is associated is passed with the
- * [MyApplication.EXTRA_SCHOOL] tag.
+ * allowed to open if a [FirebaseUser] is authenticated and the [UserAccount] instance of
+ * signed in user is passed to the activity intent with [MyApplication.EXTRA_USER] tag.
  *
  * @author saifkhichi96
  * @since 1.0.0
  */
 abstract class SecureActivity : AppCompatActivity() {
 
-    private lateinit var schoolDetails: Pair<String, String>
-    protected val schoolId: String get() = schoolDetails.first
-    protected val school: String get() = schoolDetails.second
-    protected lateinit var currentUser: User
+    protected lateinit var currentUser: UserAccount
 
     /**
      * Overrides the onCreate activity lifecycle method.
@@ -37,15 +32,12 @@ abstract class SecureActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val signedInUser = FirebaseAuth.getInstance().currentUser       // firebase auth -> (1)
-        val user = intent.getSerializableExtra(MyApplication.EXTRA_USER) as User? // account details -> (2)
+        val user = intent.getSerializableExtra(MyApplication.EXTRA_USER) as UserAccount? // account details -> (2)
         currentUser = when {
             signedInUser == null || user == null -> return finish() // both (1) and (2) must exist
             user.id == signedInUser.uid -> user                     // and both must belong to same user
             else -> return finish()                                 // else finish activity
         }
-
-        schoolDetails = intent.getSerializableExtra(MyApplication.EXTRA_SCHOOL) as Pair<String, String>?
-                ?: return finish()
     }
 
     /**
@@ -75,7 +67,6 @@ abstract class SecureActivity : AppCompatActivity() {
     fun startSecurely(target: Class<out SecureActivity>, src: Intent? = null) {
         startActivity(Intent(this, target).apply {
             this.putExtra(MyApplication.EXTRA_USER, currentUser)
-            this.putExtra(MyApplication.EXTRA_SCHOOL, schoolDetails)
             src?.let { this.putExtras(it) }
         })
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -84,6 +75,6 @@ abstract class SecureActivity : AppCompatActivity() {
     /**
      * Implement this method to update UI for signed in user, if needed.
      */
-    abstract fun updateUI(currentUser: User)
+    abstract fun updateUI(currentUser: UserAccount)
 
 }

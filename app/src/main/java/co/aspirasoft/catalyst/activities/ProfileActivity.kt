@@ -1,4 +1,4 @@
-package co.aspirasoft.sams
+package co.aspirasoft.catalyst.activities
 
 import android.Manifest
 import android.app.Activity
@@ -10,16 +10,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
-import co.aspirasoft.sams.core.DashboardChildActivity
-import co.aspirasoft.sams.model.School
-import co.aspirasoft.sams.model.Student
-import co.aspirasoft.sams.model.Teacher
-import co.aspirasoft.sams.model.User
-import co.aspirasoft.sams.storage.FileManager
-import co.aspirasoft.sams.storage.ImageLoader
+import androidx.lifecycle.lifecycleScope
+import co.aspirasoft.catalyst.MyApplication
+import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
+import co.aspirasoft.catalyst.models.UserAccount
+import co.aspirasoft.catalyst.utils.storage.FileManager
+import co.aspirasoft.catalyst.utils.storage.ImageLoader
 import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 
@@ -31,7 +32,7 @@ class ProfileActivity : DashboardChildActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        val user = intent.getSerializableExtra(MyApplication.EXTRA_PROFILE_USER) as User? ?: currentUser
+        val user = intent.getSerializableExtra(MyApplication.EXTRA_PROFILE_USER) as UserAccount? ?: currentUser
         if (user.id != currentUser.id) {
             changeUserImageButton.visibility = View.GONE
             changePasswordButton.visibility = View.GONE
@@ -97,16 +98,18 @@ class ProfileActivity : DashboardChildActivity() {
 
                         val status = Snackbar.make(userImage, getString(R.string.status_uploading), Snackbar.LENGTH_INDEFINITE)
                         status.show()
-                        mFileManager.upload("photo.png", bytes)
-                                .addOnFailureListener {
-                                    status.setText(it.message ?: getString(R.string.status_upload_failed))
-                                    Handler().postDelayed({ status.dismiss() }, 1500L)
-                                }
-                                .addOnSuccessListener {
+                        lifecycleScope.launch {
+                            try {
+                                mFileManager.upload("photo.png", bytes)?.let {
                                     status.setText(getString(R.string.status_uploaded))
                                     Handler().postDelayed({ status.dismiss() }, 1500L)
                                     showUserImage(true)
                                 }
+                            } catch (ex: Exception) {
+                                status.setText(ex.message ?: getString(R.string.status_upload_failed))
+                                Handler().postDelayed({ status.dismiss() }, 1500L)
+                            }
+                        }
                     }
                 }
             }
@@ -122,62 +125,10 @@ class ProfileActivity : DashboardChildActivity() {
         }
     }
 
-    override fun updateUI(currentUser: User) {
-        // PROFILE IMAGE
+    override fun updateUI(currentUser: UserAccount) {
         showUserImage()
-
-        // BASIC INFO
         userNameLabel.text = currentUser.name
-        headline.text = currentUser.type
-
-        // PERSONAL INFO
-        if (currentUser is School) personalSection.visibility = View.GONE
-        if (currentUser is Student) {
-            birthdayLabel.visibility = View.VISIBLE
-            birthdayLabel.text = currentUser.dateOfBirth
-        }
-        genderLabel.text = currentUser.gender
-
-        // CONTACT INFO
-        if (currentUser is School) {
-            addressLabel.visibility = View.GONE
-            phoneLabel.visibility = View.GONE
-        }
-        addressLabel.text = currentUser.address
         userEmailLabel.text = currentUser.email
-        phoneLabel.text = currentUser.phone
-
-        // ACADEMIC INFO
-        academicSection.visibility = View.VISIBLE
-        when (currentUser) {
-            is Student -> {
-                className.text = currentUser.classId
-                rollNo.text = "Roll # ${currentUser.rollNo}"
-            }
-            is Teacher -> {
-                className.text = when (currentUser.classId.isNullOrBlank()) {
-                    true -> getString(R.string.ph_class)
-                    else -> currentUser.classId
-                }
-                rollNo.visibility = View.GONE
-            }
-            is School -> academicSection.visibility = View.GONE
-        }
-
-        // EMERGENCY INFO
-        when (currentUser) {
-            is Student -> {
-                emergencySection.visibility = View.VISIBLE
-                bloodType.text = "${currentUser.bloodType}"
-                emergencyContactName.text = currentUser.emergencyContact
-                emergencyContactEmail.text = when {
-                    currentUser.emergencyEmail.isNullOrBlank() -> getString(R.string.ph_unset)
-                    else -> currentUser.emergencyEmail
-                }
-                emergencyContactPhone.text = currentUser.emergencyPhone
-            }
-            else -> emergencySection.visibility = View.GONE
-        }
 
         // ACCOUNT SETTINGS
         // TODO: Allow password reset

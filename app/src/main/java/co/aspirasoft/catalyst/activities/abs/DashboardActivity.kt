@@ -1,11 +1,11 @@
-package co.aspirasoft.sams.core
+package co.aspirasoft.catalyst.activities.abs
 
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import co.aspirasoft.sams.R
-import co.aspirasoft.sams.view.AccountSwitcher
+import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.dialogs.SettingsDialog
 
 abstract class DashboardActivity : SecureActivity() {
 

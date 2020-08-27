@@ -52,7 +52,7 @@
     <activity android:name=".TeacherDashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".ProfileActivity"
+    <activity android:name=".activities.ProfileActivity"
               android:label="@string/title_profile"
               android:configChanges="orientation|screenSize"/>
 

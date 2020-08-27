@@ -1,8 +1,8 @@
-package co.aspirasoft.sams.core
+package co.aspirasoft.catalyst.activities.abs
 
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import co.aspirasoft.sams.R
+import co.aspirasoft.catalyst.R
 
 abstract class DashboardChildActivity : SecureActivity() {
 

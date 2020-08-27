@@ -36,6 +36,7 @@ class MyApplication : Application() {
         const val EXTRA_NEW_SIGN_UP = "new_user"
         const val EXTRA_NOTICE_POSTS = "notice_posts"
         const val EXTRA_PROFILE_USER = "profile_user"
+        const val EXTRA_PROJECT = "project"
         const val EXTRA_REFERRAL_CODE = "referral_code"
         const val EXTRA_SCHOOL = "school"
         const val EXTRA_SCHOOL_SUBJECT = "subject"
@@ -56,27 +57,19 @@ class MyApplication : Application() {
         // in the Firebase database
         private val db get() = FirebaseDatabase.getInstance()
 
-        fun refToUsers() = db.getReference("users")
+        fun refToUsers() = db.getReference("users/")
         fun refToUser(uid: String) = refToUsers().child(uid)
         fun refToUserAccount(uid: String) = refToUser(uid).child("account/")
         fun refToUserConnections(uid: String) = refToUser(uid).child("connections/")
         fun refToUserConnectionsIncoming(uid: String) = refToUser(uid).child("incoming_request/")
         fun refToUserConnectionsOutgoing(uid: String) = refToUser(uid).child("outgoing_request/")
 
-        fun refToProjects(uid: String) = refToUser(uid).child("projects")
+        fun refToProjects(uid: String) = refToUser(uid).child("projects/")
         fun refToProject(uid: String, pid: String) = refToProjects(uid).child(pid)
-        fun refToProjectMessages(uid: String, pid: String) = refToProject(uid, pid).child("chats")
-        fun refToProjectTeam(uid: String, pid: String) = refToProject(uid, pid).child("team")
+        fun refToProjectMessages(uid: String, pid: String) = refToProject(uid, pid).child("chats/")
+        fun refToProjectTeam(uid: String, pid: String) = refToProject(uid, pid).child("team/")
 
-        fun refToNews(uid: String, pid: String) = refToProject(uid, pid).child("news")
-        fun refToAttendance(schoolId: String, classId: String) = db.getReference("$schoolId/classes/$classId/attendance/")
-        fun refToClasses(schoolId: String) = db.getReference("$schoolId/classes/")
-        fun refToClassNoticeBoard(schoolId: String, classId: String) = db.getReference("$schoolId/classes/$classId/notices/")
-        fun refToInvites(schoolId: String) = db.getReference("$schoolId/invites/")
-        fun refToSchoolId(userId: String) = db.getReference("user_schools/$userId/")
-        fun refToSchoolName(schoolId: String) = db.getReference("$schoolId/name/")
-        fun refToSubjects(schoolId: String, classId: String) = db.getReference("$schoolId/classes/$classId/subjects/")
-        fun refToUsers(schoolId: String) = db.getReference("$schoolId/users/")
+        fun refToNews(uid: String, pid: String) = refToProject(uid, pid).child("news/")
     }
 
 }

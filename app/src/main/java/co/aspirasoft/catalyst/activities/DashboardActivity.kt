@@ -10,6 +10,7 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardActivity
 import co.aspirasoft.catalyst.dao.ProjectsDao
+import co.aspirasoft.catalyst.dialogs.CreateProjectDialog
 import co.aspirasoft.catalyst.dialogs.SettingsDialog
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
@@ -44,23 +45,8 @@ class DashboardActivity : DashboardActivity() {
         projectAdapter = ProjectAdapter(this, projects)
         projectsList.adapter = projectAdapter
 
-
-
+        attendanceButton.setOnClickListener { startSecurely(ConnectionsActivity::class.java) }
         createProjectButton.setOnClickListener { onCreateProjectClicked() }
-
-//        NoticeBoardDao.getPostsByClass(
-//                schoolId,
-//                currentStudent.classId,
-//                OnSuccessListener {
-//                    classPosts = it
-//                })
-
-//        UsersDao.getTeacherByClass(schoolId, currentStudent.classId, OnSuccessListener {
-//            it?.let { teacher ->
-//                classTeacherName.text = teacher.name
-//                classTeacherEmail.text = teacher.email
-//            }
-//        })
 
         settingsButton.setOnClickListener {
             SettingsDialog.Builder(this).show()
@@ -81,7 +67,9 @@ class DashboardActivity : DashboardActivity() {
     }
 
     private fun createProject(okListener: ((project: Project) -> Unit)) {
-
+        val dialog = CreateProjectDialog.newInstance(currentUser.id)
+        dialog.onOkListener = okListener
+        dialog.show(supportFragmentManager, dialog.toString())
     }
 
     private fun getProjectsList(uid: String) {

@@ -48,6 +48,7 @@
   <string name="label_change_password">Change Password</string>
   <string name="label_change_photo">Change Photo</string>
   <string name="label_create">Create</string>
+  <string name="label_create_account">Create Account</string>
   <string name="label_delete">Delete</string>
   <string name="label_delete_account">Delete Account</string>
   <string name="label_edit">Edit</string>
@@ -85,14 +86,9 @@
 
 
   <!-- Card/Dialog Titles -->
-  <string name="academics">Academics</string>
-  <string name="add_class">Add Class</string>
-  <string name="add_lecture">Add Lecture</string>
-  <string name="add_student">Add Student</string>
-  <string name="add_subject">Add Subject</string>
-  <string name="close_attendance">Close Attendance</string>
-  <string name="file_upload">Add to %s (%s)</string>
-  <string name="staff">Staff</string>
+  <string name="create_project">New Project</string>
+  <string name="file_upload" formatted="false">Add to %s (%s)</string>
+  <string name="invite_team_member">Invite Team Member</string>
 
 
   <!-- Card/Dialog Descriptions -->
@@ -163,8 +159,7 @@
 
 
   <!-- Error Messages -->
-  <string name="error_conflicting_email">Email already exists.</string>
-  <string name="error_conflicting_student">Roll number already exists.</string>
+  <string name="error_no_such_user">No user account with email address found.</string>
   <string name="error_download">Could not download file.</string>
   <string name="error_invalid_blood_type">Invalid blood type.</string>
   <string name="error_invalid_email">Invalid email address.</string>

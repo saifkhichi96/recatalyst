@@ -9,12 +9,14 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@android:color/transparent"
+      android:theme="@style/AppTheme.AppBarOverlay"
       app:elevation="0dp">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
         app:layout_scrollFlags="scroll"/>
 
   </com.google.android.material.appbar.AppBarLayout>
@@ -42,7 +44,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|end"
-      android:layout_margin="@dimen/activity_horizontal_margin"
+      android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+      android:layout_marginVertical="@dimen/activity_vertical_margin"
       app:backgroundTint="?attr/colorPrimary"
       app:icon="@drawable/ic_action_add"
       app:iconTint="?android:attr/textColorPrimary"/>

@@ -1,15 +1,22 @@
-package co.aspirasoft.sams.storage
+package co.aspirasoft.catalyst.utils.storage
 
 import android.content.Context
 import android.net.Uri
+import co.aspirasoft.catalyst.models.Document
+import co.aspirasoft.catalyst.models.Project
+import co.aspirasoft.catalyst.utils.FileUtils
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FileDownloadTask
-import com.google.firebase.storage.ListResult
-import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.StorageMetadata
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -26,15 +33,21 @@ class FileManager private constructor(context: Context, relativePath: String) {
     private val storage = Firebase.storage.getReference(relativePath)
     private val cache = context.getExternalFilesDir(null)?.let { File(it, relativePath) }
 
+    init {
+        if (cache != null && !cache.exists()) {
+            cache.mkdirs()
+        }
+    }
+
     fun download(
             filename: String,
             successListener: OnSuccessListener<File>,
             failureListener: OnFailureListener,
-            invalidate: Boolean = false
+            invalidate: Boolean = false,
     ) {
         when (val cachedFile = downloadFromCache(filename)) {
             null -> {
-                val tempFile = createTempFile(filename)
+                val tempFile = FileUtils.createTempFile(filename, cache)
                 downloadFromStorage(filename, tempFile)
                         .addOnSuccessListener { successListener.onSuccess(tempFile) }
                         .addOnFailureListener {
@@ -57,30 +70,40 @@ class FileManager private constructor(context: Context, relativePath: String) {
         }
     }
 
-    fun upload(filename: String, uri: Uri): UploadTask {
-        return storage.child(filename).putFile(uri)
+    fun downloadOnly(
+            filename: String,
+            successListener: OnSuccessListener<File>,
+            failureListener: OnFailureListener,
+    ) {
+        val file = downloadFromCache(filename) ?: FileUtils.createTempFile(filename, cache)
+        downloadFromStorage(filename, file)
+                .addOnSuccessListener { successListener.onSuccess(file) }
+                .addOnFailureListener {
+                    file.delete()
+                    failureListener.onFailure(it)
+                }
     }
 
-    fun upload(filename: String, bytes: ByteArray): UploadTask {
-        return storage.child(filename).putBytes(bytes)
+    suspend fun upload(filename: String, uri: Uri): StorageMetadata? {
+        return storage.child(filename).putFile(uri).await().metadata
+    }
+
+    suspend fun upload(filename: String, bytes: ByteArray) = withContext(Dispatchers.IO) {
+        storage.child(filename).putBytes(bytes).await().metadata
+    }
+
+    suspend fun upload(document: Document): StorageMetadata? = withContext(Dispatchers.IO) {
+        upload(document.toPdfName(), document.toByteArray())
     }
 
     fun hasInCache(filename: String): Boolean {
         return downloadFromCache(filename) != null
     }
 
-    fun listAll(): Task<ListResult> {
-        return storage.listAll()
-    }
-
-    private fun createTempFile(filename: String): File {
-        val file = File(cache, filename)
-        if (!file.exists()) {
-            file.parent?.let { File(it).mkdirs() }
-            file.createNewFile()
+    fun listAll(block: (list: List<StorageReference>) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            block(storage.listAll().await().items)
         }
-
-        return file
     }
 
     private fun downloadFromCache(filename: String): File? {
@@ -101,6 +124,10 @@ class FileManager private constructor(context: Context, relativePath: String) {
     }
 
     companion object {
+        fun projectDocsManager(context: Context, project: Project): FileManager {
+            return newInstance(context, "${project.ownerId}/projects/${project.name}/docs/")
+        }
+
         fun newInstance(context: Context, relativePath: String): FileManager {
             return FileManager(context, relativePath)
         }

@@ -1,50 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="@dimen/activity_horizontal_margin">
+              android:paddingHorizontal="@dimen/activity_horizontal_margin"
+              android:paddingVertical="@dimen/activity_vertical_margin">
 
   <com.google.android.material.textview.MaterialTextView
       style="@style/TextAppearance.MaterialComponents.Subtitle1"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textStyle="bold"
-      android:text="@string/add_student"/>
+      android:text="@string/create_project"/>
 
   <com.google.android.material.textview.MaterialTextView
-      style="@style/TextAppearance.MaterialComponents.Body2"
+      style="@style/TextAppearance.MaterialComponents.Subtitle2"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/add_student_body"/>
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/hint_name"/>
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:hint="@string/hint_student_roll_no">
+      app:hintEnabled="false">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/rollNoField"
+        android:id="@+id/projectNameField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"/>
+        android:inputType="text"/>
 
   </com.google.android.material.textfield.TextInputLayout>
 
+  <com.google.android.material.textview.MaterialTextView
+      style="@style/TextAppearance.MaterialComponents.Subtitle2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/hint_short_description"/>
+
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:hint="@string/hint_student_email">
+      app:hintEnabled="false">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/emailField"
+        android:id="@+id/descriptionField"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"/>
+        android:layout_height="128dp"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        tools:text="@tools:sample/lorem/random"/>
 
   </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,17 +67,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="end"
-      android:layout_marginTop="8dp"
-      android:text="@string/label_save"/>
-
-  <com.google.android.material.button.MaterialButton
-      android:id="@+id/editButton"
-      style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="end"
-      android:layout_marginTop="8dp"
-      android:visibility="gone"
-      android:text="@android:string/ok"/>
+      android:text="@string/label_create"
+      android:textColor="?attr/colorAccent"/>
 
 </LinearLayout>

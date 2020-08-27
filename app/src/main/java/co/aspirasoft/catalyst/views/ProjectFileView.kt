@@ -1,14 +1,14 @@
-package co.aspirasoft.sams.view
+package co.aspirasoft.catalyst.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import co.aspirasoft.sams.R
-import co.aspirasoft.sams.model.CourseFile
+import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.models.Asset
 import co.aspirasoft.view.BaseView
 import com.google.android.material.button.MaterialButton
 
-class CourseFileView : BaseView<CourseFile> {
+class ProjectFileView : BaseView<Asset> {
 
     constructor(context: Context) : super(context)
 
@@ -19,11 +19,11 @@ class CourseFileView : BaseView<CourseFile> {
     private val mFileView: MaterialButton
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_course_file, this)
+        LayoutInflater.from(context).inflate(R.layout.view_project_file, this)
         mFileView = findViewById(R.id.fileView)
     }
 
-    override fun updateView(model: CourseFile) {
+    override fun updateView(model: Asset) {
         mFileView.text = model.name
     }
 

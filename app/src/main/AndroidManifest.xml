@@ -65,8 +65,9 @@
               android:parentActivityName=".TeacherDashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".SubjectActivity"
-              android:label="@string/title_subjects"
+    <activity android:name=".activities.ProjectActivity"
+              android:label="@string/title_project_details"
+              android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".TestsActivity"
@@ -81,6 +82,7 @@
 
     <activity android:name=".activities.EditorActivity"
               android:configChanges="orientation|screenSize"
+              android:parentActivityName=".activities.ProjectActivity"
               android:windowSoftInputMode="adjustResize"/>
 
     <activity android:name=".activities.DrawingActivity"

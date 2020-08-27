@@ -1,20 +1,21 @@
-package co.aspirasoft.sams.storage
+package co.aspirasoft.catalyst.adapters
 
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.adapter.ModelViewAdapter
-import co.aspirasoft.sams.R
-import co.aspirasoft.sams.model.CourseFile
-import co.aspirasoft.sams.storage.FileUtils.openInExternalApp
-import co.aspirasoft.sams.utils.Utils
-import co.aspirasoft.sams.view.CourseFileView
+import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.models.Asset
+import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
+import co.aspirasoft.catalyst.utils.storage.FileManager
+import co.aspirasoft.catalyst.views.ProjectFileView
+import co.aspirasoft.util.ViewUtils
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import java.io.IOException
 
-class MaterialAdapter(val context: Activity, val material: ArrayList<CourseFile>, private val fileManager: FileManager)
-    : ModelViewAdapter<CourseFile>(context, material, CourseFileView::class) {
+class FileAdapter(val context: Activity, val material: ArrayList<Asset>, private val fileManager: FileManager)
+    : ModelViewAdapter<Asset>(context, material, ProjectFileView::class) {
 
     override fun notifyDataSetChanged() {
         material.sortBy { it.metadata.creationTimeMillis }
@@ -22,29 +23,29 @@ class MaterialAdapter(val context: Activity, val material: ArrayList<CourseFile>
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val v = super.getView(position, convertView, parent) as CourseFileView
+        val v = super.getView(position, convertView, parent) as ProjectFileView
         val item = material[position]
         if (fileManager.hasInCache(item.name)) {
-            v.setStatus(CourseFileView.FileStatus.Local)
+            v.setStatus(ProjectFileView.FileStatus.Local)
         } else {
-            v.setStatus(CourseFileView.FileStatus.Cloud)
+            v.setStatus(ProjectFileView.FileStatus.Cloud)
         }
 
         v.setOnClickListener {
-            v.setStatus(CourseFileView.FileStatus.Downloading)
+            v.setStatus(ProjectFileView.FileStatus.Downloading)
             fileManager.download(
                     item.name,
                     OnSuccessListener { file ->
-                        v.setStatus(CourseFileView.FileStatus.Local)
+                        v.setStatus(ProjectFileView.FileStatus.Local)
                         try {
                             file.openInExternalApp(context)
                         } catch (ex: IOException) {
-                            Utils.showError(v, ex.message ?: context.getString(R.string.error_open))
+                            ViewUtils.showError(v, ex.message ?: context.getString(R.string.status_open_failed))
                         }
                     },
                     OnFailureListener {
-                        v.setStatus(CourseFileView.FileStatus.Cloud)
-                        Utils.showError(v, it.message ?: context.getString(R.string.error_download))
+                        v.setStatus(ProjectFileView.FileStatus.Cloud)
+                        ViewUtils.showError(v, it.message ?: context.getString(R.string.error_download))
                     }
             )
         }

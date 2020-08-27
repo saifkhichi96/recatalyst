@@ -36,12 +36,7 @@
 
     <activity android:name=".activities.SignUpActivity"/>
 
-    <activity android:name=".StudentDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".AttendanceActivity"
-              android:label="@string/title_attendance"
-              android:parentActivityName=".StudentDashboardActivity"
+    <activity android:name=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".ReportCardActivity"

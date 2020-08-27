@@ -1,6 +1,9 @@
 package co.aspirasoft.catalyst.activities.abs
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import co.aspirasoft.catalyst.MyApplication
+import co.aspirasoft.catalyst.activities.DashboardActivity
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.models.UserAccount
 import com.google.firebase.auth.FirebaseAuth
@@ -59,7 +62,13 @@ abstract class SilentSignInActivity : AppCompatActivity() {
      * @param account The signed-in user's account data.
      */
     private fun onSignedIn(account: UserAccount) {
+        val i = Intent(applicationContext, DashboardActivity::class.java).apply {
+            putExtra(MyApplication.EXTRA_USER, account)
+        }
 
+        startActivity(i)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
     }
 
 }

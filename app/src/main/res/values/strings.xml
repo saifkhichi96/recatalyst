@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">RECatalyst</string>
+  <string name="app_name" translatable="false">RECatalyst</string>
   <string name="tagline_1">The Ultimate Requirements Engineering</string>
   <string name="tagline_2">Solution for Software Projects</string>
   <string name="slogan">Let us manage your projects for you.</string>
@@ -11,65 +11,35 @@
 
 
   <!-- Activity titles -->
-  <string name="title_announcements">Announcements</string>
-  <string name="title_attendance">Attendance</string>
-  <string name="title_attendance_percentage">%.1f%% Attendance</string>
-  <string name="title_mark_attendance">Mark Attendance</string>
+  <string name="title_chatroom">Chatroom</string>
+  <string name="title_connections">Connections</string>
   <string name="title_profile">Profile</string>
-  <string name="title_report_card">Report Card</string>
-  <string name="title_school_classes">Manage Classes</string>
-  <string name="title_school_subjects">Manage Subjects</string>
-  <string name="title_sign_in">Sign In</string>
-  <string name="title_staff_invited">Invited Staff</string>
-  <string name="title_staff_joined">Current Staff</string>
-  <string name="title_students">Manage Students</string>
-  <string name="title_subjects">Subjects</string>
-  <string name="title_test">Add Grades</string>
-  <string name="title_tests">Grades</string>
+  <string name="title_project_details">Project Details</string>
+  <string name="title_projects">Projects</string>
+  <string name="title_task">Task Details</string>
+  <string name="title_tasks">Project Tasks</string>
+  <string name="title_team">Project Team</string>
 
 
   <!-- Placeholders -->
-  <string name="ph_address">Main Street 123, Anytown, USA</string>
-  <string name="ph_class">No Class Assigned</string>
   <string name="ph_date">1 January, 1970</string>
-  <string name="ph_duration">Duration</string>
-  <string name="ph_email">john_doe@example.com</string>
-  <string name="ph_name">John Doe</string>
-  <string name="ph_phone">+1 (098) 7654321</string>
-  <string name="ph_school">The ABC School</string>
-  <string name="ph_student_count">%d Student(s)</string>
-  <string name="ph_time">00:00</string>
-  <string name="ph_type">Student</string>
-  <string name="ph_unset">Not Set</string>
+  <string name="ph_email" translatable="false">john_doe@example.com</string>
+  <string name="ph_name" translatable="false">John Doe</string>
+  <string name="ph_time" translatable="false">00:00</string>
 
 
   <!-- Input Hints -->
-  <string name="hint_blood_group">Blood Group</string>
-  <string name="hint_city">City</string>
-  <string name="hint_class_name">Class Name</string>
-  <string name="hint_class_teacher">Class Teacher Email</string>
-  <string name="hint_country">Country</string>
-  <string name="hint_dob">Date of Birth</string>
-  <string name="hint_duration">Duration (min)</string>
+  <string name="hint_contact_info">Contact Info</string>
+  <string name="hint_description">Description</string>
+  <string name="hint_due_date">Due Date</string>
   <string name="hint_email">Email</string>
-  <string name="hint_emails">Emails</string>
-  <string name="hint_emergency_contact">Emergency Contact</string>
   <string name="hint_name">Name</string>
   <string name="hint_message">Message</string>
   <string name="hint_password">Password</string>
   <string name="hint_password_confirm">Confirm Password</string>
   <string name="hint_phone">Phone</string>
-  <string name="hint_postal_code">Postal Code</string>
-  <string name="hint_practical">Practical</string>
-  <string name="hint_state">State</string>
-  <string name="hint_street">Street</string>
-  <string name="hint_student_email">Student Email</string>
-  <string name="hint_student_roll_no">Roll Number</string>
-  <string name="hint_subject_class">Class/Section</string>
-  <string name="hint_subject_name">Course Name</string>
-  <string name="hint_subject_teacher">Teacher\'s Email</string>
-  <string name="hint_theory">Theory</string>
-  <string name="hint_time">Time</string>
+  <string name="hint_project_name">Project Name</string>
+  <string name="hint_short_description">Short Description</string>
 
 
   <!-- Button Labels -->
@@ -86,23 +56,21 @@
   <string name="label_gender_other">Other</string>
   <string name="label_grades">Grades</string>
   <string name="label_invite">Invite</string>
-  <string name="label_invite_multiple">Send Multiple Invites</string>
-  <string name="label_manage_classes">Class\nManagement</string>
-  <string name="label_manage_courses">Course\nManagement</string>
-  <string name="label_manage_students">Manage Your Students</string>
-  <string name="label_mark_attendance">Mark Attendance</string>
-  <string name="label_news">News</string>
+  <string name="label_learn_more">Learn More</string>
+  <string name="label_mark_done">Mark as done</string>
+  <string name="label_next">Next</string>
+  <string name="label_no_account">Don\'t have an account?</string>
+  <string name="label_pending_requests">Pending Requests</string>
   <string name="label_privacy">Privacy Policy</string>
-  <string name="label_profile">Manage your SAMS Profile</string>
-  <string name="label_revoke">Revoke</string>
   <string name="label_save">Save</string>
-  <string name="label_see_attendance">See Attendance</string>
-  <string name="label_see_grades">See Grades</string>
+  <string name="label_see_all">See all</string>
   <string name="label_send">Send</string>
-  <string name="label_sign_up">Sign Up</string>
-  <string name="label_skip_teacher_assignment">Assign a teacher later</string>
-  <string name="label_staff_invited">%d Pending</string>
-  <string name="label_staff_joined">%d Joined</string>
+  <string name="label_sign_in">Sign In</string>
+  <string name="label_sign_in_github">Continue with GitHub</string>
+  <string name="label_sign_out">Sign Out</string>
+  <string name="label_sign_up">Register now!</string>
+  <string name="label_tasks">Tasks</string>
+  <string name="label_team">Members</string>
   <string name="label_tos">Terms of Service</string>
   <string name="label_understood">Got It!</string>
 
@@ -111,13 +79,9 @@
   <string name="section_about">About</string>
   <string name="section_appointments">Lecture Times</string>
   <string name="section_contact">Contact</string>
-  <string name="section_courses">Your Courses</string>
-  <string name="section_homework">Homework Sheets</string>
-  <string name="section_info_academic">Academic Info</string>
-  <string name="section_info_emergency">Emergency Info</string>
-  <string name="section_material">Course Material</string>
-  <string name="section_timetable">Timetable</string>
-  <string name="section_total">Total</string>
+  <string name="section_assets">Assets</string>
+  <string name="section_projects">Projects</string>
+  <string name="section_teams">Teams</string>
 
 
   <!-- Card/Dialog Titles -->
@@ -135,21 +99,6 @@
   <string name="academics_body">Add/Edit the classes and courses taught at your school. You can also
     assign class teachers, and select instructors for each subject.
   </string>
-  <string name="add_class_body">Enter details of the new class to add it to your school. Please note that each
-    school class must have a unique name.
-  </string>
-  <string name="add_lecture_body">Select a day and time to create a new lecture appointment.</string>
-  <string name="add_student_body">Enter details of the new student to add it to your class. Please note that each
-    student must have a unique roll number and email address.
-  </string>
-  <string name="add_subject_body">Enter details of the new subject to add it to your school. Please note that each
-    subject taught to a class must have a unique name.
-  </string>
-  <string name="staff_body">Invite your team members to join SAMS. A magic link will be emailed which
-    can be used to sign up.
-  </string>
-  <string name="student_class_head">You are enrolled in</string>
-  <string name="teacher_class_head">You are assigned to</string>
 
   <!-- Onboarding and Intro -->
   <string name="sign_up_introduction">We are excited to have you on board! Let\'s start with the basics.\n\nHow should
@@ -170,19 +119,6 @@
   </string>
 
 
-  <!-- Input Explanations -->
-  <string name="helper_sign_up_email">To verify your identity, you must use the same email address to sign up on
-    which you received the sign up invitation.
-  </string>
-  <string name="helper_multiple_emails">Please write one email address on each line.</string>
-
-
-  <!-- Messages -->
-  <string name="sign_up_welcome_msg">%s %s,\n\nYou have been invited by your %s to join the SAMS School App.
-    \n\nPlease complete the registration process by creating a password for your new account.
-  </string>
-
-
   <!-- Permission Explanations -->
   <string name="explanation_storage_permission">We need permission to access your file storage in order to download
     images, course contents, and other application files. The files you access frequently are cached on
@@ -195,9 +131,6 @@
   <string name="confirm_close_editor">Make sure that you have saved any changes you made on this page before going
     back. Are you sure?
   </string>
-  <string name="confirm_delete_appointment">Remove lecture time?</string>
-  <string name="confirm_revoke_invite">Revoke invite to %s?</string>
-  <string name="confirm_save_grades">Please make sure that all marks are correct. Do you wish to save?</string>
   <string name="confirm_upload">Uploaded files cannot be edited or removed. Do you want to add \'%s\'?</string>
 
   <!-- Status Messages -->
@@ -256,35 +189,17 @@
   <string name="menu_account">Account</string>
 
 
-  <!-- Days of Week -->
-  <string name="monday">M</string>
-  <string name="tuesday">T</string>
-  <string name="wednesday">W</string>
-  <string name="thursday">T</string>
-  <string name="friday">F</string>
-  <string name="saturday">S</string>
-  <string name="sunday">S</string>
-
-
   <!-- Misc -->
-  <string name="class_teacher">class teacher</string>
-  <string name="dear">Dear</string>
-  <string name="respected">Respected</string>
-  <string name="school">school</string>
-  <string name="wait">Please Wait</string>
-  <string name="previous"><![CDATA[<]]></string>
-  <string name="next"><![CDATA[>]]></string>
   <string name="wrote">" wrote:"</string>
   <string name="at">"at "</string>
-  <string-array name="blood_types">
-    <item>O+</item>
-    <item>O-</item>
-    <item>A+</item>
-    <item>A-</item>
-    <item>B+</item>
-    <item>B-</item>
-    <item>AB+</item>
-    <item>AB-</item>
-  </string-array>
+  <string name="section_notes">Notes</string>
+  <string name="no_notes">No additional notes.</string>
+  <string name="close_editor">Close Editor</string>
+  <string name="unsaved_changes">Any unsaved changes will be lost. Do you wish to continue?</string>
+  <string name="delete_document">Delete Document</string>
+  <string name="confirm_delete">Document will be permanently removed. Are you sure?</string>
+  <string name="or">or</string>
+  <string name="disclaimer">
+    <![CDATA[* By signing up for an account, you agree to our <a href=\'#\'>privacy policy</a> and <a href=\'#\'>terms of service</a>.]]></string>
 
 </resources>

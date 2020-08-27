@@ -19,9 +19,7 @@ abstract class DashboardActivity : SecureActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_open_account -> {
-                AccountSwitcher.Builder(this)
-                        .setUser(currentUser)
-                        .show()
+                SettingsDialog.Builder(this).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)

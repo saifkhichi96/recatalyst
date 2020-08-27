@@ -3,8 +3,6 @@
   <string name="tagline_1">The Ultimate Requirements Engineering</string>
   <string name="tagline_2">Solution for Software Projects</string>
   <string name="slogan">Let us manage your projects for you.</string>
-  <string name="accepted" translatable="false">Accepted</string>
-  <string name="pending" translatable="false">Pending</string>
   <string name="format_date" translatable="false">%02d:%02d</string>
   <string name="format_date_12" translatable="false">hh:mma</string>
   <string name="format_date_24" translatable="false">hh:mm</string>
@@ -15,7 +13,6 @@
   <string name="title_connections">Connections</string>
   <string name="title_profile">Profile</string>
   <string name="title_project_details">Project Details</string>
-  <string name="title_projects">Projects</string>
   <string name="title_task">Task Details</string>
   <string name="title_tasks">Project Tasks</string>
   <string name="title_team">Project Team</string>
@@ -29,7 +26,6 @@
 
 
   <!-- Input Hints -->
-  <string name="hint_contact_info">Contact Info</string>
   <string name="hint_description">Description</string>
   <string name="hint_due_date">Due Date</string>
   <string name="hint_email">Email</string>
@@ -37,8 +33,6 @@
   <string name="hint_message">Message</string>
   <string name="hint_password">Password</string>
   <string name="hint_password_confirm">Confirm Password</string>
-  <string name="hint_phone">Phone</string>
-  <string name="hint_project_name">Project Name</string>
   <string name="hint_short_description">Short Description</string>
 
 
@@ -47,15 +41,11 @@
   <string name="label_back">Back</string>
   <string name="label_change_password">Change Password</string>
   <string name="label_change_photo">Change Photo</string>
+  <string name="label_chatroom">Chatroom</string>
   <string name="label_create">Create</string>
   <string name="label_create_account">Create Account</string>
   <string name="label_delete">Delete</string>
   <string name="label_delete_account">Delete Account</string>
-  <string name="label_edit">Edit</string>
-  <string name="label_gender_female">Female</string>
-  <string name="label_gender_male">Male</string>
-  <string name="label_gender_other">Other</string>
-  <string name="label_grades">Grades</string>
   <string name="label_invite">Invite</string>
   <string name="label_learn_more">Learn More</string>
   <string name="label_mark_done">Mark as done</string>
@@ -77,8 +67,7 @@
 
 
   <!-- Section Headings -->
-  <string name="section_about">About</string>
-  <string name="section_appointments">Lecture Times</string>
+  <string name="section_client_details">Client Details</string>
   <string name="section_contact">Contact</string>
   <string name="section_assets">Assets</string>
   <string name="section_projects">Projects</string>
@@ -137,14 +126,9 @@
   <string name="status_signing_in">Signing you in…</string>
   <string name="status_sign_in_failed">Sign in failed</string>
 
-  <string name="status_invitation_sending">Sending Invitation</string>
-  <string name="status_invitation_progress">A magic link is being emailed to %s…</string>
   <string name="status_invitation_sent">Invitation emailed</string>
   <string name="status_invitation_failed">Failed to invite</string>
 
-  <string name="status_invitations_sending">Sending %d/%d Invitation…</string>
-  <string name="status_invitations_progress">Emailed %d/%d magic links…</string>
-  <string name="status_invitations_sent">Invitations Sent</string>
 
   <string name="status_posting">Sending…</string>
   <string name="status_posted">Message sent!</string>
@@ -152,32 +136,21 @@
 
   <string name="status_saving">Saving…</string>
   <string name="status_saved">All updates saved!</string>
+  <string name="status_save_failed">Failed to saved changes.</string>
 
   <string name="status_uploading">Uploading…</string>
   <string name="status_uploaded">Uploaded successful.</string>
   <string name="status_upload_failed">Failed to upload.</string>
 
+  <string name="status_opening">Opening…</string>
+  <string name="status_open_failed">Could not open file.</string>
 
   <!-- Error Messages -->
   <string name="error_no_such_user">No user account with email address found.</string>
   <string name="error_download">Could not download file.</string>
-  <string name="error_invalid_blood_type">Invalid blood type.</string>
   <string name="error_invalid_email">Invalid email address.</string>
-  <string name="error_invalid_invitation">This user is already registered. Please make sure you are using the email on
-    which you received the invitation.
-  </string>
   <string name="error_invalid_link">Malformed link.</string>
-  <string name="error_invalid_teacher">Select a valid teacher from the list.</string>
-  <string name="error_invalid_marks">Obtained marks cannot be higher than total marks!</string>
-  <string name="error_missing_classes">You must add your school classes first.</string>
-  <string name="error_missing_invitation">Link is expired. Please ask your school to issue a new invitation.</string>
-  <string name="error_no_staff_invited">No staff members invited yet.</string>
-  <string name="error_no_staff_joined">No staff members have joined yet.</string>
-  <string name="error_open">Could not open file.</string>
   <string name="error_password_mismatch">Passwords do not match.</string>
-  <string name="error_required">required</string>
-  <string name="error_required_total_marks">Total marks are required!</string>
-  <string name="error_unknown">Unknown error.</string>
 
 
   <!-- Menu Actions -->

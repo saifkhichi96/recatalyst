@@ -91,9 +91,7 @@
               android:parentActivityName=".SchoolDashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".SchoolSubjectsActivity"
-              android:label="@string/title_school_subjects"
-              android:parentActivityName=".SchoolDashboardActivity"
+    <activity android:name=".activities.DrawingActivity"
               android:configChanges="orientation|screenSize"/>
 
     <provider

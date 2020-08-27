@@ -1,0 +1,122 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+  <!-- Toolbar -->
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorPrimaryDark"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+    <!-- Color Palette -->
+    <LinearLayout
+        android:id="@+id/paintColors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal">
+
+      <ImageButton
+          android:layout_width="@dimen/large_brush"
+          android:layout_height="@dimen/large_brush"
+          android:background="@color/skin"
+          android:onClick="paintClicked"
+          android:tag="@color/skin"
+          app:srcCompat="@drawable/pallet"/>
+
+      <ImageButton
+          android:layout_width="@dimen/large_brush"
+          android:layout_height="@dimen/large_brush"
+          android:background="@color/black"
+          android:onClick="paintClicked"
+          android:tag="@color/black"
+          app:srcCompat="@drawable/pallet"/>
+
+      <ImageButton
+          android:layout_width="@dimen/large_brush"
+          android:layout_height="@dimen/large_brush"
+          android:background="@color/red"
+          android:onClick="paintClicked"
+          android:tag="@color/red"
+          app:srcCompat="@drawable/pallet"/>
+
+      <ImageButton
+          android:layout_width="@dimen/large_brush"
+          android:layout_height="@dimen/large_brush"
+          android:background="@color/green"
+          android:onClick="paintClicked"
+          android:tag="@color/green"
+          app:srcCompat="@drawable/pallet"/>
+
+      <ImageButton
+          android:layout_width="@dimen/large_brush"
+          android:layout_height="@dimen/large_brush"
+          android:background="@color/blue"
+          android:onClick="paintClicked"
+          android:tag="@color/blue"
+          app:srcCompat="@drawable/pallet"/>
+
+      <ImageButton
+          android:layout_width="@dimen/large_brush"
+          android:layout_height="@dimen/large_brush"
+          android:background="@color/yellow"
+          android:onClick="paintClicked"
+          android:tag="@color/yellow"
+          app:srcCompat="@drawable/pallet"/>
+
+    </LinearLayout>
+
+    <!-- Tools -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal">
+
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:id="@+id/newButton"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:padding="4dp"
+          app:icon="@drawable/ic_action_delete"
+          app:iconSize="32dp"
+          app:iconTint="?attr/colorSecondary"/>
+
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:id="@+id/brushButton"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:padding="4dp"
+          app:icon="@drawable/ic_action_image"
+          app:iconSize="32dp"
+          app:iconTint="?attr/colorSecondary"/>
+
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:id="@+id/eraseButton"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:padding="4dp"
+          app:icon="@drawable/ic_action_eraser"
+          app:iconSize="32dp"
+          app:iconTint="?attr/colorSecondary"/>
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <co.aspirasoft.catalyst.views.DrawingView
+      android:id="@+id/drawingView"
+      android:layout_width="match_parent"
+      android:layout_height="fill_parent"
+      android:background="@color/white"/>
+
+</LinearLayout>

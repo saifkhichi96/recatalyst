@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.EditorActivity">
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@android:color/transparent"
+      android:theme="@style/AppTheme.AppBarOverlay"
+      app:elevation="0dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:title="Document Name"
+        app:subtitle="version"
+        app:layout_scrollFlags="scroll"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="top"
+        android:orientation="horizontal"
+        app:layout_scrollFlags="scroll">
+
+      <androidx.appcompat.widget.AppCompatTextView
+          android:id="@+id/selectedSection"
+          style="@style/TextAppearance.MaterialComponents.Subtitle1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="64dp"
+          android:gravity="start|center_vertical"
+          android:textColor="?android:attr/textColorPrimary"
+          tools:text="@tools:sample/lorem"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/backButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:layout_marginStart="-64dp"
+          android:padding="2dp"
+          app:icon="@drawable/ic_action_back"
+          app:iconSize="28dp"
+          app:iconTint="?android:attr/textColorPrimary"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/nextButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:padding="2dp"
+          app:icon="@drawable/ic_action_next"
+          app:iconSize="28dp"
+          app:iconTint="?android:attr/textColorPrimary"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/headingsView"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:tabBackground="?attr/colorPrimary"
+        app:tabIndicatorColor="?attr/colorPrimaryDark"
+        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorFullWidth="true"
+        app:tabMode="fixed"/>
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginBottom="48dp"
+      android:scrollbars="none"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <co.aspirasoft.view.NestedListView
+        android:id="@+id/sectionsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:paddingVertical="@dimen/activity_vertical_margin"
+        android:scrollbars="none"/>
+
+  </androidx.core.widget.NestedScrollView>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:layout_gravity="bottom"
+      android:background="?attr/colorPrimary"
+      android:orientation="horizontal">
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/boldButton"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_format_bold"
+        app:iconSize="32dp"
+        app:iconTint="@android:color/black"/>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/italicButton"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:icon="@drawable/ic_format_italic"
+        app:iconSize="32dp"
+        app:iconTint="@android:color/black"/>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/underlineButton"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:icon="@drawable/ic_format_underline"
+        app:iconSize="32dp"
+        app:iconTint="@android:color/black"/>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/orderedListButton"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:icon="@drawable/ic_format_list_ordered"
+        app:iconSize="32dp"
+        app:iconTint="@android:color/black"/>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/unorderedListButton"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        app:icon="@drawable/ic_format_list_unordered"
+        app:iconSize="32dp"
+        app:iconTint="@android:color/black"/>
+
+  </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

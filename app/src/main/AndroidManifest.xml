@@ -79,20 +79,13 @@
               android:parentActivityName=".SubjectActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".SchoolDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".SchoolTeachersActivity"
-              android:parentActivityName=".SchoolDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".SchoolClassesActivity"
-              android:label="@string/title_school_classes"
-              android:parentActivityName=".SchoolDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
+    <activity android:name=".activities.EditorActivity"
+              android:configChanges="orientation|screenSize"
+              android:windowSoftInputMode="adjustResize"/>
 
     <activity android:name=".activities.DrawingActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:configChanges="orientation|screenSize"
+              android:parentActivityName=".activities.EditorActivity"/>
 
     <provider
         android:name="androidx.core.content.FileProvider"

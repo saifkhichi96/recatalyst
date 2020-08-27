@@ -87,10 +87,15 @@ object ConnectionRequestBO {
                 .removeValue()
                 .await()
 
-        // Add it to accepted requests list
+        // Add it to accepted requests list of both users
         MyApplication.refToUserConnections(uid)
                 .child(sender)
                 .setValue(sender)
+                .await()
+
+        MyApplication.refToUserConnections(sender)
+                .child(uid)
+                .setValue(uid)
                 .await()
     }
 

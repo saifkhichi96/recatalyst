@@ -1,7 +1,6 @@
 package co.aspirasoft.catalyst.dao
 
 import co.aspirasoft.catalyst.MyApplication
-import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.mappedList
 
 /**
@@ -25,8 +24,8 @@ object ConnectionsDao {
      * @param uid The id of the user whose connections to fetch.
      * @param receiver A callback to receive the result of the operation.
      */
-    fun getConnections(uid: UserAccount, receiver: (list: List<String>) -> Unit) {
-        MyApplication.refToUserConnections(uid.id)
+    fun getConnections(uid: String, receiver: (list: List<String>) -> Unit) {
+        MyApplication.refToUserConnections(uid)
                 .mappedList<String> { connections ->
                     receiver(connections)
                 }
@@ -43,7 +42,7 @@ object ConnectionsDao {
      * @param receiver A callback to receive the result of the operation.
      */
     fun getReceivedRequests(uid: String, receiver: (list: List<String>) -> Unit) {
-        MyApplication.refToUserConnectionsOutgoing(uid)
+        MyApplication.refToUserConnectionsIncoming(uid)
                 .mappedList<String> { connections ->
                     receiver(connections)
                 }

@@ -39,12 +39,12 @@
     <activity android:name=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".ReportCardActivity"
-              android:label="@string/title_report_card"
-              android:parentActivityName=".StudentDashboardActivity"
+    <activity android:name=".activities.ConnectionsActivity"
+              android:label="@string/title_connections"
+              android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".TeacherDashboardActivity"
+    <activity android:name=".activities.IntroActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.ProfileActivity"

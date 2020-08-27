@@ -3,7 +3,8 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="@dimen/activity_horizontal_margin">
+              android:paddingHorizontal="@dimen/activity_horizontal_margin"
+              android:paddingVertical="@dimen/activity_vertical_margin">
 
   <com.google.android.material.textview.MaterialTextView
       android:id="@+id/title"

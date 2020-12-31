@@ -46,7 +46,7 @@ object ImageLoader {
                     },
                     OnFailureListener {
                         try {
-                            Glide.with(context).load(R.drawable.ph_student).into(target)
+                            Glide.with(context).load(R.drawable.placeholder_avatar).into(target)
                         } catch (ignored: Exception) {
 
                         }

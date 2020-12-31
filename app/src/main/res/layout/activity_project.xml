@@ -43,28 +43,7 @@
           android:layout_gravity="bottom|center_horizontal"
           android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:id="@+id/noticeBoardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
-            android:onClick="onTeamsClicked"
-            android:text="@string/label_chatroom"
-            android:textColor="?attr/colorAccent"
-            app:icon="@drawable/ic_news"
-            app:iconTint="?attr/colorAccent"/>
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:onClick="onTasksClicked"
-            android:text="@string/label_tasks"
-            android:textColor="?attr/colorAccent"
-            app:icon="@drawable/ic_grades"
-            app:iconTint="?attr/colorAccent"/>
 
       </LinearLayout>
 

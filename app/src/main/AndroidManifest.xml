@@ -38,46 +38,33 @@
     <activity android:name=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
+    <activity android:name=".activities.ProfileActivity"
+              android:label="@string/title_profile"
+              android:parentActivityName=".activities.DashboardActivity"
+              android:configChanges="orientation|screenSize"/>
+
     <activity android:name=".activities.ConnectionsActivity"
               android:label="@string/title_connections"
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.IntroActivity"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".activities.ProfileActivity"
-              android:label="@string/title_profile"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".StudentsActivity"
-              android:label="@string/title_students"
-              android:parentActivityName=".TeacherDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".NoticeActivity"
-              android:label="@string/title_announcements"
-              android:parentActivityName=".TeacherDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
-
-    <activity android:name=".MarkAttendanceActivity"
-              android:label="@string/title_mark_attendance"
-              android:parentActivityName=".TeacherDashboardActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:configChanges="orientation|screenSize"
+              android:parentActivityName=".activities.ConnectionsActivity"/>
 
     <activity android:name=".activities.ProjectActivity"
               android:label="@string/title_project_details"
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".TestsActivity"
-              android:label="@string/title_tests"
-              android:parentActivityName=".SubjectActivity"
+    <activity android:name=".activities.TasksActivity"
+              android:label="@string/title_tasks"
+              android:parentActivityName=".activities.ProjectActivity"
               android:configChanges="orientation|screenSize"/>
 
-    <activity android:name=".TestActivity"
-              android:label="@string/title_test"
-              android:parentActivityName=".SubjectActivity"
+    <activity android:name=".activities.TaskActivity"
+              android:label="@string/title_task"
+              android:parentActivityName=".activities.ProjectActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.EditorActivity"

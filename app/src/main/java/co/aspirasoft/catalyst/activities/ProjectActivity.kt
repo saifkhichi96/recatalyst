@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.MyApplication
@@ -84,6 +86,18 @@ class ProjectActivity : DashboardChildActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_project, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_tasks -> onTasksClicked()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun updateUI(currentUser: UserAccount) {
         // Show subject details
         supportActionBar?.title = project.name
@@ -111,10 +125,10 @@ class ProjectActivity : DashboardChildActivity() {
 
     fun onTeamsClicked(v: View) {
 
-    }
-
-    fun onTasksClicked(v: View) {
-
+    private fun onTasksClicked() {
+        startSecurely(TasksActivity::class.java, Intent().apply {
+            putExtra(MyApplication.EXTRA_PROJECT, project)
+        })
     }
 
     private fun showProjectContents() {
@@ -141,7 +155,6 @@ class ProjectActivity : DashboardChildActivity() {
                 assetsSpace.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
             }
         }
-
     }
 
     private fun showProjectDocs() {

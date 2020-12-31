@@ -43,7 +43,7 @@ class UserView : BaseView<UserAccount> {
         }
 
         ImageLoader.with(context)
-                .load(model)
+                .load(model.id)
                 .into(userImage)
     }
 

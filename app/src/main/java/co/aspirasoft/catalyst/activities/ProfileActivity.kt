@@ -137,7 +137,7 @@ class ProfileActivity : DashboardChildActivity() {
 
     private fun showUserImage(invalidate: Boolean = false) {
         ImageLoader.with(this)
-                .load(currentUser)
+                .load(currentUser.id)
                 .skipCache(invalidate)
                 .into(userImage)
     }

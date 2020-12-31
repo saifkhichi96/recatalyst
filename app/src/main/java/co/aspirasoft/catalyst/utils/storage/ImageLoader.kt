@@ -3,11 +3,8 @@ package co.aspirasoft.catalyst.utils.storage
 import android.content.Context
 import android.widget.ImageView
 import co.aspirasoft.catalyst.R
-import co.aspirasoft.catalyst.models.UserAccount
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 
 object ImageLoader {
 
@@ -16,12 +13,12 @@ object ImageLoader {
     }
 
     class ImageLoadTask(val context: Context) {
-        fun load(user: UserAccount): UserImageTask {
-            return UserImageTask(context, user)
+        fun load(uid: String): UserImageTask {
+            return UserImageTask(context, uid)
         }
     }
 
-    class UserImageTask(val context: Context, val user: UserAccount) {
+    class UserImageTask(val context: Context, val uid: String) {
         private var skip: Boolean = false
         private val filename = "photo.png"
 
@@ -31,9 +28,9 @@ object ImageLoader {
         }
 
         fun into(target: ImageView) {
-            FileManager.newInstance(context, "users/${user.id}/").download(
+            FileManager.newInstance(context, "users/${uid}/").download(
                     filename,
-                    OnSuccessListener {
+                    {
                         try {
                             Glide.with(context)
                                     .load(it)
@@ -44,7 +41,7 @@ object ImageLoader {
 
                         }
                     },
-                    OnFailureListener {
+                    {
                         try {
                             Glide.with(context).load(R.drawable.placeholder_avatar).into(target)
                         } catch (ignored: Exception) {

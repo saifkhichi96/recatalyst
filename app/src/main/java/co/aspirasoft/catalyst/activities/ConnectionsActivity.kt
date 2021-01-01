@@ -64,10 +64,7 @@ class ConnectionsActivity : DashboardChildActivity() {
         setContentView(R.layout.activity_connections)
 
         placeholderText.text = "You don't have any Connections."
-        learnMoreButton.setOnClickListener {
-            startActivity(Intent(applicationContext, IntroActivity::class.java))
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
+        learnMoreButton.setOnClickListener { onLearnMoreClicked() }
 
         requestsAdapter = ConnectionAdapter(this, requests)
         requestsAdapter.onItemClickListener = { position ->
@@ -142,6 +139,10 @@ class ConnectionsActivity : DashboardChildActivity() {
                 dialog.show(supportFragmentManager, dialog.toString())
                 true
             }
+            R.id.action_learn_more -> {
+                onLearnMoreClicked()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -185,6 +186,11 @@ class ConnectionsActivity : DashboardChildActivity() {
                 }
             }
         }
+    }
+
+    private fun onLearnMoreClicked() {
+        startActivity(Intent(applicationContext, IntroActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     private class ConnectionAdapter(context: Context, val users: List<UserAccount>)

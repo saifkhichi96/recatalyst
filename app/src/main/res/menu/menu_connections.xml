@@ -7,4 +7,10 @@
       android:icon="@drawable/ic_action_invite"
       app:showAsAction="ifRoom"/>
 
+  <item
+      android:id="@+id/action_learn_more"
+      android:title="@string/label_learn_more"
+      android:icon="@drawable/ic_action_info"
+      app:showAsAction="ifRoom"/>
+
 </menu>

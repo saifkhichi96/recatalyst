@@ -47,6 +47,12 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
             wizardIcon.setImageDrawable(value)
         }
 
+    var isBackShown: Boolean = true
+        set(value) {
+            field = value
+            backButton.visibility = if (value) View.VISIBLE else View.GONE
+        }
+
     var isDividerShown: Boolean = true
         set(value) {
             field = value
@@ -89,6 +95,7 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
 
                 icon = getDrawable(R.styleable.WizardView_icon)
 
+                isBackShown = getBoolean(R.styleable.WizardView_showBack, true)
                 isDividerShown = getBoolean(R.styleable.WizardView_showDivider, true)
                 isIndicatorShown = getBoolean(R.styleable.WizardView_showIndicator, true)
                 isTitleShown = getBoolean(R.styleable.WizardView_showTitle, true)
@@ -143,7 +150,7 @@ class WizardView(context: Context, attrs: AttributeSet?, defStyleInt: Int)
                     contentView.currentItem = currentPosition
                 }
 
-                backButton.visibility = if (isFirstStep) View.GONE else View.VISIBLE
+                backButton.visibility = if (isFirstStep || !isBackShown) View.GONE else View.VISIBLE
                 nextButton.text = if (isLastStep) submitLabel else nextLabel
             }
 

@@ -4,6 +4,7 @@
     <attr name="icon" format="reference"/>
     <attr name="nextLabel" format="string"/>
     <attr name="submitLabel" format="string"/>
+    <attr name="showBack" format="boolean"/>
     <attr name="showDivider" format="boolean"/>
     <attr name="showIndicator" format="boolean"/>
     <attr name="showTitle" format="boolean"/>

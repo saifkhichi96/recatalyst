@@ -13,6 +13,8 @@ import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
+import co.aspirasoft.catalyst.utils.FileUtils
+import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
 import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.util.ViewUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -20,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_editor.*
 import kotlinx.coroutines.launch
+import java.io.FileOutputStream
 
 class EditorActivity : DashboardChildActivity() {
 
@@ -43,7 +46,6 @@ class EditorActivity : DashboardChildActivity() {
         // Display door/window details
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
             title = document.name
             subtitle = String.format("v%s", document.version)
         }
@@ -107,8 +109,8 @@ class EditorActivity : DashboardChildActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_save_file -> {
-                saveProject()
+            R.id.action_share_document -> {
+                shareProject()
                 return true
             }
             android.R.id.home -> {
@@ -137,6 +139,18 @@ class EditorActivity : DashboardChildActivity() {
             val error = ex.message ?: getString(R.string.status_save_failed)
             ViewUtils.showError(sectionsList, error)
         }
+    }
+
+    private fun shareProject() {
+        // Save document as a PDF
+        val name = String.format("%s (v%s).pdf", document.name, document.version)
+        val file = FileUtils.createTempFile(name, fm.cache)
+        FileOutputStream(file).use { fos ->
+            fos.write(document.toByteArray())
+        }
+
+        // Open PDF in external app
+        file.openInExternalApp(this)
     }
 
     override fun onBackPressed() {

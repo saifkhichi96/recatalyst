@@ -31,7 +31,7 @@ import java.io.File
 class FileManager private constructor(context: Context, relativePath: String) {
 
     private val storage = Firebase.storage.getReference(relativePath)
-    private val cache = context.getExternalFilesDir(null)?.let { File(it, relativePath) }
+    val cache = context.getExternalFilesDir(null)?.let { File(it, relativePath) }
 
     init {
         if (cache != null && !cache.exists()) {

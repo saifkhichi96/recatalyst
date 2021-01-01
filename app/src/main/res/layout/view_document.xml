@@ -36,64 +36,6 @@
         app:textAllCaps="true"
         tools:text="@tools:sample/lorem"/>
 
-    <LinearLayout
-        android:id="@+id/buttonBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="start|bottom"
-        android:orientation="horizontal">
-
-      <com.google.android.material.button.MaterialButton
-          android:id="@+id/deleteButton"
-          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-          android:layout_width="32dp"
-          android:layout_height="42dp"
-          android:layout_marginStart="4dp"
-          android:padding="4dp"
-          app:cornerRadius="16dp"
-          android:visibility="gone"
-          app:icon="@drawable/ic_action_delete"
-          app:iconSize="24dp"
-          app:iconTint="?attr/colorSecondary"
-          app:rippleColor="?attr/colorSecondary"/>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="end|bottom"
-          android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/viewButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_width="32dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="4dp"
-            android:padding="4dp"
-            app:cornerRadius="16dp"
-            android:visibility="gone"
-            app:icon="@drawable/ic_action_open"
-            app:iconSize="24dp"
-            app:iconTint="@android:color/white"
-            app:rippleColor="?attr/colorSecondary"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/editButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
-            android:layout_width="32dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="4dp"
-            android:padding="4dp"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/ic_action_edit"
-            app:iconSize="24dp"
-            app:iconTint="@android:color/white"
-            app:rippleColor="?attr/colorSecondary"/>
-
-      </LinearLayout>
-
-    </LinearLayout>
-
   </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

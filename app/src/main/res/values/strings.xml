@@ -56,6 +56,7 @@
   <string name="label_save">Save</string>
   <string name="label_see_all">See all</string>
   <string name="label_send">Send</string>
+  <string name="label_share">Share</string>
   <string name="label_sign_in">Sign In</string>
   <string name="label_sign_in_github">Continue with GitHub</string>
   <string name="label_sign_out">Sign Out</string>

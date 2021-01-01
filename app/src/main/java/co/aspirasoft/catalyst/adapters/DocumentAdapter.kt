@@ -10,13 +10,8 @@ import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.DocumentType
 import co.aspirasoft.catalyst.models.Project
-import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
 import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.catalyst.views.DocumentView
-import co.aspirasoft.util.ViewUtils
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.material.snackbar.Snackbar
 import kotlin.reflect.KClass
 
 class DocumentAdapter(context: Context, private val project: Project, private val documents: Array<KClass<out DocumentType>>)
@@ -68,47 +63,28 @@ class DocumentAdapter(context: Context, private val project: Project, private va
 
     private fun onDocumentNotFound(holder: DocumentView, type: DocumentType) {
         holder.versionView.text = String.format("Version: N/A")
-        holder.deleteButton.visibility = View.GONE
-        holder.viewButton.visibility = View.GONE
-        holder.editButton.setOnClickListener {
-            onCreateListener?.invoke(Document.Builder()
+        holder.itemCard.setOnClickListener {
+            val newDocument = Document.Builder()
                     .setProject(project.name)
                     .setType(type)
                     .setVersion("1.0.0")
-                    .build())
+                    .build()
+            onCreateListener?.invoke(newDocument)
+            onEditListener?.invoke(newDocument)
         }
     }
 
     private fun onDocumentExists(holder: DocumentView, document: Document) {
         holder.versionView.text = String.format("Version: ${document.version}")
 
-        holder.deleteButton.visibility = View.VISIBLE
-        holder.viewButton.visibility = View.VISIBLE
-
         // Set up click actions
-        holder.editButton.setOnClickListener {
+        holder.itemCard.setOnClickListener {
             onEditListener?.invoke(document)
         }
 
-        holder.deleteButton.setOnClickListener {
+        holder.itemCard.setOnLongClickListener {
             onDeleteListener?.invoke(document)
-        }
-
-        holder.viewButton.setOnClickListener {
-            val status = Snackbar.make(holder.itemCard, context.getString(R.string.status_opening), Snackbar.LENGTH_INDEFINITE)
-            status.show()
-            fm.downloadOnly(
-                    String.format("%s (v%s).pdf", document.name, document.version),
-                    OnSuccessListener { file ->
-                        status.dismiss()
-                        file.openInExternalApp(context)
-                    },
-                    OnFailureListener {
-                        status.dismiss()
-                        ViewUtils.showError(holder.itemCard, it.message
-                                ?: context.getString(R.string.status_open_failed))
-                    }
-            )
+            true
         }
     }
 

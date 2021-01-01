@@ -57,6 +57,11 @@
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
+    <activity android:name=".activities.ChatroomActivity"
+              android:label="@string/title_chatroom"
+              android:parentActivityName=".activities.ProjectActivity"
+              android:configChanges="orientation|screenSize"/>
+
     <activity android:name=".activities.TasksActivity"
               android:label="@string/title_tasks"
               android:parentActivityName=".activities.ProjectActivity"

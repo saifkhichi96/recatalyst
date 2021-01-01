@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ChatroomActivity">
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@id/commentBar">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          app:popupTheme="@style/AppTheme.PopupOverlay"
+          app:layout_scrollFlags="scroll"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="48dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+      <co.aspirasoft.view.NestedListView
+          android:id="@+id/messagesList"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_gravity="bottom"
+          android:divider="@android:color/transparent"
+          android:overScrollMode="never"
+          android:paddingStart="@dimen/activity_horizontal_margin"
+          android:paddingTop="@dimen/activity_vertical_margin"
+          android:paddingEnd="@dimen/activity_horizontal_margin"
+          android:paddingBottom="@dimen/activity_vertical_margin"
+          android:scrollbars="none"
+          android:stackFromBottom="true"
+          android:transcriptMode="alwaysScroll"/>
+
+    </LinearLayout>
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+  <LinearLayout
+      android:id="@+id/commentBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:padding="8dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginEnd="48dp"
+        app:boxBackgroundColor="#4000"
+        app:boxCornerRadiusBottomEnd="18dp"
+        app:boxCornerRadiusBottomStart="18dp"
+        app:boxCornerRadiusTopEnd="18dp"
+        app:boxCornerRadiusTopStart="18dp"
+        app:hintEnabled="false"
+        app:boxStrokeColor="#0000">
+
+      <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/messageInput"
+          android:layout_width="match_parent"
+          android:layout_height="39dp"
+          android:gravity="center_vertical"
+          android:hint="@string/hint_message"
+          android:inputType="text"
+          android:maxLines="1"
+          android:paddingStart="16dp"
+          android:paddingTop="0dp"
+          android:paddingEnd="?actionBarSize"
+          android:paddingBottom="0dp"
+          android:textCursorDrawable="@drawable/cursor"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sendMessage"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="38dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="-38dp"
+        android:padding="11dp"
+        app:cornerRadius="18dp"
+        app:icon="@drawable/ic_action_send"
+        app:iconSize="18dp"
+        app:iconTint="?attr/colorPrimary"
+        app:backgroundTint="?attr/colorAccent"/>
+
+  </LinearLayout>
+
+</RelativeLayout>

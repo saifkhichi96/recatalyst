@@ -30,7 +30,7 @@
   <string name="hint_due_date">Due Date</string>
   <string name="hint_email">Email</string>
   <string name="hint_name">Name</string>
-  <string name="hint_message">Message</string>
+  <string name="hint_message">Type a message</string>
   <string name="hint_password">Password</string>
   <string name="hint_password_confirm">Confirm Password</string>
   <string name="hint_short_description">Short Description</string>
@@ -54,6 +54,7 @@
   <string name="label_pending_requests">Pending Requests</string>
   <string name="label_privacy">Privacy Policy</string>
   <string name="label_save">Save</string>
+  <string name="label_search">Search</string>
   <string name="label_see_all">See all</string>
   <string name="label_send">Send</string>
   <string name="label_share">Share</string>
@@ -79,12 +80,6 @@
   <string name="create_project">New Project</string>
   <string name="file_upload" formatted="false">Add to %s (%s)</string>
   <string name="invite_team_member">Invite Team Member</string>
-
-
-  <!-- Card/Dialog Descriptions -->
-  <string name="academics_body">Add/Edit the classes and courses taught at your school. You can also
-    assign class teachers, and select instructors for each subject.
-  </string>
 
   <!-- Onboarding and Intro -->
   <string name="sign_up_introduction">We are excited to have you on board! Let\'s start with the basics.\n\nHow should
@@ -114,9 +109,6 @@
 
   <!-- Confirmation Messages -->
   <string name="confirm_cancel_sign_up">Your account has not been created yet. Do you want to exit sign up?</string>
-  <string name="confirm_close_editor">Make sure that you have saved any changes you made on this page before going
-    back. Are you sure?
-  </string>
   <string name="confirm_upload">Uploaded files cannot be edited or removed. Do you want to add \'%s\'?</string>
 
   <!-- Status Messages -->
@@ -130,10 +122,7 @@
   <string name="status_invitation_sent">Invitation emailed</string>
   <string name="status_invitation_failed">Failed to invite</string>
 
-
-  <string name="status_posting">Sending…</string>
-  <string name="status_posted">Message sent!</string>
-  <string name="status_post_failed">Could not send the message at this time.</string>
+  <string name="status_message_not_sent">Could not send the message at this time.</string>
 
   <string name="status_saving">Saving…</string>
   <string name="status_saved">All updates saved!</string>

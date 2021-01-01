@@ -7,17 +7,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Parcelize
-class Message(
-        var postDate: Date = Date(System.currentTimeMillis()),
-        var postContent: String = "",
-        var postAuthor: String = "",
-) : BaseModel(), Parcelable {
+class Message(var content: String, var sender: String, var timestamp: Date = Date(System.currentTimeMillis()))
+    : BaseModel(), Parcelable {
 
-    val postDateAsString: String
+    constructor() : this("", "", Date(System.currentTimeMillis()))
+
+    var id: String = ""
+
+    val datetime: String
         get() {
             val formatter = SimpleDateFormat("hh:mm a, EE dd MMM, yyyy", Locale.getDefault())
-            return formatter.format(postDate)
+            return formatter.format(timestamp)
         }
+
+    @Transient
+    var incoming: Boolean = true
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -25,14 +29,13 @@ class Message(
 
         other as Message
 
-        if (postDate != other.postDate) return false
-        if (postContent != other.postContent) return false
+        if (id != other.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return postDate.hashCode()
+        return id.hashCode()
     }
 
 }

@@ -92,8 +92,16 @@ class ProjectActivity : DashboardChildActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_tasks -> onTasksClicked()
+        return when (item.itemId) {
+            R.id.action_chatroom -> {
+                onChatroomClicked()
+                true
+            }
+            R.id.action_tasks -> {
+                onTasksClicked()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -123,7 +131,11 @@ class ProjectActivity : DashboardChildActivity() {
         }
     }
 
-    fun onTeamsClicked(v: View) {
+    private fun onChatroomClicked() {
+        startSecurely(ChatroomActivity::class.java, Intent().apply {
+            putExtra(MyApplication.EXTRA_PROJECT, project)
+        })
+    }
 
     private fun onTasksClicked() {
         startSecurely(TasksActivity::class.java, Intent().apply {

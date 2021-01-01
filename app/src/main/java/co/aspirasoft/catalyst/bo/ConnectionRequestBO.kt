@@ -87,6 +87,12 @@ object ConnectionRequestBO {
                 .removeValue()
                 .await()
 
+        // Remove outgoing request from the sender's account
+        MyApplication.refToUserConnectionsOutgoing(sender)
+                .child(uid)
+                .removeValue()
+                .await()
+
         // Add it to accepted requests list of both users
         MyApplication.refToUserConnections(uid)
                 .child(sender)
@@ -113,7 +119,7 @@ object ConnectionRequestBO {
                 .await()
 
         // Remove outgoing request from the sender's account
-        MyApplication.refToUserConnectionsIncoming(sender)
+        MyApplication.refToUserConnectionsOutgoing(sender)
                 .child(uid)
                 .removeValue()
                 .await()

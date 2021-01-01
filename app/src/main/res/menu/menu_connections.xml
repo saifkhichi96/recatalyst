@@ -2,12 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item
-      android:id="@+id/action_invite"
-      android:title="@string/label_invite"
-      android:icon="@drawable/ic_action_invite"
-      app:showAsAction="ifRoom"/>
-
-  <item
       android:id="@+id/action_learn_more"
       android:title="@string/label_learn_more"
       android:icon="@drawable/ic_action_info"

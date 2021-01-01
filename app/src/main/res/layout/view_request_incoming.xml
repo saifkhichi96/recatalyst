@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingBottom="4dp">
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="32dp"
+      android:layout_height="32dp"
+      app:cardBackgroundColor="?android:attr/colorBackground"
+      app:cardCornerRadius="16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/userImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder_avatar"/>
+
+  </com.google.android.material.card.MaterialCardView>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp">
+
+    <LinearLayout
+        android:id="@+id/actionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal">
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/rejectButton"
+          style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+          android:layout_width="32dp"
+          android:layout_height="42dp"
+          android:padding="8dp"
+          android:layout_marginEnd="8dp"
+          app:cornerRadius="16dp"
+          app:icon="@drawable/ic_reject"
+          app:iconSize="16dp"
+          app:iconTint="?attr/colorAccent"
+          app:strokeColor="?attr/colorAccent"
+          app:strokeWidth="1dp"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/acceptButton"
+          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+          android:layout_width="32dp"
+          android:layout_height="42dp"
+          android:padding="8dp"
+          app:backgroundTint="?attr/colorAccent"
+          app:cornerRadius="16dp"
+          app:icon="@drawable/ic_accept"
+          app:iconSize="16dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/actionLayout"
+        android:orientation="vertical">
+
+      <com.google.android.material.textview.MaterialTextView
+          style="@style/TextAppearance.MaterialComponents.Body1"
+          android:id="@+id/userNameLabel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          tools:text="@tools:sample/full_names"/>
+
+      <com.google.android.material.textview.MaterialTextView
+          style="@style/TextAppearance.MaterialComponents.Body2"
+          android:id="@+id/userEmailLabel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:autoLink="email"
+          android:text="@string/ph_email"/>
+
+    </LinearLayout>
+
+  </RelativeLayout>
+
+</LinearLayout>

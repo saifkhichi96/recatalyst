@@ -47,11 +47,11 @@
   <string name="label_delete">Delete</string>
   <string name="label_delete_account">Delete Account</string>
   <string name="label_invite">Invite</string>
+  <string name="label_invitations">Invitations</string>
   <string name="label_learn_more">Learn More</string>
   <string name="label_mark_done">Mark as done</string>
   <string name="label_next">Next</string>
   <string name="label_no_account">Don\'t have an account?</string>
-  <string name="label_pending_requests">Pending Requests</string>
   <string name="label_privacy">Privacy Policy</string>
   <string name="label_save">Save</string>
   <string name="label_search">Search</string>

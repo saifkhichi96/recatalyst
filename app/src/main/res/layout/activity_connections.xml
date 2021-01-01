@@ -2,8 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activities.ConnectionsActivity">
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
@@ -21,44 +23,11 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
-  <LinearLayout
-      android:id="@+id/placeholder"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:alpha="0.35"
-      android:gravity="center"
-      android:orientation="vertical">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/no_data"
-        app:tint="?attr/colorPrimaryDark"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.AppCompat.Button"
-        android:id="@+id/placeholderText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"/>
-
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:id="@+id/learnMoreButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_learn_more"
-        android:textSize="12sp"
-        android:textColor="?attr/colorAccent"/>
-
-  </LinearLayout>
-
   <androidx.core.widget.NestedScrollView
       android:id="@+id/content"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:visibility="gone"
+      android:background="?attr/colorPrimary"
       app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
@@ -66,38 +35,179 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-      <LinearLayout
+      <com.google.android.material.card.MaterialCardView
           android:id="@+id/requestsSection"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:visibility="gone">
+          android:layout_marginBottom="8dp"
+          app:cardCornerRadius="0dp">
 
-        <com.google.android.material.textview.MaterialTextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/label_pending_requests"/>
+            android:orientation="vertical">
 
-        <co.aspirasoft.view.NestedListView
-            android:id="@+id/requestsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+          <com.google.android.material.button.MaterialButton
+              style="@style/Widget.MaterialComponents.Button.TextButton"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:minHeight="0dp"
+              android:gravity="start"
+              android:text="@string/label_invitations"
+              android:textAllCaps="false"
+              android:textColor="?attr/colorAccent"
+              app:icon="@drawable/ic_rangle"
+              app:iconGravity="end"
+              app:iconSize="18dp"
+              app:iconTint="?attr/colorOnBackground"/>
 
-        <View android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:alpha="0.5"
-              android:background="?attr/colorPrimary"/>
+          <co.aspirasoft.view.NestedListView
+              android:id="@+id/requestsList"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:dividerHeight="1dp"/>
 
-      </LinearLayout>
+        </LinearLayout>
 
-      <co.aspirasoft.view.NestedListView
-          android:id="@+id/connectionsList"
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.card.MaterialCardView
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          app:cardCornerRadius="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginHorizontal="8dp"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Connections"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|end">
+
+              <com.google.android.material.button.MaterialButton
+                  android:id="@+id/inviteButton"
+                  style="@style/Widget.MaterialComponents.Button.TextButton"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:minHeight="0dp"
+                  android:gravity="end"
+                  android:padding="0dp"
+                  android:includeFontPadding="false"
+                  android:text="Invite"
+                  android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                  android:textColor="?attr/colorAccent"/>
+
+            </LinearLayout>
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:id="@+id/placeholder"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:alpha="0.35"
+              android:gravity="center"
+              android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/no_data"
+                app:tint="?attr/colorPrimaryDark"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.AppCompat.Button"
+                android:id="@+id/placeholderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:id="@+id/learnMoreButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_learn_more"
+                android:textSize="12sp"
+                android:textColor="?attr/colorAccent"/>
+
+          </LinearLayout>
+
+          <co.aspirasoft.view.NestedListView
+              android:id="@+id/connectionsList"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          app:cardCornerRadius="0dp"
+          app:contentPadding="8dp">
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+
+          <com.google.android.material.textview.MaterialTextView
+              style="@style/TextAppearance.MaterialComponents.Caption"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Invite Users to Connect"/>
+
+          <com.google.android.material.textfield.TextInputLayout
+              style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              app:boxBackgroundColor="#1000"
+              app:boxStrokeWidth="0dp"
+              app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inviteeEmailInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="Recipient's email address">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
+          </com.google.android.material.textfield.TextInputLayout>
+
+          <com.google.android.material.button.MaterialButton
+              style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+              android:id="@+id/sendRequestButton"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="end"
+              android:text="Send Request"
+              android:textColor="?attr/colorAccent"/>
+
+        </LinearLayout>
+
+      </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -58,57 +58,46 @@ class ProfileActivity : DashboardChildActivity() {
         when (requestCode) {
             RESULT_ACTION_LOAD -> if (resultCode == Activity.RESULT_OK) {
                 data?.data?.let { selectedImage ->
-                    val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                    contentResolver.query(
-                            selectedImage,
-                            filePathColumn,
-                            null,
-                            null,
-                            null
-                    )?.let { cursor ->
-                        cursor.moveToFirst()
+                    userImage.setImageURI(selectedImage)
+                    val bm = userImage.drawable as BitmapDrawable? ?: return@let
+                    val source = bm.bitmap ?: return@let
 
-                        val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-                        val picturePath: String = cursor.getString(columnIndex)
-                        cursor.close()
+                    // Crop center region
+                    val bitmap = Bitmap.createScaledBitmap(if (source.width >= source.height) {
+                        Bitmap.createBitmap(
+                                source,
+                                source.width / 2 - source.height / 2,
+                                0,
+                                source.height,
+                                source.height
+                        )
+                    } else {
+                        Bitmap.createBitmap(
+                                source,
+                                0,
+                                source.height / 2 - source.width / 2,
+                                source.width,
+                                source.width
+                        )
+                    }, 256, 256, false)
 
-                        // Crop center region
-                        val source = BitmapFactory.decodeFile(picturePath)
-                        val bitmap = Bitmap.createScaledBitmap(if (source.width >= source.height) {
-                            Bitmap.createBitmap(
-                                    source,
-                                    source.width / 2 - source.height / 2,
-                                    0,
-                                    source.height,
-                                    source.height
-                            )
-                        } else {
-                            Bitmap.createBitmap(
-                                    source,
-                                    0,
-                                    source.height / 2 - source.width / 2,
-                                    source.width,
-                                    source.width
-                            )
-                        }, 256, 256, false)
+                    val outputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                    val bytes = outputStream.toByteArray()
 
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                        val bytes = outputStream.toByteArray()
-
-                        val status = Snackbar.make(userImage, getString(R.string.status_uploading), Snackbar.LENGTH_INDEFINITE)
-                        status.show()
-                        lifecycleScope.launch {
-                            try {
-                                mFileManager.upload("photo.png", bytes)?.let {
-                                    status.setText(getString(R.string.status_uploaded))
-                                    Handler().postDelayed({ status.dismiss() }, 1500L)
-                                    showUserImage(true)
-                                }
-                            } catch (ex: Exception) {
-                                status.setText(ex.message ?: getString(R.string.status_upload_failed))
+                    val status = Snackbar.make(userImage, getString(R.string.status_uploading), Snackbar.LENGTH_INDEFINITE)
+                    status.show()
+                    lifecycleScope.launch {
+                        try {
+                            mFileManager.upload("photo.png", bytes)?.let {
+                                status.setText(getString(R.string.status_uploaded))
                                 Handler().postDelayed({ status.dismiss() }, 1500L)
+                                showUserImage(true)
                             }
+                        } catch (ex: Exception) {
+                            userImage.setImageResource(R.drawable.placeholder_avatar)
+                            status.setText(ex.message ?: getString(R.string.status_upload_failed))
+                            Handler().postDelayed({ status.dismiss() }, 1500L)
                         }
                     }
                 }

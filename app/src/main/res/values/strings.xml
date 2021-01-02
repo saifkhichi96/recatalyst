@@ -19,7 +19,6 @@
 
 
   <!-- Placeholders -->
-  <string name="ph_date">1 January, 1970</string>
   <string name="ph_email" translatable="false">john_doe@example.com</string>
   <string name="ph_name" translatable="false">John Doe</string>
   <string name="ph_time" translatable="false">00:00</string>
@@ -55,8 +54,6 @@
   <string name="label_privacy">Privacy Policy</string>
   <string name="label_save">Save</string>
   <string name="label_search">Search</string>
-  <string name="label_see_all">See all</string>
-  <string name="label_send">Send</string>
   <string name="label_share">Share</string>
   <string name="label_sign_in">Sign In</string>
   <string name="label_sign_in_github">Continue with GitHub</string>
@@ -113,14 +110,11 @@
 
   <!-- Status Messages -->
   <string name="status_signing_up">Signing up…</string>
-  <string name="status_signed_up">Congratulations! Use your email/password to sign into your new account now.</string>
   <string name="status_sign_up_failed">Sign up failed.</string>
 
-  <string name="status_signing_in">Signing you in…</string>
   <string name="status_sign_in_failed">Sign in failed</string>
 
   <string name="status_invitation_sent">Invitation emailed</string>
-  <string name="status_invitation_failed">Failed to invite</string>
 
   <string name="status_message_not_sent">Could not send the message at this time.</string>
 
@@ -132,7 +126,6 @@
   <string name="status_uploaded">Uploaded successful.</string>
   <string name="status_upload_failed">Failed to upload.</string>
 
-  <string name="status_opening">Opening…</string>
   <string name="status_open_failed">Could not open file.</string>
 
   <!-- Error Messages -->
@@ -148,8 +141,6 @@
 
 
   <!-- Misc -->
-  <string name="wrote">" wrote:"</string>
-  <string name="at">"at "</string>
   <string name="section_notes">Notes</string>
   <string name="no_notes">No additional notes.</string>
   <string name="close_editor">Close Editor</string>

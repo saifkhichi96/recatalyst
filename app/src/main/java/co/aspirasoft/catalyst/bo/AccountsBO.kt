@@ -2,7 +2,10 @@ package co.aspirasoft.catalyst.bo
 
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.models.UserAccount
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 
 /**
@@ -25,17 +28,26 @@ object AccountsBO {
      * write user details to the database.
      *
      * @param account The account to register.
+     * @param existingUser (Optional) Existing user to link the new account with.
      * @throws Throwable An exception is raised if registration fails.
      */
-    suspend fun registerAccount(account: UserAccount) {
+    suspend fun registerAccount(account: UserAccount, existingUser: FirebaseUser? = null) {
         // Sign up for a new account
         val email = account.email
         val password = account.password
-        val result = auth.createUserWithEmailAndPassword(email, password).await()
+
+        val result = when (existingUser) {
+            null -> auth.createUserWithEmailAndPassword(email, password).await()
+            else -> {
+                val credential = EmailAuthProvider.getCredential(email, password)
+                existingUser.linkWithCredential(credential).await()
+            }
+        }
 
         // Save user's details in the database
         try {
-            account.id = result.user!!.uid
+            val newUser = result.user!!
+            account.id = newUser.uid
             account.password = "" // we don't want to save passwords
             AccountsDao.add(account)
         }
@@ -50,18 +62,29 @@ object AccountsBO {
     /**
      * Deletes a user account.
      *
-     * @param email The email address associated with the account to delete.
-     * @param password The password of the user account.
+     * @param credential The sign-in credentials of the account to delete.
      * @throws RuntimeException An error is raised if account deletion fails.
      */
-    suspend fun deleteAccount(email: String, password: String) {
+    suspend fun deleteAccount(credential: AuthCredential) {
         try {
-            val result = auth.signInWithEmailAndPassword(email, password).await()
+            val result = auth.signInWithCredential(credential).await()
             result.user!!.reauthenticate(result.credential!!).await()
             result.user!!.delete().await()
         } catch (ex: Exception) {
             throw RuntimeException(ex.message)
         }
+    }
+
+    /**
+     * Deletes a user account.
+     *
+     * @param email The email address associated with the account to delete.
+     * @param password The password of the user account.
+     * @throws RuntimeException An error is raised if account deletion fails.
+     */
+    suspend fun deleteAccount(email: String, password: String) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+        deleteAccount(credential)
     }
 
 }

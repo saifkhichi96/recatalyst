@@ -2,7 +2,6 @@ package co.aspirasoft.catalyst.models
 
 import co.aspirasoft.model.BaseModel
 import java.util.*
-import kotlin.reflect.KClass
 
 /**
  * A data class representing a single user of the app.
@@ -25,18 +24,35 @@ data class UserAccount(var id: String, var name: String, var email: String, @Tra
         email = email.toLowerCase(Locale.getDefault())
     }
 
+    var bio: String? = null
+        set(value) {
+            field = value
+            setChanged()
+        }
+
+    var blog: String? = null
+        set(value) {
+            field = value
+            setChanged()
+        }
+
+    var github: String? = null
+        set(value) {
+            field = value
+            setChanged()
+        }
+
     var phone: String? = null
         set(value) {
             field = value
             setChanged()
         }
 
-    companion object {
-        @JvmStatic
-        fun valueOf(s: String?): KClass<out UserAccount>? {
-            return UserAccount::class
+    var location: String? = null
+        set(value) {
+            field = value
+            setChanged()
         }
-    }
 
 }
 

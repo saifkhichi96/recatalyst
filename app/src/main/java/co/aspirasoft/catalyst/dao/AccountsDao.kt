@@ -43,7 +43,11 @@ object AccountsDao {
     fun getById(uid: String, receiver: (user: UserAccount?) -> Unit) {
         MyApplication.refToUserAccount(uid)
                 .get { snapshot ->
-                    receiver(snapshot?.toUser())
+                    receiver(try {
+                        snapshot?.toUser()
+                    } catch (ex: Exception) {
+                        null
+                    })
                 }
     }
 

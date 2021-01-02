@@ -11,12 +11,52 @@
     android:paddingVertical="@dimen/activity_vertical_margin">
 
   <!-- Logo -->
-  <androidx.appcompat.widget.AppCompatImageView
-      android:layout_width="128dp"
-      android:layout_height="128dp"
+  <LinearLayout
+      android:layout_width="144dp"
+      android:layout_height="match_parent"
       android:layout_marginEnd="@dimen/activity_horizontal_margin"
-      android:scaleType="fitCenter"
-      app:srcCompat="@drawable/logo"/>
+      android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/logo"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/errorSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:cardBackgroundColor="#2000"
+        app:cardElevation="0dp"
+        app:contentPadding="4dp">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_error"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/errorMessage"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"/>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+  </LinearLayout>
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -29,11 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/hint_email"
-        app:boxCornerRadiusBottomEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusTopStart="24dp">
+        android:hint="@string/hint_email">
 
       <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/emailField"
@@ -50,11 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:hint="@string/hint_password"
-        app:passwordToggleEnabled="true"
-        app:boxCornerRadiusBottomEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusTopStart="24dp">
+        app:passwordToggleEnabled="true">
 
       <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/passwordField"

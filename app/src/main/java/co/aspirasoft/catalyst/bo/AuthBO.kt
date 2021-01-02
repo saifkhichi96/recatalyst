@@ -1,7 +1,7 @@
 package co.aspirasoft.catalyst.bo
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import android.app.Activity
+import com.google.firebase.auth.*
 import kotlinx.coroutines.tasks.await
 
 /**
@@ -27,6 +27,27 @@ object AuthBO {
         return auth.signInWithEmailAndPassword(email, password)
                 .await()
                 ?.user
+    }
+
+    suspend fun signInWithCredential(credential: AuthCredential): FirebaseUser? {
+        return auth.signInWithCredential(credential)
+                .await()
+                ?.user
+    }
+
+    @Throws(NullPointerException::class)
+    suspend fun signInWithGithub(context: Activity): AuthResult {
+        val provider = OAuthProvider.newBuilder("github.com").apply {
+            scopes = arrayListOf("read:user", "user:email")
+        }
+        val pendingResult = auth.pendingAuthResult
+        return when {
+            // There's something already here! Finish the sign-in for your user.
+            pendingResult != null -> pendingResult.await()!!
+
+            // There's no pending result so you need to start the sign-in flow.
+            else -> auth.startActivityForSignInWithProvider(context, provider.build()).await()!!
+        }
     }
 
     /**

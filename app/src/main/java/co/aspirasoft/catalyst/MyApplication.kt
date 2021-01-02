@@ -11,16 +11,10 @@ import com.google.firebase.database.FirebaseDatabase
  */
 class MyApplication : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-
-        // Enabling persistence speeds up app by caching data locally
-        // db.setPersistenceEnabled(true)
-    }
-
     companion object {
         // the EXTRA_* strings are used as tags to pass
         // data between activities using Intents
+        const val EXTRA_CREDENTIALS = "credentials"
         const val EXTRA_DOCUMENT = "document"
         const val EXTRA_NEW_SIGN_UP = "new_user"
         const val EXTRA_NOTICE_POSTS = "notice_posts"

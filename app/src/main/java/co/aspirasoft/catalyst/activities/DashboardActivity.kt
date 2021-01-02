@@ -15,6 +15,8 @@ import co.aspirasoft.catalyst.dialogs.SettingsDialog
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.ProjectView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
 /**
@@ -50,6 +52,14 @@ class DashboardActivity : DashboardActivity() {
 
         settingsButton.setOnClickListener {
             SettingsDialog.Builder(this).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Firebase.auth.currentUser == null) {
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
         }
     }
 

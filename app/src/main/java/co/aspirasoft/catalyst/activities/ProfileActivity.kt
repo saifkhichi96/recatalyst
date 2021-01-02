@@ -14,12 +14,19 @@ import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
+import co.aspirasoft.catalyst.bo.AccountsBO
+import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.catalyst.utils.storage.ImageLoader
+import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile.passwordField
+import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
@@ -121,7 +128,29 @@ class ProfileActivity : DashboardChildActivity() {
 
         // ACCOUNT SETTINGS
         // TODO: Allow password reset
-        // TODO: Allow account deletion
+        // Allow account deletion
+        deleteAccountButton.setOnClickListener { deleteSection.visibility = View.VISIBLE }
+        cancelDeleteButton.setOnClickListener { deleteSection.visibility = View.GONE }
+        confirmDeleteButton.setOnClickListener {
+            if (passwordField.isNotBlank(true)) {
+                try {
+                    confirmDeleteButton.isEnabled = false
+                    // Delete user data from database
+                    AccountsDao.delete(currentUser.id) {
+                        lifecycleScope.launch {
+                            val password = passwordField.text.toString().trim()
+                            AccountsBO.deleteAccount(currentUser.email, password)
+                            Firebase.auth.signOut()
+                            finish()
+                        }
+                    }
+                } catch (ex: Exception) {
+                    passwordField.error = ex.message
+                } finally {
+                    confirmDeleteButton.isEnabled = true
+                }
+            }
+        }
     }
 
     private fun showUserImage(invalidate: Boolean = false) {

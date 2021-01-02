@@ -76,6 +76,36 @@ object AccountsDao {
     }
 
     /**
+     * Deletes user data from database.
+     */
+    fun delete(uid: String, callback: () -> Unit) {
+        // Remove connection links to other users
+        ConnectionsDao.getConnections(uid) { connections ->
+            connections.forEach { MyApplication.refToUserConnections(it).child(uid).setValue(null) }
+
+            // Withdraw all sent connection requests
+            ConnectionsDao.getSentRequests(uid) { sentRequests ->
+                sentRequests.forEach { MyApplication.refToUserConnectionsIncoming(it).child(uid).setValue(null) }
+
+                // Reject all received connection requests
+                ConnectionsDao.getReceivedRequests(uid) { receivedRequests ->
+                    receivedRequests.forEach { MyApplication.refToUserConnectionsOutgoing(it).child(uid).setValue(null) }
+
+                    // TODO: Delete references to this user in other users' projects
+
+                    // Delete all user data
+                    MyApplication.refToUser(uid).setValue(null)
+
+                    // TODO: Delete any files in Storage
+
+                    // Callback method on completion
+                    callback()
+                }
+            }
+        }
+    }
+
+    /**
      * Casts a [DataSnapshot] to a [UserAccount].
      *
      * @return The user account contained in the snapshot.

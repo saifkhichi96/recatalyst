@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.InputUtils.markRequired
-import co.aspirasoft.util.InputUtils.showError
 import co.aspirasoft.view.WizardViewStep
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -60,9 +59,9 @@ class CreatePasswordStep : WizardViewStep("") {
     }
 
     private fun checkPasswordValid(): Boolean {
-        passwordField.showError(null)
+        passwordField.error = null
         if (passwordField.text.isNullOrBlank() || passwordField.text.toString() != passwordRepeatField.text.toString()) {
-            passwordField.showError(getString(R.string.error_password_mismatch))
+            passwordField.error = getString(R.string.error_password_mismatch)
             return false
         }
 

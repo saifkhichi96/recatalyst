@@ -106,7 +106,88 @@
             android:padding="0dp"
             android:text="@string/label_delete_account"
             android:textAllCaps="false"
-            android:textColor="@color/colorWarning"/>
+            android:textColor="?attr/colorError"/>
+
+        <!-- Delete Confirmation Box -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/deleteSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#1000"
+            app:cardElevation="0dp"
+            app:contentPadding="8dp"
+            app:strokeColor="?attr/colorPrimary"
+            app:strokeWidth="1dp">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_account"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:hint="@string/hint_password"
+                app:passwordToggleEnabled="true">
+
+              <com.google.android.material.textfield.TextInputEditText
+                  android:id="@+id/passwordField"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:inputType="textPassword"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                  android:id="@+id/cancelDeleteButton"
+                  style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="0dp"
+                  android:minHeight="0dp"
+                  android:padding="0dp"
+                  android:text="@android:string/cancel"
+                  android:textAllCaps="false"
+                  android:textColor="?attr/colorOnBackground"/>
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/confirmDeleteButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="@string/label_confirm_delete"
+                    android:textColor="?attr/colorError"/>
+
+              </LinearLayout>
+
+            </LinearLayout>
+
+          </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
       </LinearLayout>
 

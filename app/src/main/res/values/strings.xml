@@ -41,6 +41,7 @@
   <string name="label_change_password">Change Password</string>
   <string name="label_change_photo">Change Photo</string>
   <string name="label_chatroom">Chatroom</string>
+  <string name="label_confirm_delete">Confirm Delete</string>
   <string name="label_create">Create</string>
   <string name="label_create_account">Create Account</string>
   <string name="label_delete">Delete</string>
@@ -107,6 +108,9 @@
   <!-- Confirmation Messages -->
   <string name="confirm_cancel_sign_up">Your account has not been created yet. Do you want to exit sign up?</string>
   <string name="confirm_upload">Uploaded files cannot be edited or removed. Do you want to add \'%s\'?</string>
+  <string name="delete_account">All your data would be permanently deleted and cannot be recovered. Please re-enter your
+    password to confirm the action.
+  </string>
 
   <!-- Status Messages -->
   <string name="status_signing_up">Signing up…</string>

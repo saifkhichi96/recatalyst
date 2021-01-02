@@ -91,8 +91,8 @@ class SignUpActivity : AppCompatActivity() {
     private fun onSubmit(data: SparseArray<Any>) {
         val newUser = if (linkUser != null) linkUser!! else UserAccount()
         newUser.apply {
-            this.name = data[R.id.emailField, linkUser?.name ?: ""].toString()
-            this.email = data[R.id.nameField, linkUser?.email ?: ""].toString()
+            this.name = data[R.id.nameField, linkUser?.name ?: ""].toString()
+            this.email = data[R.id.emailField, linkUser?.email ?: ""].toString()
             this.password = data[R.id.passwordField, ""].toString()
 
             onUserCreated(this)

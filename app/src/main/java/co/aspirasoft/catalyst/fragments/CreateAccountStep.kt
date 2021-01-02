@@ -10,7 +10,6 @@ import co.aspirasoft.catalyst.R
 import co.aspirasoft.util.InputUtils.isEmail
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.InputUtils.markRequired
-import co.aspirasoft.util.InputUtils.showError
 import co.aspirasoft.view.WizardViewStep
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -42,9 +41,9 @@ class CreateAccountStep : WizardViewStep("") {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                emailField.showError(null)
+                emailField.error = null
                 if (!s.toString().trim().isEmail()) {
-                    emailField.showError(getString(R.string.error_invalid_email))
+                    emailField.error = getString(R.string.error_invalid_email)
                 }
             }
         })
@@ -56,7 +55,7 @@ class CreateAccountStep : WizardViewStep("") {
         return if (emailField.isNotBlank(true)) {
             val email = emailField.text.toString().trim()
             if (!email.isEmail()) {
-                emailField.showError(getString(R.string.error_invalid_email))
+                emailField.error = getString(R.string.error_invalid_email)
                 false
             } else {
                 data.put(R.id.emailField, email)

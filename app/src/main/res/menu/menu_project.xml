@@ -3,19 +3,19 @@
 
   <item
       android:id="@+id/action_chatroom"
-      android:title="@string/label_chatroom"
+      android:title="@string/chatroom"
       android:icon="@drawable/ic_action_chat"
       app:showAsAction="ifRoom"/>
 
   <item
       android:id="@+id/action_tasks"
-      android:title="@string/label_tasks"
+      android:title="@string/tasks"
       android:icon="@drawable/ic_tasks"
       app:showAsAction="ifRoom"/>
 
   <item
       android:id="@+id/action_team"
-      android:title="@string/label_team"
+      android:title="@string/project_team"
       app:showAsAction="never"/>
 
 </menu>

@@ -39,12 +39,12 @@
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.ProfileActivity"
-              android:label="@string/title_profile"
+              android:label="@string/profile"
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.ConnectionsActivity"
-              android:label="@string/title_connections"
+              android:label="@string/connections"
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
@@ -53,32 +53,32 @@
               android:parentActivityName=".activities.ConnectionsActivity"/>
 
     <activity android:name=".activities.TeamInvitesActivity"
-              android:label="Collaboration"
+              android:label="@string/collaboration"
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.ProjectActivity"
-              android:label="@string/title_project_details"
+              android:label="@string/project_details"
               android:parentActivityName=".activities.DashboardActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.ChatroomActivity"
-              android:label="@string/title_chatroom"
+              android:label="@string/chatroom"
               android:parentActivityName=".activities.ProjectActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.TeamActivity"
-              android:label="@string/title_team"
+              android:label="@string/project_team"
               android:parentActivityName=".activities.ChatroomActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.TasksActivity"
-              android:label="@string/title_tasks"
+              android:label="@string/project_tasks"
               android:parentActivityName=".activities.ProjectActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.TaskActivity"
-              android:label="@string/title_task"
+              android:label="@string/task_details"
               android:parentActivityName=".activities.ProjectActivity"
               android:configChanges="orientation|screenSize"/>
 

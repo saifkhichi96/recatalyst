@@ -37,7 +37,7 @@ class IncomingInviteView : BaseView<TeamInvite> {
     }
 
     override fun updateView(model: TeamInvite) {
-        inviteMessage.text = context.getString(R.string.team_invite, model.sender, model.project)
+        inviteMessage.text = context.getString(R.string.project_team_invite, model.sender, model.project)
     }
 
 }

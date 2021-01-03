@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+  <string name="slogan">Lassen Sie uns Ihre Projekte für Sie verwalten.</string>
+  <string name="tagline_1">Die ultimative Requirements Engineering</string>
+  <string name="tagline_2">Lösung für Ihre Softwareprojekte</string>
+
+  <string name="accept">Akzeptieren</string>
+  <string name="account">Konto</string>
+  <string name="add">Hinzufügen</string>
+  <string name="assets">Dateien</string>
+  <string name="back">Zurück</string>
+  <string name="brush_size">Pinselgröße</string>
+  <string name="change_password">Passwort Ändern</string>
+  <string name="change_photo">Foto Ändern</string>
+  <string name="chatroom">Chatraum</string>
+  <string name="client_details">Kundendetails</string>
+  <string name="close_editor">Editor Schließen</string>
+  <string name="collaboration">Kollaboration</string>
+  <string name="connection_request_explanation">Um eine Verbindung mit einem anderen Benutzer herzustellen, müssen Sie
+    die mit seinem Konto verknüpfte E-Mail-Adresse kennen, mit der Sie eine Verbindungsanfrage senden können.\n\nSobald
+    sie die Anfrage angenommen haben, können Sie mit der Zusammenarbeit beginnen.
+  </string>
+  <string name="connection_invitation">Benutzer zum Verbinden einladen</string>
+  <string name="connection_request_send">Bitten</string>
+  <string name="connection_requested">Verbindungsanforderung gesendet.</string>
+  <string name="connection_requests">Hinzufügen einer Verbindung</string>
+  <string name="connections">Verbindungen</string>
+  <string name="connections_explanation">Personen in Ihrem Netzwerk werden als Verbindungen bezeichnet.\n\nMithilfe von
+    Verbindungen können Sie Mitglieder zu Ihren Projektteams hinzufügen, in denen Sie gemeinsam an Ihren Projekten
+    arbeiten können.
+  </string>
+  <string name="connections_none">Sie haben keine Verbindungen.</string>
+  <string name="connections_your">Ihre Verbindungen</string>
+  <string name="contact">Kontakt</string>
+  <string name="create">Erstellen</string>
+  <string name="create_account">Konto Erstellen</string>
+  <string name="create_drawing">Zeichnung Erstellen</string>
+  <string name="create_drawing_confirm">Jeder Fortschritt geht verloren, wenn Sie eine neue Zeichnung beginnen.
+    Fortfahren?
+  </string>
+  <string name="create_project">Neues Projekt</string>
+  <string name="create_project_error">Konnte kein neues Projekt erstellen.</string>
+  <string name="deadline">Geburtstermin</string>
+  <string name="delete">Löschen</string>
+  <string name="delete_account">Konto Löschen</string>
+  <string name="delete_account_confirm">Alle Ihre Daten würden dauerhaft gelöscht und können nicht wiederhergestellt
+    werden. Bitte geben Sie Ihr Passwort erneut ein, um die Aktion zu bestätigen.
+  </string>
+  <string name="delete_confirm">Bestätigen</string>
+  <string name="delete_document">Dokument Löschen</string>
+  <string name="delete_document_confirm">Das Dokument wird dauerhaft gelöscht. Sind Sie sicher?</string>
+  <string name="description">Beschreibung</string>
+  <string name="description_short">Kurze Beschreibung</string>
+  <string name="dont_have_an_account">Noch keinen Account?</string>
+  <string name="email">E-Mail</string>
+  <string name="email_error">Ungültige E-Mail Adresse.</string>
+  <string name="email_recipient">E-Mail Adresse des Empfängers</string>
+  <string name="eraser_size">Radiergummi Größe</string>
+  <string name="file_download_error">Die Datei konnte nicht heruntergeladen werden.</string>
+  <string name="file_open_error">Die Datei konnte nicht geöffnet werden.</string>
+  <string name="file_upload" formatted="false">Zum %s hinzufügen (%s)</string>
+  <string name="glossary">Glossar</string>
+  <string name="ignore_unsaved_changes">Alle nicht gespeicherten Änderungen gehen verloren. Möchten Sie fortfahren?
+  </string>
+  <string name="invitations">Verbindungsanfragen</string>
+  <string name="invite">Einladen</string>
+  <string name="invite_conflict">Benutzer bereits eingeladen.</string>
+  <string name="invite_error">Fehler beim Senden der Einladung.</string>
+  <string name="invite_sent">Einladung versendet</string>
+  <string name="invite_team_member">Teammitglied Einladen</string>
+  <string name="invite_user_error">Dieser Benutzer kann nicht eingeladen werden.</string>
+  <string name="learn_more">Mehr erfahren</string>
+  <string name="mark_as_done">Als erledigt markieren</string>
+  <string name="message_close_app">Drücken Sie zum Beenden zweimal die Zurück-Taste.</string>
+  <string name="message_input">Nachricht schreiben</string>
+  <string name="name">Name</string>
+  <string name="next">Nächste</string>
+  <string name="no_such_user">Es existiert kein solcher Benutzer.</string>
+  <string name="notes">Notizen</string>
+  <string name="notes_none">Keine zusätzlichen Notizen.</string>
+  <string name="or">oder</string>
+  <string name="password">Passwort</string>
+  <string name="password_confirm">Passwort Bestätigung</string>
+  <string name="password_mismatch_error">Die Passwörter stimmen nicht überein.</string>
+  <string name="permission_storage">Wir benötigen die Erlaubnis, auf Ihren Dateispeicher zuzugreifen, um
+    Bilder, Kursinhalte und andere Anwendungsdateien herunterladen zu können. Die Dateien, auf die Sie häufig zugreifen,
+    werden auf Ihrem Gerät zwischengespeichert, um Ihnen ein reibungsloseres Erlebnis zu bieten.
+  </string>
+  <string name="privacy_policy">Datenschutz-Bestimmungen</string>
+  <string name="profile">Profil</string>
+  <string name="project_client">Kunden-Infos</string>
+  <string name="project_details">Projekt Details</string>
+  <string name="project_tasks">Projektaufgaben</string>
+  <string name="project_team">Projektteam</string>
+  <string name="project_team_invite">%s hat Sie eingeladen, an dem Projekt %s mitzuarbeiten.</string>
+  <string name="projects">Projekte</string>
+  <string name="reject">Ablehnen</string>
+  <string name="save">Speichern</string>
+  <string name="save_drawing">Wollen Sie die Zeichnung für \'%s\' speichern?</string>
+  <string name="save_drawing_success">Zeichnung gespeichert!</string>
+  <string name="save_error">Speichern fehlgeschlagen. Prüfen Sie die App-Berechtigungen.</string>
+  <string name="save_changes_error">Änderungen konnten nicht gespeichert werden.</string>
+  <string name="save_changes_success">Alle Updates gespeichert!</string>
+  <string name="saving">Speichern…</string>
+  <string name="send_message_failed">Konnte die Nachricht zu diesem Zeitpunkt nicht senden.</string>
+  <string name="settings">Einstellungen</string>
+  <string name="share">Teilen</string>
+  <string name="sign_in">Anmelden</string>
+  <string name="sign_in_credentials_error">Ungültige E-Mail/Passwort-Kombination. Bitte überprüfen Sie Ihre
+    Anmeldedaten, bevor Sie es erneut versuchen.
+  </string>
+  <string name="sign_in_failed">Anmeldung fehlgeschlagen</string>
+  <string name="sign_in_github">Anmeldung mit GitHub</string>
+  <string name="sign_in_github_error">Es existiert bereits ein Konto mit derselben E-Mail-Adresse, das aber nicht mit
+    GitHub verbunden ist. Melden Sie sich mit E-Mail/Passwort an und verbinden Sie GitHub in den Kontoeinstellungen.
+  </string>
+  <string name="sign_out">Abmelden</string>
+  <string name="sign_out_confirm">Sie werden abgemeldet. Weiter?</string>
+  <string name="sign_up">Jetzt registrieren!</string>
+  <string name="sign_up_cancel_confirm">Ihr Konto wurde noch nicht erstellt. Möchten Sie die Anmeldung beenden?</string>
+  <string name="sign_up_create_password">Ein letzter Schritt, bevor Sie beginnen können.\n\nSichern Sie Ihr Konto mit
+    einem sicheren Passwort.
+  </string>
+  <string name="sign_up_disclaimer">
+    <![CDATA[* Wenn Sie sich für ein Konto anmelden, stimmen Sie unseren <a href=\'#\'>Datenschutzrichtlinien</a> und <a href=\'#\'>Nutzungsbedingungen</a> zu.]]>
+  </string>
+  <string name="sign_up_failed">Kontoerstellung fehlgeschlagen.</string>
+  <string name="sign_up_introduction">Wir freuen uns, Sie an Bord zu haben! Beginnen wir mit den Grundlagen.\n\nWie
+    sollen wir Sie ansprechen?
+  </string>
+  <string name="signing_in">Neues Konto erstellen…</string>
+  <string name="stakeholders">Stakeholder</string>
+  <string name="task_details">Aufgabendetails</string>
+  <string name="tasks">Aufgaben</string>
+  <string name="teams">Teams</string>
+  <string name="teams_none">Sie sind noch keinem Team beigetreten.</string>
+  <string name="tos">Nutzungsbedingungen</string>
+  <string name="understood">Alles klar!</string>
+  <string name="upload_confirm">Hochgeladene Dateien können nicht bearbeitet oder entfernt werden. Möchten Sie \'%s\'
+    hinzufügen?
+  </string>
+  <string name="upload_failed">Hochladen fehlgeschlagen.</string>
+  <string name="uploaded">Erfolgreich hochgeladen.</string>
+  <string name="uploading">Uploaden…</string>
+  <string name="url_error">Deformierter Link.</string>
+</resources>

@@ -56,7 +56,7 @@ class TaskActivity : DashboardChildActivity() {
             deadlineField.setText(formatter.format(System.currentTimeMillis()))
             deadlineButton.setOnClickListener {
                 val picker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText(getString(R.string.hint_due_date))
+                        .setTitleText(getString(R.string.deadline))
                         .build()
 
                 picker.addOnPositiveButtonClickListener {
@@ -86,11 +86,11 @@ class TaskActivity : DashboardChildActivity() {
     }
 
     private fun saveTask(task: Task) {
-        val status = Snackbar.make(nameField, getString(R.string.status_saving), Snackbar.LENGTH_INDEFINITE)
+        val status = Snackbar.make(nameField, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
         status.show()
         try {
             lifecycleScope.launch { TasksDao.add(task, project) }
-            status.setText(getString(R.string.status_saved))
+            status.setText(getString(R.string.save_changes_success))
             Handler().postDelayed({
                 status.dismiss()
                 finish()

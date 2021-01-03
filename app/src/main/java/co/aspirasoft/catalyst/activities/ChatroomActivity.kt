@@ -70,7 +70,7 @@ class ChatroomActivity : DashboardChildActivity() {
                     messageInput.setText("")
                 } catch (ex: Exception) {
                     Snackbar.make(messagesList,
-                            ex.message ?: getString(R.string.status_message_not_sent),
+                            ex.message ?: getString(R.string.send_message_failed),
                             Snackbar.LENGTH_LONG).show()
                 }
             }

@@ -51,7 +51,7 @@ class ProfileActivity : DashboardChildActivity() {
             if (PermissionUtils.requestPermissionIfNeeded(
                             this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            getString(R.string.explanation_storage_permission),
+                            getString(R.string.permission_storage),
                             RC_WRITE_PERMISSION
                     )) {
                 pickImage()
@@ -91,18 +91,18 @@ class ProfileActivity : DashboardChildActivity() {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                     val bytes = outputStream.toByteArray()
 
-                    val status = Snackbar.make(userImage, getString(R.string.status_uploading), Snackbar.LENGTH_INDEFINITE)
+                    val status = Snackbar.make(userImage, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
                     status.show()
                     lifecycleScope.launch {
                         try {
                             mFileManager.upload("photo.png", bytes)?.let {
-                                status.setText(getString(R.string.status_uploaded))
+                                status.setText(getString(R.string.uploaded))
                                 Handler().postDelayed({ status.dismiss() }, 1500L)
                                 showUserImage(true)
                             }
                         } catch (ex: Exception) {
                             userImage.setImageResource(R.drawable.placeholder_avatar)
-                            status.setText(ex.message ?: getString(R.string.status_upload_failed))
+                            status.setText(ex.message ?: getString(R.string.upload_failed))
                             Handler().postDelayed({ status.dismiss() }, 1500L)
                         }
                     }

@@ -84,7 +84,7 @@
               android:paddingLeft="24dp"
               android:paddingEnd="16dp"
               android:paddingRight="16dp"
-              android:text="@string/label_back"
+              android:text="@string/back"
               app:backgroundTint="?attr/colorPrimary"
               app:cornerRadius="16dp"/>
 
@@ -133,7 +133,7 @@
               android:paddingLeft="16dp"
               android:paddingEnd="24dp"
               android:paddingRight="24dp"
-              android:text="@string/label_next"
+              android:text="@string/next"
               app:backgroundTint="?attr/colorAccent"
               app:cornerRadius="16dp"/>
 

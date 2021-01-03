@@ -116,7 +116,7 @@ class ProjectActivity : DashboardChildActivity() {
         clientName.text = "" // FIXME: project.clientName
         clientContact.text = "" // FIXME: project.clientContact
         comments.text = when {
-            project.description.isNullOrBlank() -> getString(R.string.no_notes)
+            project.description.isNullOrBlank() -> getString(R.string.notes_none)
             else -> project.description
         }
 
@@ -128,7 +128,7 @@ class ProjectActivity : DashboardChildActivity() {
         if (PermissionUtils.requestPermissionIfNeeded(
                         this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        getString(R.string.explanation_storage_permission),
+                        getString(R.string.permission_storage),
                         RC_WRITE_PERMISSION
                 )) {
             pickFile(RESULT_ACTION_PICK_ASSETS)
@@ -207,8 +207,8 @@ class ProjectActivity : DashboardChildActivity() {
                 setOnItemDeleteListener { document ->
                     MaterialAlertDialogBuilder(context)
                             .setTitle(getString(R.string.delete_document))
-                            .setMessage(getString(R.string.confirm_delete))
-                            .setPositiveButton(R.string.label_delete) { _, _ ->
+                            .setMessage(getString(R.string.delete_document_confirm))
+                            .setPositiveButton(R.string.delete) { _, _ ->
                                 if (project.removeDocument(document.name)) {
                                     try {
                                         lifecycleScope.launch { ProjectsDao.add(project) }
@@ -238,10 +238,10 @@ class ProjectActivity : DashboardChildActivity() {
     private fun uploadFile(fm: FileManager, filename: String, data: Uri, adapter: FileAdapter?) {
         MaterialAlertDialogBuilder(this)
                 .setTitle(String.format(getString(R.string.file_upload), project.name, project.ownerId))
-                .setMessage(String.format(getString(R.string.confirm_upload), filename))
+                .setMessage(String.format(getString(R.string.upload_confirm), filename))
                 .setPositiveButton(android.R.string.yes) { dialog, _ ->
                     dialog.dismiss()
-                    val status = Snackbar.make(contentList, getString(R.string.status_uploading), Snackbar.LENGTH_INDEFINITE)
+                    val status = Snackbar.make(contentList, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
                     status.show()
                     GlobalScope.launch(Dispatchers.Main) {
                         try {
@@ -250,13 +250,13 @@ class ProjectActivity : DashboardChildActivity() {
                                 adapter?.notifyDataSetChanged()
 
                                 runOnUiThread {
-                                    status.setText(getString(R.string.status_uploaded))
+                                    status.setText(getString(R.string.uploaded))
                                     Handler().postDelayed({ status.dismiss() }, 2500L)
                                 }
                             }
                         } catch (ex: Exception) {
                             runOnUiThread {
-                                status.setText(ex.message ?: getString(R.string.status_upload_failed))
+                                status.setText(ex.message ?: getString(R.string.upload_failed))
                                 Handler().postDelayed({ status.dismiss() }, 2500L)
                             }
                         }

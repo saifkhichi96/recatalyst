@@ -24,8 +24,8 @@ class ConnectionIntro : WizardViewStep("") {
         bodyView = v.findViewById(R.id.body)
 
         iconView.setImageResource(R.drawable.intro_connect)
-        headlineView.text = getString(R.string.title_connections)
-        bodyView.text = getString(R.string.explain_connections)
+        headlineView.text = getString(R.string.connections)
+        bodyView.text = getString(R.string.connections_explanation)
 
         return v
     }

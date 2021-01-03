@@ -123,7 +123,7 @@ class EditorActivity : DashboardChildActivity() {
     }
 
     private fun saveProject() {
-        val status = Snackbar.make(sectionsList, getString(R.string.status_saving), Snackbar.LENGTH_INDEFINITE)
+        val status = Snackbar.make(sectionsList, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
         status.show()
 
         project.addDocument(document)
@@ -132,11 +132,11 @@ class EditorActivity : DashboardChildActivity() {
                 ProjectsDao.add(project)
                 fm.upload(document)
             }
-            status.setText(getString(R.string.status_saved))
+            status.setText(getString(R.string.save_changes_success))
             Handler().postDelayed({ finish() }, 2500L)
         } catch (ex: Exception) {
             status.dismiss()
-            val error = ex.message ?: getString(R.string.status_save_failed)
+            val error = ex.message ?: getString(R.string.save_changes_error)
             ViewUtils.showError(sectionsList, error)
         }
     }
@@ -156,11 +156,11 @@ class EditorActivity : DashboardChildActivity() {
     override fun onBackPressed() {
         MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.close_editor))
-                .setMessage(getString(R.string.unsaved_changes))
+                .setMessage(getString(R.string.ignore_unsaved_changes))
                 .setPositiveButton(android.R.string.yes) { _, _ ->
                     super@EditorActivity.onBackPressed()
                 }
-                .setNeutralButton(R.string.label_save) { _, _ ->
+                .setNeutralButton(R.string.save) { _, _ ->
                     saveProject()
                     super@EditorActivity.onBackPressed()
                 }

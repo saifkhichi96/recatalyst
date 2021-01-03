@@ -40,12 +40,12 @@ class FileAdapter(val context: Activity, val material: ArrayList<Asset>, private
                         try {
                             file.openInExternalApp(context)
                         } catch (ex: IOException) {
-                            ViewUtils.showError(v, ex.message ?: context.getString(R.string.status_open_failed))
+                            ViewUtils.showError(v, ex.message ?: context.getString(R.string.file_open_error))
                         }
                     },
                     OnFailureListener {
                         v.setStatus(ProjectFileView.FileStatus.Cloud)
-                        ViewUtils.showError(v, it.message ?: context.getString(R.string.error_download))
+                        ViewUtils.showError(v, it.message ?: context.getString(R.string.file_download_error))
                     }
             )
         }

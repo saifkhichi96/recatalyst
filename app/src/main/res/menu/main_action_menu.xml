@@ -5,7 +5,7 @@
   <item
       android:id="@+id/action_open_account"
       android:icon="@drawable/ic_action_account"
-      android:title="@string/menu_account"
+      android:title="@string/account"
       app:showAsAction="ifRoom"/>
 
 </menu>

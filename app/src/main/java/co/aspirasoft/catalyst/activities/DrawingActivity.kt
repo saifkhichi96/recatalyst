@@ -92,7 +92,7 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
     private fun showBrushSizeChooserDialog() {
         val brushDialog = Dialog(this)
         brushDialog.setContentView(R.layout.dialog_drawing_brush)
-        brushDialog.setTitle("Brush size:")
+        brushDialog.setTitle(getString(R.string.brush_size))
         val smallBtn = brushDialog.findViewById<ImageButton>(R.id.smallSize)
         smallBtn.setOnClickListener {
             drawingView.setBrushSize(smallBrush)
@@ -117,7 +117,7 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showEraserSizeChooserDialog() {
         val brushDialog = Dialog(this)
-        brushDialog.setTitle("Eraser size:")
+        brushDialog.setTitle(getString(R.string.eraser_size))
         brushDialog.setContentView(R.layout.dialog_drawing_brush)
 
         val smallButton = brushDialog.findViewById<ImageButton>(R.id.smallSize)
@@ -145,21 +145,21 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showNewPaintingAlertDialog() {
         val newDialog = MaterialAlertDialogBuilder(this)
-        newDialog.setTitle("New drawing")
-        newDialog.setMessage("Start new drawing (you will lose the current drawing)?")
-        newDialog.setPositiveButton("Yes") { dialog, _ ->
+        newDialog.setTitle(getString(R.string.create_drawing))
+        newDialog.setMessage(getString(R.string.create_drawing_confirm))
+        newDialog.setPositiveButton(android.R.string.yes) { dialog, _ ->
             drawingView.reset()
             dialog.dismiss()
         }
-        newDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        newDialog.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
         newDialog.show()
     }
 
     private fun showSavePaintingConfirmationDialog() {
         val saveDialog = MaterialAlertDialogBuilder(this)
-        saveDialog.setTitle("Save Drawing")
-        saveDialog.setMessage("Do you want to save sketch for the '$property' property?")
-        saveDialog.setPositiveButton("Yes") { _, _ -> // Get canvas bitmap
+        saveDialog.setTitle(getString(R.string.save))
+        saveDialog.setMessage(getString(R.string.save_drawing, property))
+        saveDialog.setPositiveButton(android.R.string.yes) { _, _ -> // Get canvas bitmap
             drawingView.isDrawingCacheEnabled = true
             val bitmap = drawingView.drawingCache
 
@@ -167,18 +167,18 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
             val saved = saveBitmap(bitmap, index, doorWindow, project)
             if (saved) {
                 Toast.makeText(this@DrawingActivity,
-                        "Sketch saved!", Toast.LENGTH_SHORT)
+                        getString(R.string.save_drawing_success), Toast.LENGTH_SHORT)
                         .show()
                 finish()
             } else {
                 Toast.makeText(this@DrawingActivity,
-                        "Failed to save. Check app permissions.", Toast.LENGTH_SHORT)
+                        getString(R.string.save_error), Toast.LENGTH_SHORT)
                         .show()
             }
             // Destroy the current cache.
             drawingView.destroyDrawingCache()
         }
-        saveDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        saveDialog.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
         saveDialog.show()
     }
 

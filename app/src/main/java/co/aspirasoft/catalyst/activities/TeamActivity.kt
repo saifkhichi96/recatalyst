@@ -61,15 +61,15 @@ class TeamActivity : DashboardChildActivity() {
     private fun onAddMemberClicked() {
         val dialog = SingleInputForm.newInstance(
                 title = getString(R.string.invite_team_member),
-                hint = "Recipient's Email Address",
+                hint = getString(R.string.email_recipient),
                 inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
-                okButton = getString(R.string.label_invite)
+                okButton = getString(R.string.invite)
         )
         dialog.setOnSubmitListener {
             // Validate input
             val email = it.trim()
             if (!email.isEmail()) {
-                ViewUtils.showError(addButton, getString(R.string.error_invalid_email))
+                ViewUtils.showError(addButton, getString(R.string.email_error))
                 return@setOnSubmitListener
             }
 
@@ -80,7 +80,7 @@ class TeamActivity : DashboardChildActivity() {
             AccountsDao.getByEmail(email) { account ->
                 // Show an error if no account with given email
                 if (account == null) {
-                    ViewUtils.showError(addButton, getString(R.string.error_no_such_user))
+                    ViewUtils.showError(addButton, getString(R.string.no_such_user))
                     dialog.setEnabled(true)
                     return@getByEmail
                 }
@@ -92,16 +92,16 @@ class TeamActivity : DashboardChildActivity() {
                         TeamInviteBO.send(account.id, team)
 
                         // Show success message and dismiss the dialog
-                        ViewUtils.showMessage(addButton, getString(R.string.status_invitation_sent))
+                        ViewUtils.showMessage(addButton, getString(R.string.invite_sent))
                         dialog.dismiss()
                     }
 
                     // If sending fails, show an error message and re-enable input (to allow retry)
                     catch (ex: Exception) {
                         ViewUtils.showError(addButton, when (ex) {
-                            is IllegalArgumentException -> "Cannot invite this user."
-                            is IllegalStateException -> "User already invited."
-                            else -> ex.message ?: "Error sending the invite."
+                            is IllegalArgumentException -> getString(R.string.invite_user_error)
+                            is IllegalStateException -> getString(R.string.invite_conflict)
+                            else -> ex.message ?: getString(R.string.invite_error)
                         })
                         dialog.setEnabled(true)
                     }

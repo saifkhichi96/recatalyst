@@ -43,7 +43,7 @@ class CreateAccountStep : WizardViewStep("") {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 emailField.error = null
                 if (!s.toString().trim().isEmail()) {
-                    emailField.error = getString(R.string.error_invalid_email)
+                    emailField.error = getString(R.string.email_error)
                 }
             }
         })
@@ -55,7 +55,7 @@ class CreateAccountStep : WizardViewStep("") {
         return if (emailField.isNotBlank(true)) {
             val email = emailField.text.toString().trim()
             if (!email.isEmail()) {
-                emailField.error = getString(R.string.error_invalid_email)
+                emailField.error = getString(R.string.email_error)
                 false
             } else {
                 data.put(R.id.emailField, email)

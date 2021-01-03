@@ -61,7 +61,7 @@ class CreatePasswordStep : WizardViewStep("") {
     private fun checkPasswordValid(): Boolean {
         passwordField.error = null
         if (passwordField.text.isNullOrBlank() || passwordField.text.toString() != passwordRepeatField.text.toString()) {
-            passwordField.error = getString(R.string.error_password_mismatch)
+            passwordField.error = getString(R.string.password_mismatch_error)
             return false
         }
 

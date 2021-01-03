@@ -70,7 +70,7 @@ class CreateProjectDialog : BottomSheetDialogFragment() {
     }
 
     private fun onError(error: String? = null) {
-        ViewUtils.showError(projectNameField, error ?: "Failed to create new project.")
+        ViewUtils.showError(projectNameField, error ?: getString(R.string.create_project_error))
         isCancelable = true
         okButton.isEnabled = true
     }

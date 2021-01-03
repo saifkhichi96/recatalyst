@@ -75,14 +75,15 @@
         app:boxCornerRadiusTopEnd="18dp"
         app:boxCornerRadiusTopStart="18dp"
         app:hintEnabled="false"
-        app:boxStrokeColor="#0000">
+        app:boxStrokeColor="@android:color/transparent"
+        app:boxStrokeWidth="0dp">
 
       <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/messageInput"
           android:layout_width="match_parent"
           android:layout_height="39dp"
           android:gravity="center_vertical"
-          android:hint="@string/hint_message"
+          android:hint="@string/message_input"
           android:inputType="text"
           android:maxLines="1"
           android:paddingStart="16dp"
@@ -97,10 +98,11 @@
         android:id="@+id/sendMessage"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="38dp"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:layout_marginStart="-38dp"
+        android:layout_marginBottom="0dp"
         android:padding="11dp"
-        app:cornerRadius="18dp"
+        app:cornerRadius="19dp"
         app:icon="@drawable/ic_action_send"
         app:iconSize="18dp"
         app:iconTint="?attr/colorPrimary"

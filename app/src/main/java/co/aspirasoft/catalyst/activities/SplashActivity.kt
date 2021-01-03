@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.SilentSignInActivity
+import co.aspirasoft.catalyst.utils.DynamicLinksUtils
 import co.aspirasoft.util.ViewUtils
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -91,7 +92,7 @@ class SplashActivity : SilentSignInActivity() {
         try {
             return Uri.parse(link.getQueryParameter(MyApplication.PARAM_LINK_TARGET))
         } catch (ex: Exception) {
-            throw ParseException(getString(R.string.error_invalid_link), 0)
+            throw ParseException(getString(R.string.url_error), 0)
         }
     }
 
@@ -105,10 +106,24 @@ class SplashActivity : SilentSignInActivity() {
             val actionData = getLinkAction(link)
             when (actionData!!.path) {
                 // TODO: Perform deep-linked actions here.
+                // case: Complete sign up process
+                DynamicLinksUtils.ACTION_REGISTRATION -> {
+                    // actionCompleteSignUp(link, actionData)
+                }
             }
         } catch (ex: Exception) {
-            ViewUtils.showError(splashScreen, ex.message ?: getString(R.string.error_invalid_link))
+            ViewUtils.showError(splashScreen, ex.message ?: getString(R.string.url_error))
         }
     }
+
+    // private fun actionCompleteSignUp(link: Uri, data: Uri) {
+    //     val i = Intent(this, SignUpActivity::class.java)
+    //     i.putExtra(MyApplication.EXTRA_REFERRAL_CODE, data.getQueryParameter(MyApplication.PARAM_REFERRAL_CODE))
+    //     i.putExtra(MyApplication.EXTRA_ACCOUNT_TYPE, data.getQueryParameter(MyApplication.PARAM_ACCOUNT_TYPE))
+    //     i.data = link
+    //
+    //     startActivity(i)
+    //     finish()
+    // }
 
 }

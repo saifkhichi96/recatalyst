@@ -75,7 +75,7 @@ class SignUpActivity : AppCompatActivity() {
         )
 
         wizardView.setOnSubmitListener {
-            findViewById<Button>(R.id.nextButton).text = getString(R.string.status_signing_up)
+            findViewById<Button>(R.id.nextButton).text = getString(R.string.signing_in)
             findViewById<Button>(R.id.nextButton).isEnabled = false
             onSubmit(it)
         }
@@ -112,7 +112,7 @@ class SignUpActivity : AppCompatActivity() {
                 onSuccess(credential)
             } catch (ex: Exception) {
                 signUpCompleted = false
-                onFailure(ex.message ?: getString(R.string.status_sign_up_failed))
+                onFailure(ex.message ?: getString(R.string.sign_up_failed))
             }
         }
     }
@@ -126,7 +126,7 @@ class SignUpActivity : AppCompatActivity() {
      */
     private fun onFailure(error: String) {
         ViewUtils.showError(wizardView, error)
-        findViewById<Button>(R.id.nextButton).text = getString(R.string.label_create_account)
+        findViewById<Button>(R.id.nextButton).text = getString(R.string.create_account)
         findViewById<Button>(R.id.nextButton).isEnabled = true
     }
 
@@ -153,7 +153,7 @@ class SignUpActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (!wizardView.onBackPressed()) {
             MaterialAlertDialogBuilder(this)
-                    .setMessage(getString(R.string.confirm_cancel_sign_up))
+                    .setMessage(getString(R.string.sign_up_cancel_confirm))
                     .setPositiveButton(android.R.string.yes) { dialog, _ ->
                         super.onBackPressed()
                         dialog.dismiss()

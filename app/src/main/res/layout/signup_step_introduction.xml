@@ -30,7 +30,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_name">
+        android:hint="@string/name">
 
       <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/nameField"

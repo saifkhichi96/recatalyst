@@ -62,7 +62,7 @@ class ConnectionsActivity : DashboardChildActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_connections)
 
-        placeholderText.text = "You don't have any Connections."
+        placeholderText.text = getString(R.string.connections_none)
         learnMoreButton.setOnClickListener { onLearnMoreClicked() }
 
         requestsAdapter = IncomingRequestAdapter(this, requests)
@@ -161,17 +161,22 @@ class ConnectionsActivity : DashboardChildActivity() {
         val email = inviteeEmailInput.text.toString().trim()
         // Validate provided email address
         if (!email.isEmail()) {
-            ViewUtils.showError(placeholder, getString(R.string.error_invalid_email))
+            ViewUtils.showError(placeholder, getString(R.string.email_error))
             return
         }
 
         // Send a connection request
-        ConnectionRequestBO.send(currentUser.id, email.toLowerCase(Locale.getDefault())) { error ->
+        ConnectionRequestBO.send(currentUser.id, email.toLowerCase(Locale.getDefault())) { ex ->
             runOnUiThread { inviteeEmailInput.setText("") }
-            if (error == null) {
-                ViewUtils.showMessage(placeholder, "Connection request sent.")
+            if (ex == null) {
+                ViewUtils.showMessage(placeholder, getString(R.string.connection_requested))
             } else {
-                ViewUtils.showError(placeholder, error)
+                ViewUtils.showError(placeholder, when (ex) {
+                    is IllegalArgumentException -> getString(R.string.invite_user_error)
+                    is IllegalStateException -> getString(R.string.invite_conflict)
+                    is NoSuchElementException -> getString(R.string.no_such_user)
+                    else -> ex.message ?: getString(R.string.invite_error)
+                })
             }
         }
     }

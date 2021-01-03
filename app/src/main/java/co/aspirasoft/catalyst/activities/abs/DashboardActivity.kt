@@ -33,7 +33,7 @@ abstract class DashboardActivity : SecureActivity() {
         }
 
         this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Press back button twice to exit.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.message_close_app), Toast.LENGTH_SHORT).show()
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 

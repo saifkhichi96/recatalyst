@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:title="@string/title_task"
+        app:title="@string/task_details"
         app:layout_scrollFlags="scroll"/>
 
   </com.google.android.material.appbar.AppBarLayout>
@@ -41,7 +41,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="8dp"
-          android:hint="@string/hint_name">
+          android:hint="@string/name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameField"
@@ -56,7 +56,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="8dp"
-          android:hint="@string/hint_description">
+          android:hint="@string/description">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descriptionField"
@@ -79,7 +79,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_due_date">
+            android:hint="@string/deadline">
 
           <com.google.android.material.textfield.TextInputEditText
               android:id="@+id/deadlineField"
@@ -107,7 +107,7 @@
           android:id="@+id/completeButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/label_mark_done"/>
+          android:text="@string/mark_as_done"/>
 
       <com.google.android.material.button.MaterialButton
           style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -116,7 +116,7 @@
           android:layout_height="wrap_content"
           android:layout_gravity="end"
           android:onClick="onSaveButtonClicked"
-          android:text="@string/label_save"
+          android:text="@string/save"
           android:textColor="?attr/colorAccent"/>
 
     </LinearLayout>

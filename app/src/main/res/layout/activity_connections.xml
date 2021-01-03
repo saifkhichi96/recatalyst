@@ -53,7 +53,7 @@
               android:layout_height="wrap_content"
               android:minHeight="0dp"
               android:gravity="start"
-              android:text="@string/label_invitations"
+              android:text="@string/invitations"
               android:textAllCaps="false"
               android:textColor="?attr/colorAccent"
               app:icon="@drawable/ic_rangle"
@@ -93,7 +93,7 @@
                 style="@style/TextAppearance.MaterialComponents.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your Connections"/>
+                android:text="@string/connections_your"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                   android:gravity="end"
                   android:padding="0dp"
                   android:includeFontPadding="false"
-                  android:text="Invite"
+                  android:text="@string/invite"
                   android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                   android:textColor="?attr/colorAccent"/>
 
@@ -144,7 +144,7 @@
                 android:id="@+id/learnMoreButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_learn_more"
+                android:text="@string/learn_more"
                 android:textSize="12sp"
                 android:textColor="?attr/colorAccent"/>
 
@@ -174,7 +174,7 @@
               style="@style/TextAppearance.MaterialComponents.Caption"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Invite Users to Connect"/>
+              android:text="@string/connection_invitation"/>
 
           <com.google.android.material.textfield.TextInputLayout
               style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -182,6 +182,7 @@
               android:layout_height="wrap_content"
               android:layout_marginTop="8dp"
               app:boxBackgroundColor="#1000"
+              app:boxStrokeColor="@android:color/transparent"
               app:boxStrokeWidth="0dp"
               app:hintEnabled="false">
 
@@ -190,7 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Recipient's email address">
+                android:hint="@string/email_recipient">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -202,7 +203,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="end"
-              android:text="Send Request"
+              android:text="@string/connection_request_send"
               android:textColor="?attr/colorAccent"/>
 
         </LinearLayout>

@@ -25,7 +25,7 @@ class ConnectionRequestIntro : WizardViewStep("") {
 
         iconView.setImageResource(R.drawable.intro_connect_request)
         headlineView.text = getString(R.string.connection_requests)
-        bodyView.text = getString(R.string.explain_connection_requests)
+        bodyView.text = getString(R.string.connection_request_explanation)
 
         return v
     }

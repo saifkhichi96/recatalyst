@@ -12,7 +12,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       custom:icon="@null"
-      custom:submitLabel="@string/label_create_account"
+      custom:submitLabel="@string/create_account"
       custom:showDivider="false"
       custom:showIndicator="false"
       custom:showTitle="false"/>

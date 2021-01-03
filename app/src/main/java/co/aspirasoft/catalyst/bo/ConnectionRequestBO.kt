@@ -25,25 +25,25 @@ object ConnectionRequestBO {
      * @param recipientEmail The email address of the recipient.
      * @param receiver Callback for receiving the result.
      */
-    fun send(sender: String, recipientEmail: String, receiver: (error: String?) -> Unit) {
+    fun send(sender: String, recipientEmail: String, receiver: (ex: Exception?) -> Unit) {
         // Get reference to the invitee's account (need this to add the request in their account)
         AccountsDao.getByEmail(recipientEmail) { recipient ->
             // No user with this email? Oops! Sound the alarm bells!!!
             if (recipient == null) {
-                receiver("Could not find the user $recipientEmail.")
+                receiver(NoSuchElementException())
                 return@getByEmail
             }
 
             // Invitee is same as the sender? WHAT SORCERY IS THIS? WE AIN'T DOING INCEPTION HERE!!!
             if (recipient.id.equals(sender, true)) {
-                receiver("Could not invite this user.")
+                receiver(IllegalArgumentException())
                 return@getByEmail
             }
 
             // Invitee's account located? Good! We can move forward now!!!
             ConnectionsDao.getSentRequests(sender) { sentRequests ->
                 if (!sentRequests.none { it.equals(recipient.id, true) }) {
-                    receiver("You have already invited this user to connect.")
+                    receiver(IllegalStateException())
                     return@getSentRequests
                 }
 
@@ -63,7 +63,7 @@ object ConnectionRequestBO {
 
                         receiver(null)
                     } catch (ex: Exception) {
-                        receiver("Could not send the connection request.")
+                        receiver(ex)
                     }
                 }
             }

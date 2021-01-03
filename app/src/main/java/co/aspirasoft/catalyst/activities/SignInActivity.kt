@@ -162,11 +162,10 @@ class SignInActivity : SilentSignInActivity() {
         errorMessage.text = when (ex) {
             is FirebaseAuthInvalidUserException,
             is FirebaseAuthInvalidCredentialsException,
-            -> "Invalid email/password combination. Please check your credentials before retrying."
+            -> getString(R.string.sign_in_credentials_error)
             is FirebaseAuthUserCollisionException ->
-                "An account already exists with same email address but is not connected " +
-                        "to GitHub. Sign in using email/password and connect GitHub in account settings."
-            is NullPointerException -> getString(R.string.status_sign_in_failed)
+                getString(R.string.sign_in_github_error)
+            is NullPointerException -> getString(R.string.sign_in_failed)
             else -> "${ex.javaClass.simpleName}: ${ex.message}"
         }
         errorSection.visibility = View.VISIBLE

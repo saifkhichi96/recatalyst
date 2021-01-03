@@ -1,159 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
   <string name="app_name" translatable="false">RECatalyst</string>
+  <string name="slogan">Let us manage your projects for you.</string>
   <string name="tagline_1">The Ultimate Requirements Engineering</string>
   <string name="tagline_2">Solution for Software Projects</string>
-  <string name="slogan">Let us manage your projects for you.</string>
+
   <string name="format_date" translatable="false">%02d:%02d</string>
   <string name="format_date_12" translatable="false">hh:mma</string>
   <string name="format_date_24" translatable="false">hh:mm</string>
 
-
-  <!-- Activity titles -->
-  <string name="title_chatroom">Chatroom</string>
-  <string name="title_connections">Connections</string>
-  <string name="title_profile">Profile</string>
-  <string name="title_project_details">Project Details</string>
-  <string name="title_task">Task Details</string>
-  <string name="title_tasks">Project Tasks</string>
-  <string name="title_team">Project Team</string>
-
-
-  <!-- Placeholders -->
   <string name="ph_email" translatable="false">john_doe@example.com</string>
   <string name="ph_name" translatable="false">John Doe</string>
   <string name="ph_time" translatable="false">00:00</string>
 
-
-  <!-- Input Hints -->
-  <string name="hint_description">Description</string>
-  <string name="hint_due_date">Due Date</string>
-  <string name="hint_email">Email</string>
-  <string name="hint_name">Name</string>
-  <string name="hint_message">Type a message</string>
-  <string name="hint_password">Password</string>
-  <string name="hint_password_confirm">Confirm Password</string>
-  <string name="hint_short_description">Short Description</string>
-
-
-  <!-- Button Labels -->
-  <string name="label_add">Add</string>
-  <string name="label_back">Back</string>
-  <string name="label_change_password">Change Password</string>
-  <string name="label_change_photo">Change Photo</string>
-  <string name="label_chatroom">Chatroom</string>
-  <string name="label_confirm_delete">Confirm Delete</string>
-  <string name="label_create">Create</string>
-  <string name="label_create_account">Create Account</string>
-  <string name="label_delete">Delete</string>
-  <string name="label_delete_account">Delete Account</string>
-  <string name="label_invite">Invite</string>
-  <string name="label_invitations">Invitations</string>
-  <string name="label_learn_more">Learn More</string>
-  <string name="label_mark_done">Mark as done</string>
-  <string name="label_next">Next</string>
-  <string name="label_no_account">Don\'t have an account?</string>
-  <string name="label_privacy">Privacy Policy</string>
-  <string name="label_save">Save</string>
-  <string name="label_search">Search</string>
-  <string name="label_share">Share</string>
-  <string name="label_sign_in">Sign In</string>
-  <string name="label_sign_in_github">Continue with GitHub</string>
-  <string name="label_sign_out">Sign Out</string>
-  <string name="label_sign_up">Register now!</string>
-  <string name="label_tasks">Tasks</string>
-  <string name="label_team">Project team</string>
-  <string name="label_tos">Terms of Service</string>
-  <string name="label_understood">Got It!</string>
-
-
-  <!-- Section Headings -->
-  <string name="section_client_details">Client Details</string>
-  <string name="section_contact">Contact</string>
-  <string name="section_assets">Assets</string>
-  <string name="section_projects">Projects</string>
-  <string name="section_teams">Teams</string>
-
-
-  <!-- Card/Dialog Titles -->
-  <string name="create_project">New Project</string>
-  <string name="file_upload" formatted="false">Add to %s (%s)</string>
-  <string name="invite_team_member">Invite Team Member</string>
-
-  <!-- Onboarding and Intro -->
-  <string name="sign_up_introduction">We are excited to have you on board! Let\'s start with the basics.\n\nHow should
-    we address
-    you?
+  <string name="accept">Accept</string>
+  <string name="account">Account</string>
+  <string name="add">Add</string>
+  <string name="assets">Assets</string>
+  <string name="back">Back</string>
+  <string name="brush_size">Brush Size</string>
+  <string name="change_password">Change Password</string>
+  <string name="change_photo">Change Photo</string>
+  <string name="chatroom">Chatroom</string>
+  <string name="client_details">Client Details</string>
+  <string name="close_editor">Close Editor</string>
+  <string name="collaboration">Collaboration</string>
+  <string name="connection_request_explanation">To connect with another user, you need to know the email address
+    associated with their account, which you can use to send a connection request.\n\nOnce they accept the
+    request, you can start collaborating.
   </string>
-  <string name="sign_up_create_password">One last step before you are all set to begin.\n\nSecure your account with a
-    strong
-    password.
-  </string>
-  <string name="explain_connections">People in your network are called connections.\n\nConnections allow you to add
+  <string name="connection_invitation">Invite Users to Connect</string>
+  <string name="connection_request_send">Send Request</string>
+  <string name="connection_requested">Connection request sent.</string>
+  <string name="connection_requests">Adding a Connection</string>
+  <string name="connections">Connections</string>
+  <string name="connections_explanation">People in your network are called connections.\n\nConnections allow you to add
     members to your project teams, where you can work together on your projects.
   </string>
-  <string name="connection_requests">Adding a Connection</string>
-  <string name="explain_connection_requests">To connect with another user, you need to know the email address associated
-    with their account, which you can use to send a connection request.\n\nOnce they accept the request, you can start
-    collaborating.
+  <string name="connections_none">You don\'t have any Connections.</string>
+  <string name="connections_your">Your Connections</string>
+  <string name="contact">Contact</string>
+  <string name="create">Create</string>
+  <string name="create_account">Create Account</string>
+  <string name="create_drawing">Create Drawing</string>
+  <string name="create_drawing_confirm">Any progress will be lost if you start a new drawing. Continue?</string>
+  <string name="create_project">New Project</string>
+  <string name="create_project_error">Could not create new project.</string>
+  <string name="deadline">Due Date</string>
+  <string name="delete">Delete</string>
+  <string name="delete_account">Delete Account</string>
+  <string name="delete_account_confirm">All your data would be permanently deleted and cannot be recovered. Please
+    re-enter your password to confirm the action.
   </string>
-
-
-  <!-- Permission Explanations -->
-  <string name="explanation_storage_permission">We need permission to access your file storage in order to download
+  <string name="delete_confirm">Confirm Delete</string>
+  <string name="delete_document">Delete Document</string>
+  <string name="delete_document_confirm">Document will be permanently removed. Are you sure?</string>
+  <string name="description">Description</string>
+  <string name="description_short">Short Description</string>
+  <string name="dont_have_an_account">Don\'t have an account?</string>
+  <string name="email">Email</string>
+  <string name="email_error">Invalid email address.</string>
+  <string name="email_recipient">Recipient\'s Email Address</string>
+  <string name="eraser_size">Eraser size:</string>
+  <string name="file_download_error">Could not download file.</string>
+  <string name="file_open_error">Could not open file.</string>
+  <string name="file_upload" formatted="false">Add to %s (%s)</string>
+  <string name="glossary">Glossary</string>
+  <string name="ignore_unsaved_changes">Any unsaved changes will be lost. Do you wish to continue?</string>
+  <string name="invitations">Invitations</string>
+  <string name="invite">Invite</string>
+  <string name="invite_conflict">User already invited.</string>
+  <string name="invite_error">Error sending the invite.</string>
+  <string name="invite_sent">Invitation sent</string>
+  <string name="invite_team_member">Invite Team Member</string>
+  <string name="invite_user_error">Cannot invite this user.</string>
+  <string name="learn_more">Learn More</string>
+  <string name="mark_as_done">Mark as done</string>
+  <string name="message_close_app">Press back button twice to exit.</string>
+  <string name="message_input">Type a message</string>
+  <string name="name">Name</string>
+  <string name="next">Next</string>
+  <string name="no_such_user">No such user exists.</string>
+  <string name="notes">Notes</string>
+  <string name="notes_none">No additional notes.</string>
+  <string name="or">or</string>
+  <string name="password">Password</string>
+  <string name="password_confirm">Confirm Password</string>
+  <string name="password_mismatch_error">Passwords do not match.</string>
+  <string name="permission_storage">We need permission to access your file storage in order to download
     images, course contents, and other application files. The files you access frequently are cached on
     your device in order to provide you a smoother experience.
   </string>
-
-
-  <!-- Confirmation Messages -->
-  <string name="confirm_cancel_sign_up">Your account has not been created yet. Do you want to exit sign up?</string>
-  <string name="confirm_upload">Uploaded files cannot be edited or removed. Do you want to add \'%s\'?</string>
-  <string name="delete_account">All your data would be permanently deleted and cannot be recovered. Please re-enter your
-    password to confirm the action.
+  <string name="privacy_policy">Privacy Policy</string>
+  <string name="profile">Profile</string>
+  <string name="project_client">Client Info</string>
+  <string name="project_details">Project Details</string>
+  <string name="project_tasks">Project Tasks</string>
+  <string name="project_team">Project Team</string>
+  <string name="project_team_invite">%s has invited you to join the %s project.</string>
+  <string name="projects">Projects</string>
+  <string name="reject">Reject</string>
+  <string name="save">Save</string>
+  <string name="save_drawing">Do you want to save the drawing for \'%s\'?</string>
+  <string name="save_drawing_success">Drawing saved!</string>
+  <string name="save_error">Failed to save. Check app permissions.</string>
+  <string name="save_changes_error">Failed to saved changes.</string>
+  <string name="save_changes_success">All updates saved!</string>
+  <string name="saving">Saving…</string>
+  <string name="send_message_failed">Could not send the message at this time.</string>
+  <string name="settings">Settings</string>
+  <string name="share">Share</string>
+  <string name="sign_in">Sign In</string>
+  <string name="sign_in_credentials_error">Invalid email/password combination. Please check your credentials before
+    retrying.
   </string>
-
-  <!-- Status Messages -->
-  <string name="status_signing_up">Signing up…</string>
-  <string name="status_sign_up_failed">Sign up failed.</string>
-
-  <string name="status_sign_in_failed">Sign in failed</string>
-
-  <string name="status_invitation_sent">Invitation emailed</string>
-
-  <string name="status_message_not_sent">Could not send the message at this time.</string>
-
-  <string name="status_saving">Saving…</string>
-  <string name="status_saved">All updates saved!</string>
-  <string name="status_save_failed">Failed to saved changes.</string>
-
-  <string name="status_uploading">Uploading…</string>
-  <string name="status_uploaded">Uploaded successful.</string>
-  <string name="status_upload_failed">Failed to upload.</string>
-
-  <string name="status_open_failed">Could not open file.</string>
-
-  <!-- Error Messages -->
-  <string name="error_no_such_user">No user account with email address found.</string>
-  <string name="error_download">Could not download file.</string>
-  <string name="error_invalid_email">Invalid email address.</string>
-  <string name="error_invalid_link">Malformed link.</string>
-  <string name="error_password_mismatch">Passwords do not match.</string>
-
-
-  <!-- Menu Actions -->
-  <string name="menu_account">Account</string>
-
-
-  <!-- Misc -->
-  <string name="section_notes">Notes</string>
-  <string name="no_notes">No additional notes.</string>
-  <string name="close_editor">Close Editor</string>
-  <string name="unsaved_changes">Any unsaved changes will be lost. Do you wish to continue?</string>
-  <string name="delete_document">Delete Document</string>
-  <string name="confirm_delete">Document will be permanently removed. Are you sure?</string>
-  <string name="or">or</string>
-  <string name="disclaimer">
-    <![CDATA[* By signing up for an account, you agree to our <a href=\'#\'>privacy policy</a> and <a href=\'#\'>terms of service</a>.]]></string>
-  <string name="team_invite">%s has invited you to join the %s project.</string>
-
+  <string name="sign_in_failed">Sign in failed</string>
+  <string name="sign_in_github">Continue with GitHub</string>
+  <string name="sign_in_github_error">An account already exists with same email address but is not connected to GitHub.
+    Sign in using email/password and connect GitHub in account settings.
+  </string>
+  <string name="sign_out">Sign Out</string>
+  <string name="sign_out_confirm">You will be logged out. Continue?</string>
+  <string name="sign_up">Register now!</string>
+  <string name="sign_up_cancel_confirm">Your account has not been created yet. Do you want to exit sign up?</string>
+  <string name="sign_up_create_password">One last step before you are all set to begin.\n\nSecure your account with a
+    strong password.
+  </string>
+  <string name="sign_up_disclaimer">
+    <![CDATA[* By signing up for an account, you agree to our <a href=\'#\'>privacy policy</a> and <a href=\'#\'>terms of service</a>.]]>
+  </string>
+  <string name="sign_up_failed">Sign up failed.</string>
+  <string name="sign_up_introduction">We are excited to have you on board! Let\'s start with the basics.\n\nHow should
+    we address you?
+  </string>
+  <string name="signing_in">Signing up…</string>
+  <string name="stakeholders">Stakeholders</string>
+  <string name="task_details">Task Details</string>
+  <string name="tasks">Tasks</string>
+  <string name="teams">Teams</string>
+  <string name="teams_none">You have not joined any teams yet.</string>
+  <string name="tos">Terms of Service</string>
+  <string name="understood">Got It!</string>
+  <string name="upload_confirm">Uploaded files cannot be edited or removed. Do you want to add \'%s\'?</string>
+  <string name="upload_failed">Failed to upload.</string>
+  <string name="uploaded">Successfully uploaded.</string>
+  <string name="uploading">Uploading…</string>
+  <string name="url_error">Malformed link.</string>
 </resources>

@@ -20,7 +20,7 @@
           android:id="@+id/signOutButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/label_sign_out"
+          android:text="@string/sign_out"
           android:textColor="?attr/colorAccent"/>
 
       <com.google.android.material.button.MaterialButton
@@ -28,7 +28,7 @@
           android:id="@+id/privacyButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/label_privacy"
+          android:text="@string/privacy_policy"
           android:textColor="?attr/colorAccent"/>
 
       <com.google.android.material.button.MaterialButton
@@ -36,7 +36,7 @@
           android:id="@+id/tosButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/label_tos"
+          android:text="@string/tos"
           android:textColor="?attr/colorAccent"/>
 
     </LinearLayout>

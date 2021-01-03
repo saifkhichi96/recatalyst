@@ -30,7 +30,7 @@ class TeamInvitesActivity : DashboardChildActivity() {
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        TeamInviteDao.getReceived(currentUser.id) {
+        TeamInviteDao.getReceivedInvites(currentUser.id) {
             invites.clear()
             invites.addAll(it)
             inviteAdapter.notifyDataSetChanged()

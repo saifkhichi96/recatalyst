@@ -135,7 +135,7 @@ class ConnectionsActivity : DashboardChildActivity() {
         }
 
         // Fetch and show the connections
-        ConnectionsDao.getConnections(currentUser.id) {
+        ConnectionsDao.getUserConnections(currentUser.id) {
             connections.clear()
             if (it.isNotEmpty()) {
                 placeholder.visibility = View.GONE

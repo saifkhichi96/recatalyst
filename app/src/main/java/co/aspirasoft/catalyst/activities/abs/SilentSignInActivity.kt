@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.activities.DashboardActivity
+import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.models.UserAccount
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 /**
@@ -21,8 +21,6 @@ import com.google.firebase.auth.FirebaseUser
  */
 abstract class SilentSignInActivity : AppCompatActivity() {
 
-    protected val auth = FirebaseAuth.getInstance()
-
     /**
      * Starts the silent sign-in process.
      *
@@ -32,7 +30,7 @@ abstract class SilentSignInActivity : AppCompatActivity() {
      * @return True if the sign-in process was started, else False.
      */
     protected fun startSilentSignIn(): Boolean {
-        auth.currentUser?.let {
+        AuthBO.currentUser?.let {
             onAuthenticated(it)
             return true
         }

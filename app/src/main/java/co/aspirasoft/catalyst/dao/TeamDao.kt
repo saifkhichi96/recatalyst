@@ -18,29 +18,38 @@ import co.aspirasoft.catalyst.utils.list
 object TeamDao {
 
     /**
-     * Fetches a team from database.
-     *
-     * This involves a network request and happens asynchronously. A callback function
-     * is used for handling the response of the request when it is available.
+     * Gets a [Team] from the database.
      *
      * @param project The project to which this team belongs.
-     * @param listener A listener for receiving response of the request.
+     * @param receiver Callback for receiving the results.
      */
-    fun get(project: Project, listener: (team: Team?) -> Unit) {
+    fun getProjectTeam(project: Project, receiver: (Team?) -> Unit) {
         MyApplication.refToProjectTeam(project.ownerId, project.name)
-                .getOrNull<Team>(listener)
+                .getOrNull(receiver)
     }
 
-    fun getAll(uid: String, listener: (teams: List<Team>) -> Unit) {
+    /**
+     * Gets list of a user's [Team]s.
+     *
+     * @param uid The id of the user.
+     * @param receiver Callback for receiving the result.
+     */
+    fun getUserTeams(uid: String, receiver: (List<Team>) -> Unit) {
         MyApplication.refToUser(uid)
                 .child("teams/")
-                .list(listener)
+                .list(receiver)
     }
 
-    fun getMembers(project: Project, listener: (team: List<String>) -> Unit) {
-        MyApplication.refToProjectTeam(project.ownerId, project.name)
+    /**
+     * Gets list of a [Team]'s members.
+     *
+     * @param team The team whose members to get.
+     * @param receiver Callback for receiving the result.
+     */
+    fun getTeamMembers(team: Team, receiver: (List<String>) -> Unit) {
+        MyApplication.refToProjectTeam(team.manager, team.project)
                 .child("members/")
-                .list(listener)
+                .list(receiver)
     }
 
 }

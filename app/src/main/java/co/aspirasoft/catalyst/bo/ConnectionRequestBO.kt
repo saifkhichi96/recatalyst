@@ -21,13 +21,9 @@ object ConnectionRequestBO {
     /**
      * Sends a new connection request.
      *
-     * This operation happens asynchronously, and the result of the operation is a
-     * an error message in case of failure, or null if operation successful. This
-     * result is passed back through the callback method provided to the function.
-     *
-     * @param sender The user id of the request sender.
-     * @param recipientEmail The email address of the request's recipient.
-     * @param receiver A callback to receive the result of the operation.
+     * @param sender The user id of the sender.
+     * @param recipientEmail The email address of the recipient.
+     * @param receiver Callback for receiving the result.
      */
     fun send(sender: String, recipientEmail: String, receiver: (error: String?) -> Unit) {
         // Get reference to the invitee's account (need this to add the request in their account)
@@ -81,18 +77,6 @@ object ConnectionRequestBO {
      * @param sender The user id of the request sender.
      */
     suspend fun accept(uid: String, sender: String) {
-        // Remove request from incoming requests list
-        MyApplication.refToUserConnectionsIncoming(uid)
-                .child(sender)
-                .removeValue()
-                .await()
-
-        // Remove outgoing request from the sender's account
-        MyApplication.refToUserConnectionsOutgoing(sender)
-                .child(uid)
-                .removeValue()
-                .await()
-
         // Add it to accepted requests list of both users
         MyApplication.refToUserConnections(uid)
                 .child(sender)
@@ -103,6 +87,9 @@ object ConnectionRequestBO {
                 .child(uid)
                 .setValue(uid)
                 .await()
+
+        // Remove connection logs
+        reject(uid, sender)
     }
 
     /**
@@ -112,7 +99,7 @@ object ConnectionRequestBO {
      * @param sender The user id of the request sender.
      */
     suspend fun reject(uid: String, sender: String) {
-        // Remove incoming request from the user's account
+        // Remove request from incoming requests list
         MyApplication.refToUserConnectionsIncoming(uid)
                 .child(sender)
                 .removeValue()

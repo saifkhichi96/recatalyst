@@ -170,7 +170,7 @@ class SignInActivity : SilentSignInActivity() {
             else -> "${ex.javaClass.simpleName}: ${ex.message}"
         }
         errorSection.visibility = View.VISIBLE
-        auth.signOut()
+        AuthBO.signOut()
     }
 
     /**

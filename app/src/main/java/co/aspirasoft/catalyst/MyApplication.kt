@@ -1,7 +1,8 @@
 package co.aspirasoft.catalyst
 
 import android.app.Application
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 /**
  * An [Application] subclass represents this application.
@@ -17,7 +18,6 @@ class MyApplication : Application() {
         const val EXTRA_CREDENTIALS = "credentials"
         const val EXTRA_DOCUMENT = "document"
         const val EXTRA_NEW_SIGN_UP = "new_user"
-        const val EXTRA_NOTICE_POSTS = "notice_posts"
         const val EXTRA_PROFILE_USER = "profile_user"
         const val EXTRA_PROJECT = "project"
         const val EXTRA_TASK = "task"
@@ -29,7 +29,7 @@ class MyApplication : Application() {
 
         // the refTo* functions return a reference to resources
         // in the Firebase database
-        private val db get() = FirebaseDatabase.getInstance()
+        private val db get() = Firebase.database
 
         fun refToUsers() = db.getReference("users/")
         fun refToUser(uid: String) = refToUsers().child(uid)

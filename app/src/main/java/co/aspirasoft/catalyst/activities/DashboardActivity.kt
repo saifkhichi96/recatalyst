@@ -9,6 +9,7 @@ import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardActivity
+import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.dao.TeamDao
 import co.aspirasoft.catalyst.dialogs.CreateProjectDialog
@@ -18,8 +19,6 @@ import co.aspirasoft.catalyst.models.Team
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.ProjectView
 import co.aspirasoft.catalyst.views.TeamView
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
 /**
@@ -75,7 +74,7 @@ class DashboardActivity : DashboardActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Firebase.auth.currentUser == null) {
+        if (AuthBO.currentUser == null) {
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
         }
@@ -102,7 +101,7 @@ class DashboardActivity : DashboardActivity() {
     }
 
     private fun getProjectsList(uid: String) {
-        ProjectsDao.getAll(uid) {
+        ProjectsDao.getUserProjects(uid) {
             projects.clear()
             projects.addAll(it)
             projects.sortBy { team -> team.name }
@@ -111,7 +110,7 @@ class DashboardActivity : DashboardActivity() {
     }
 
     private fun getTeamsList(uid: String) {
-        TeamDao.getAll(uid) {
+        TeamDao.getUserTeams(uid) {
             teams.clear()
             teams.addAll(it)
             teams.sortBy { team -> team.project }

@@ -3,8 +3,8 @@ package co.aspirasoft.catalyst.dialogs
 import android.app.Activity
 import android.content.Intent
 import co.aspirasoft.catalyst.activities.SignInActivity
+import co.aspirasoft.catalyst.bo.AuthBO
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
 
 object LogoutConfirmationDialog {
 
@@ -13,7 +13,7 @@ object LogoutConfirmationDialog {
                 .setTitle("Sign Out")
                 .setMessage("You will be logged out. Continue?")
                 .setPositiveButton(android.R.string.yes) { _, _ ->
-                    FirebaseAuth.getInstance().signOut()
+                    AuthBO.signOut()
                     activity.startActivity(Intent(activity, SignInActivity::class.java))
                     activity.finish()
                 }

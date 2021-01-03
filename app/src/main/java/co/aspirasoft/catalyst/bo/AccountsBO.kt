@@ -26,10 +26,11 @@ object AccountsBO {
      * Registers a new user account.
      *
      * Registration involves creating a new user account with provided credentials, and
-     * write user details to the database.
+     * writing user details to the database.
      *
-     * @param account The account to register.
+     * @param account The user account to register.
      * @param existingUser (Optional) Existing user to link the new account with.
+     * @throws Exception Exception thrown if new account could not be created.
      */
     @Throws(Exception::class)
     suspend fun registerAccount(account: UserAccount, existingUser: FirebaseUser? = null) {
@@ -64,6 +65,7 @@ object AccountsBO {
      * Deletes a user account.
      *
      * @param credential The sign-in credentials of the account to delete.
+     * @throws RuntimeException Exception thrown if deletion fails.
      */
     @Throws(RuntimeException::class)
     suspend fun deleteAccount(credential: AuthCredential) {
@@ -81,6 +83,7 @@ object AccountsBO {
      *
      * @param email The email address associated with the account to delete.
      * @param password The password of the user account.
+     * @throws RuntimeException Exception thrown if deletion fails.
      */
     @Throws(RuntimeException::class)
     suspend fun deleteAccount(email: String, password: String) {

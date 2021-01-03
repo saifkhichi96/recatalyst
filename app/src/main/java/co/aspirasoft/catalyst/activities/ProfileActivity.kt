@@ -15,6 +15,7 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.bo.AccountsBO
+import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.storage.FileManager
@@ -22,8 +23,6 @@ import co.aspirasoft.catalyst.utils.storage.ImageLoader
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile.passwordField
 import kotlinx.android.synthetic.main.activity_sign_in.*
@@ -140,7 +139,7 @@ class ProfileActivity : DashboardChildActivity() {
                         lifecycleScope.launch {
                             val password = passwordField.text.toString().trim()
                             AccountsBO.deleteAccount(currentUser.email, password)
-                            Firebase.auth.signOut()
+                            AuthBO.signOut()
                             finish()
                         }
                     }

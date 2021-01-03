@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class TeamActivity : DashboardChildActivity() {
 
-    private lateinit var project: Project
+    private lateinit var team: Team
 
     private lateinit var memberAdapter: UserAdapter
     private val members = ArrayList<UserAccount>()
@@ -35,7 +35,8 @@ class TeamActivity : DashboardChildActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-        project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
+        val project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
+        team = Team(project.name, project.ownerId)
 
         memberAdapter = UserAdapter(this, members)
         contentList.adapter = memberAdapter
@@ -45,11 +46,11 @@ class TeamActivity : DashboardChildActivity() {
 
     override fun updateUI(currentUser: UserAccount) {
         this.members.clear()
-        TeamDao.getMembers(project) {
-            it.forEach { uid ->
+        TeamDao.getTeamMembers(team) { members ->
+            members.forEach { uid ->
                 AccountsDao.getById(uid) { account ->
                     account?.let {
-                        members.add(it)
+                        this.members.add(it)
                         memberAdapter.notifyDataSetChanged()
                     }
                 }
@@ -88,7 +89,7 @@ class TeamActivity : DashboardChildActivity() {
                 lifecycleScope.launch {
                     try {
                         // Send the invite
-                        TeamInviteBO.send(account.id, Team(project.name, project.ownerId))
+                        TeamInviteBO.send(account.id, team)
 
                         // Show success message and dismiss the dialog
                         ViewUtils.showMessage(addButton, getString(R.string.status_invitation_sent))

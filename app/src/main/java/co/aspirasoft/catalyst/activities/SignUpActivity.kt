@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.bo.AccountsBO
+import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.fragments.CreateAccountStep
 import co.aspirasoft.catalyst.fragments.CreatePasswordStep
 import co.aspirasoft.catalyst.fragments.IntroductionStep
@@ -17,8 +18,6 @@ import co.aspirasoft.util.ViewUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.coroutines.launch
 
@@ -108,7 +107,7 @@ class SignUpActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val credential = EmailAuthProvider.getCredential(user.email, user.password)
-                AccountsBO.registerAccount(user, Firebase.auth.currentUser)
+                AccountsBO.registerAccount(user, AuthBO.currentUser)
                 signUpCompleted = true
                 onSuccess(credential)
             } catch (ex: Exception) {

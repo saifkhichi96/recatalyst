@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import co.aspirasoft.catalyst.MyApplication
+import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.models.UserAccount
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 /**
@@ -31,7 +31,7 @@ abstract class SecureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val signedInUser = FirebaseAuth.getInstance().currentUser       // firebase auth -> (1)
+        val signedInUser = AuthBO.currentUser                       // firebase auth -> (1)
         val user = intent.getSerializableExtra(MyApplication.EXTRA_USER) as UserAccount? // account details -> (2)
         currentUser = when {
             signedInUser == null || user == null -> return finish() // both (1) and (2) must exist

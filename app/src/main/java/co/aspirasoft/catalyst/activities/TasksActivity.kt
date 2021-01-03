@@ -47,7 +47,7 @@ class TasksActivity : DashboardChildActivity() {
     override fun updateUI(currentUser: UserAccount) {
         adapter = TaskAdapter(this, tasks)
         contentList.adapter = adapter
-        TasksDao.getTasksByProject(project, object : ChildEventListener {
+        TasksDao.getProjectTasks(project, object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.getValue<Task>()?.let { task ->
                     if (!tasks.contains(task)) {
@@ -97,11 +97,11 @@ class TasksActivity : DashboardChildActivity() {
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
         })
     }

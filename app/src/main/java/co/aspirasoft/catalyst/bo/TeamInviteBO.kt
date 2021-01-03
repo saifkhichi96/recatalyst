@@ -17,23 +17,21 @@ import kotlinx.coroutines.tasks.await
 object TeamInviteBO {
 
     /**
-     * Sends a new team joining invitation.
+     * Sends a [TeamInvite] to a user.
      *
-     * This operation happens asynchronously, and the result of the operation is a
-     * an error message in case of failure, or null if operation successful. This
-     * result is passed back through the callback method provided to the function.
-     *
-     * @param recipient The user id of the invitation's recipient.
-     * @param team The team for which to send the invitation.
+     * @param recipient The user id of the recipient.
+     * @param team The team for which to send the invite.
+     * @throws IllegalArgumentException Exception thrown if recipient already member of team.
+     * @throws IllegalStateException Exception thrown if recipient has already been invited.
      */
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     suspend fun send(recipient: String, team: Team) {
         when {
-            // case: user already in team (as member or manager)
+            // FIXME: case: user already in team (as member or manager)
             team.hasMember(recipient) -> throw IllegalArgumentException()
             team.manager == recipient -> throw IllegalArgumentException()
 
-            // case: user invited before
+            // FIXME: case: user invited before
             team.hasInvited(recipient) -> throw IllegalStateException()
 
             // case: all okay, send the invitation

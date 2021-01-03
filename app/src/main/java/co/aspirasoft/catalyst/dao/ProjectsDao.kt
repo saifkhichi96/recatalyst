@@ -2,10 +2,10 @@ package co.aspirasoft.catalyst.dao
 
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.models.Project
+import co.aspirasoft.catalyst.utils.getOrNull
 import co.aspirasoft.catalyst.utils.list
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+
 
 /**
  * A data access class to read details of subjects.
@@ -19,24 +19,35 @@ import kotlinx.coroutines.withContext
 object ProjectsDao {
 
     /**
-     * Adds a new subject to database.
+     * Adds a new [Project] to the database.
      *
-     * @param project The subject to sendTeamInvitation.
+     * @param project The project to add.
      */
-    suspend fun add(project: Project): Void? = withContext(Dispatchers.Main) {
+    suspend fun add(project: Project) {
         MyApplication.refToProject(project.ownerId, project.name)
                 .setValue(project)
                 .await()
     }
 
     /**
-     * Retrieves a list of projects owned by a user.
+     * Gets a [Project] from the database.
+     *
+     * @param uid The id of the project owner.
+     * @param project The name of the project.
+     * @param receiver Callback for receiving the result.
+     */
+    fun get(uid: String, project: String, receiver: (Project?) -> Unit) {
+        MyApplication.refToProject(uid, project).getOrNull(receiver)
+    }
+
+    /**
+     * Gets list of a user's [Project]s.
      *
      * @param uid The id of the user.
-     * @param listener A listener for receiving response of the request.
+     * @param receiver Callback for receiving the result.
      */
-    fun getAll(uid: String, listener: (projects: List<Project>) -> Unit) {
-        MyApplication.refToProjects(uid).list(listener)
+    fun getUserProjects(uid: String, receiver: (List<Project>) -> Unit) {
+        MyApplication.refToProjects(uid).list(receiver)
     }
 
 }

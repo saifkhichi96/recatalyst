@@ -3,6 +3,7 @@ package co.aspirasoft.catalyst.dao
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.utils.list
 
+
 /**
  * A data access class to manage user connections in the database.
  *
@@ -15,44 +16,32 @@ import co.aspirasoft.catalyst.utils.list
 object ConnectionsDao {
 
     /**
-     * Fetches list of a user's connections.
+     * Gets list of a user's connections.
      *
-     * This operation happens asynchronously, and the result of the operation is a
-     * list of user ids of all the connections, or an empty list. This result is
-     * passed back through the callback method provided to the function.
-     *
-     * @param uid The id of the user whose connections to fetch.
-     * @param receiver A callback to receive the result of the operation.
+     * @param uid The id of the user whose connections to get.
+     * @param receiver Callback for receiving the result.
      */
-    fun getConnections(uid: String, receiver: (list: List<String>) -> Unit) {
+    fun getUserConnections(uid: String, receiver: (List<String>) -> Unit) {
         MyApplication.refToUserConnections(uid).list(receiver)
     }
 
     /**
-     * Fetches list of all connection requests received by a user.
+     * Gets list of all received connection requests.
      *
-     * This operation happens asynchronously, and the result of the operation is a
-     * list of user ids of all the senders, or an empty list. This result is passed
-     * back through the callback method provided to the function.
-     *
-     * @param uid The id of the user whose incoming requests to fetch.
-     * @param receiver A callback to receive the result of the operation.
+     * @param uid The id of the user whose received requests to get.
+     * @param receiver Callback for receiving the result.
      */
-    fun getReceivedRequests(uid: String, receiver: (list: List<String>) -> Unit) {
+    fun getReceivedRequests(uid: String, receiver: (List<String>) -> Unit) {
         MyApplication.refToUserConnectionsIncoming(uid).list(receiver)
     }
 
     /**
-     * Fetches list of all connection requests sent by a user.
+     * Gets list of all sent connection requests.
      *
-     * This operation happens asynchronously, and the result of the operation is a
-     * list of user ids of all the recipients, or an empty list. This result is passed
-     * back through the callback method provided to the function.
-     *
-     * @param uid The id of the user whose outgoing requests to fetch.
-     * @param receiver A callback to receive the result of the operation.
+     * @param uid The id of the user whose sent requests to get.
+     * @param receiver Callback for receiving the result.
      */
-    fun getSentRequests(uid: String, receiver: (list: List<String>) -> Unit) {
+    fun getSentRequests(uid: String, receiver: (List<String>) -> Unit) {
         MyApplication.refToUserConnectionsOutgoing(uid).list(receiver)
     }
 

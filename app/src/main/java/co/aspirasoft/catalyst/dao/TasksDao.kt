@@ -4,13 +4,18 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.Task
 import com.google.firebase.database.ChildEventListener
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+
 
 object TasksDao {
 
-    suspend fun add(task: Task, project: Project): Void? = withContext(Dispatchers.Main) {
+    /**
+     * Adds a new [Task] to the [Project].
+     *
+     * @param task The task to add.
+     * @param project The project to add the task to.
+     */
+    suspend fun add(task: Task, project: Project) {
         val ref = MyApplication.refToProject(project.ownerId, project.name)
                 .child("tasks/")
                 .push()
@@ -20,10 +25,16 @@ object TasksDao {
         }
     }
 
-    fun getTasksByProject(project: Project, listener: ChildEventListener) {
+    /**
+     * Gets list of a [Project]'s tasks.
+     *
+     * @param project The project whose tasks to get.
+     * @param receiver Callback for receiving the result.
+     */
+    fun getProjectTasks(project: Project, receiver: ChildEventListener) {
         MyApplication.refToProject(project.ownerId, project.name)
                 .child("tasks/")
-                .addChildEventListener(listener)
+                .addChildEventListener(receiver)
     }
 
 }

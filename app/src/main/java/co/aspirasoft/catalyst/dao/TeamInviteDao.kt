@@ -16,16 +16,13 @@ import co.aspirasoft.catalyst.utils.list
 object TeamInviteDao {
 
     /**
-     * Fetches a list of incoming invites.
-     *
-     * This involves a network request and happens asynchronously. A callback function
-     * is used for handling the response of the request when it is available.
+     * Gets list of all received [TeamInvite]s.
      *
      * @param uid The id of the user whose invites to get.
-     * @param listener A listener for receiving response of the request.
+     * @param receiver Callback for receiving the results.
      */
-    fun getReceived(uid: String, listener: (team: List<TeamInvite>) -> Unit) {
-        MyApplication.refToReceivedInvites(uid).list(listener)
+    fun getReceivedInvites(uid: String, receiver: (List<TeamInvite>) -> Unit) {
+        MyApplication.refToReceivedInvites(uid).list(receiver)
     }
 
 }

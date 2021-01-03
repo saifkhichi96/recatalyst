@@ -8,6 +8,7 @@ import com.google.firebase.database.DataSnapshot
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
+
 /**
  * A data access class to manage user accounts in the database.
  *
@@ -20,9 +21,9 @@ import java.util.*
 object AccountsDao {
 
     /**
-     * Adds a new user account to the database.
+     * Adds a new [UserAccount] to the database.
      *
-     * @param account The account to add.
+     * @param account The user account to add.
      */
     suspend fun add(account: UserAccount) {
         MyApplication.refToUserAccount(account.id)
@@ -31,16 +32,12 @@ object AccountsDao {
     }
 
     /**
-     * Fetches a user's account details by their user id.
+     * Gets user data by user's id.
      *
-     * This operation happens asynchronously, and the result of the operation, which
-     * can either be a [UserAccount] or null in case of a mismatch or error, is
-     * passed back through the callback method provided to the function.
-     *
-     * @param uid The id of the user to fetch.
-     * @param receiver A callback to receive the result of the operation.
+     * @param uid The id of the user to get.
+     * @param receiver Callback for receiving the result.
      */
-    fun getById(uid: String, receiver: (user: UserAccount?) -> Unit) {
+    fun getById(uid: String, receiver: (UserAccount?) -> Unit) {
         MyApplication.refToUserAccount(uid)
                 .get { snapshot ->
                     receiver(try {
@@ -52,35 +49,35 @@ object AccountsDao {
     }
 
     /**
-     * Fetches a user's account details by their user id.
+     * Gets user data by user's email address.
      *
-     * This operation happens asynchronously, and the result of the operation, which
-     * can either be a [UserAccount] or null in case of a mismatch or error, is
-     * passed back through the callback method provided to the function.
-     *
-     * @param email The email address associated with account of the user to fetch.
-     * @param receiver A callback to receive the result of the operation.
+     * @param email The email address of the user account to get.
+     * @param receiver Callback for receiving the result.
      */
-    fun getByEmail(email: String, receiver: (user: UserAccount?) -> Unit) {
+    fun getByEmail(email: String, receiver: (UserAccount?) -> Unit) {
         val accountPath = "account"
         val emailPath = "$accountPath/email"
         MyApplication.refToUsers()
                 .orderByChild(emailPath)
                 .equalTo(email.toLowerCase(Locale.getDefault()))
                 .getChildren { snapshots ->
-                    receiver(if (snapshots == null) null else runCatching {
-                        val snapshot = snapshots.elementAt(0).child(accountPath)
-                        snapshot.toUser()
-                    }.getOrNull())
+                    receiver(try {
+                        snapshots!!.elementAt(0).child(accountPath).toUser()
+                    } catch (ex: Exception) {
+                        null
+                    })
                 }
     }
 
     /**
      * Deletes user data from database.
+     *
+     * @param uid The id of the user to delete.
+     * @param receiver Callback for receiving the result.
      */
-    fun delete(uid: String, callback: () -> Unit) {
+    fun delete(uid: String, receiver: () -> Unit) {
         // Remove connection links to other users
-        ConnectionsDao.getConnections(uid) { connections ->
+        ConnectionsDao.getUserConnections(uid) { connections ->
             connections.forEach { MyApplication.refToUserConnections(it).child(uid).setValue(null) }
 
             // Withdraw all sent connection requests
@@ -99,7 +96,7 @@ object AccountsDao {
                     // TODO: Delete any files in Storage
 
                     // Callback method on completion
-                    callback()
+                    receiver()
                 }
             }
         }
@@ -108,9 +105,9 @@ object AccountsDao {
     /**
      * Casts a [DataSnapshot] to a [UserAccount].
      *
-     * @return The user account contained in the snapshot.
-     * @throws ClassCastException An error is raised if casting fails.
+     * @throws ClassCastException Exception thrown if casting fails.
      */
+    @Throws(ClassCastException::class)
     private fun DataSnapshot.toUser(): UserAccount {
         return try {
             this.getValue(UserAccount::class.java)!!

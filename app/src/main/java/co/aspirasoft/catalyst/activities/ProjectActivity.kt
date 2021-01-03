@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_project.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 /**
@@ -166,9 +167,14 @@ class ProjectActivity : DashboardChildActivity() {
         mAssetManager.listAll { items ->
             mAssets.clear()
             items.forEach { reference ->
-                reference.metadata.addOnSuccessListener { metadata ->
-                    mAssets.add(Asset(reference.name, metadata))
-                    mAssetAdapter?.notifyDataSetChanged()
+                lifecycleScope.launch {
+                    try {
+                        val metadata = reference.metadata.await()
+                        mAssets.add(Asset(reference.name, metadata))
+                        mAssetAdapter?.notifyDataSetChanged()
+                    } catch (ex: Exception) {
+                        // TODO: Handle failure
+                    }
                 }
             }
 

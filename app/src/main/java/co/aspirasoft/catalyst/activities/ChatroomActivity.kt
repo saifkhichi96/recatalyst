@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
@@ -17,6 +18,7 @@ import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.MessageView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_chatroom.*
+import kotlinx.coroutines.launch
 
 class ChatroomActivity : DashboardChildActivity() {
 
@@ -32,7 +34,7 @@ class ChatroomActivity : DashboardChildActivity() {
 
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
         messageAdapter = MessageAdapter(this, messages)
-        ChatroomDao.getMessagesByProject(project) {
+        ChatroomDao.observeChatroom(project) {
             if (!messages.contains(it)) {
                 messages.add(it)
                 messageAdapter.notifyDataSetChanged()
@@ -60,19 +62,17 @@ class ChatroomActivity : DashboardChildActivity() {
     private fun onSendMessageClicked() {
         val messageContent = messageInput.text.toString().trim()
         if (messageContent.isNotBlank()) {
-            try {
-                val message = Message(messageContent, currentUser.id)
-                ChatroomDao.add(project, message) {
-                    if (!it.isSuccessful) {
-                        Snackbar.make(messagesList,
-                                it.exception?.message ?: getString(R.string.status_message_not_sent),
-                                Snackbar.LENGTH_LONG).show()
-                    } else {
-                        messageInput.setText("")
-                    }
+            lifecycleScope.launch {
+                try {
+                    val message = Message(messageContent, currentUser.id)
+
+                    ChatroomDao.add(project, message)
+                    messageInput.setText("")
+                } catch (ex: Exception) {
+                    Snackbar.make(messagesList,
+                            ex.message ?: getString(R.string.status_message_not_sent),
+                            Snackbar.LENGTH_LONG).show()
                 }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
             }
         }
 

@@ -1,5 +1,4 @@
 <resources>
-  <string name="app_name">Aspirasoft Core APIs</string>
   <string name="required_asterisk" translatable="false"><![CDATA[<font color=\'#cc0029\'>*</font>]]></string>
   <string name="back">Back</string>
   <string name="next">Next</string>

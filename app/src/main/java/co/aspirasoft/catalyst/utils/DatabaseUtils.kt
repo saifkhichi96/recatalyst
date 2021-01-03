@@ -1,7 +1,10 @@
 package co.aspirasoft.catalyst.utils
 
-import com.google.firebase.database.*
-import kotlin.reflect.KClass
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 
 
 fun Query.get(listener: (snapshot: DataSnapshot?) -> Unit) {
@@ -52,74 +55,32 @@ fun Query.observeChildren(observer: (snapshots: Iterable<DataSnapshot>?) -> Unit
     }
 }
 
-fun <T : Any> Query.getOrNull(type: KClass<T>, listener: (result: T?) -> Unit) {
+inline fun <reified T> Query.getOrNull(crossinline listener: (result: T?) -> Unit) {
     get { snapshot ->
-        listener(snapshot.getOrNull(type))
+        listener(snapshot.getOrNull())
     }
 }
 
-fun <T : Any> Query.observeOrNull(type: KClass<T>, listener: (result: T?) -> Unit) {
+inline fun <reified T> Query.observeOrNull(crossinline listener: (result: T?) -> Unit) {
     observe { snapshot ->
-        listener(snapshot.getOrNull(type))
+        listener(snapshot.getOrNull())
     }
 }
 
-fun <T : Any> Query.getOrNull(type: GenericTypeIndicator<T>, listener: (result: T?) -> Unit) {
-    get { snapshot ->
-        listener(snapshot.getOrNull(type))
+inline fun <reified T> Query.list(crossinline listener: (list: List<T>) -> Unit) {
+    get { listener(it.list()) }
+}
+
+inline fun <reified T> DataSnapshot?.getOrNull(): T? {
+    return kotlin.runCatching { this?.getValue<T>() }.getOrNull()
+}
+
+inline fun <reified T> DataSnapshot?.list(): List<T> {
+    val list = mutableListOf<T>()
+    if (this != null) {
+        for (childSnapshot in this.children) {
+            childSnapshot.getOrNull<T>()?.let { list.add(it) }
+        }
     }
-}
-
-fun <T : Any> Query.observeOrNull(type: GenericTypeIndicator<T>, listener: (result: T?) -> Unit) {
-    observe { snapshot ->
-        listener(snapshot.getOrNull(type))
-    }
-}
-
-fun <T : Any> Query.list(listener: (list: List<T>) -> Unit) {
-    val t = object : GenericTypeIndicator<ArrayList<T>>() {}
-    getOrNull(t) { listener(it.orEmpty()) }
-}
-
-fun <V : Any> Query.map(listener: (map: HashMap<String, V>?) -> Unit) {
-    val t = object : GenericTypeIndicator<HashMap<String, V>>() {}
-    getOrNull(t) { listener(it) }
-}
-
-fun <T : Any> Query.mappedList(listener: (list: List<T>) -> Unit) {
-    map<T> { listener(it?.values?.toList().orEmpty()) }
-}
-
-fun <T : Any> DataSnapshot?.getOrNull(type: KClass<T>): T? {
-    return kotlin.runCatching { this?.getValue(type.java) }.getOrNull()
-}
-
-fun <T : Any> DataSnapshot?.getOrNull(type: GenericTypeIndicator<T>): T? {
-    return kotlin.runCatching { this?.getValue(type) }.getOrNull()
-}
-
-fun <T : Any> DataSnapshot?.list(listener: (list: List<T>) -> Unit) {
-    list<T, Unit>(listener)
-}
-
-fun <T : Any, R> DataSnapshot?.list(listener: (list: List<T>) -> R): R {
-    val t = object : GenericTypeIndicator<ArrayList<T>>() {}
-    return listener(getOrNull(t).orEmpty())
-}
-
-fun <V : Any> DataSnapshot?.map(listener: (map: HashMap<String, V>?) -> Unit) {
-    map<V, Unit>(listener)
-}
-
-fun <V : Any, R> DataSnapshot?.map(listener: (map: HashMap<String, V>?) -> R): R {
-    val t = object : GenericTypeIndicator<HashMap<String, V>>() {}
-    return listener(getOrNull(t))
-}
-
-fun <T : Any> DataSnapshot?.mappedList(listener: (list: List<T>) -> Unit) {
-    mappedList<T, Unit>(listener)
-}
-
-fun <T : Any, R> DataSnapshot?.mappedList(listener: (list: List<T>) -> R): R {
-    return map<T, R> { listener(it?.values?.toList().orEmpty()) }
+    return list
 }

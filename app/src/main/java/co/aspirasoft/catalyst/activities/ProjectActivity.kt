@@ -101,9 +101,12 @@ class ProjectActivity : DashboardChildActivity() {
                 onTasksClicked()
                 true
             }
+            R.id.action_team -> {
+                onTeamClicked()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun updateUI(currentUser: UserAccount) {
@@ -139,6 +142,12 @@ class ProjectActivity : DashboardChildActivity() {
 
     private fun onTasksClicked() {
         startSecurely(TasksActivity::class.java, Intent().apply {
+            putExtra(MyApplication.EXTRA_PROJECT, project)
+        })
+    }
+
+    private fun onTeamClicked() {
+        startSecurely(TeamActivity::class.java, Intent().apply {
             putExtra(MyApplication.EXTRA_PROJECT, project)
         })
     }

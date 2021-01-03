@@ -2,10 +2,7 @@ package co.aspirasoft.catalyst.dao
 
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.models.Project
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.GenericTypeIndicator
-import com.google.firebase.database.ValueEventListener
+import co.aspirasoft.catalyst.utils.list
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -39,18 +36,7 @@ object ProjectsDao {
      * @param listener A listener for receiving response of the request.
      */
     fun getAll(uid: String, listener: (projects: List<Project>) -> Unit) {
-        MyApplication.refToProjects(uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val t = object : GenericTypeIndicator<HashMap<String, Project>>() {}
-                        val v = snapshot.getValue(t)?.values?.toList().orEmpty()
-                        listener(v)
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        listener(emptyList())
-                    }
-                })
+        MyApplication.refToProjects(uid).list(listener)
     }
 
 }

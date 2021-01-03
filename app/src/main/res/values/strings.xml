@@ -61,7 +61,7 @@
   <string name="label_sign_out">Sign Out</string>
   <string name="label_sign_up">Register now!</string>
   <string name="label_tasks">Tasks</string>
-  <string name="label_team">Members</string>
+  <string name="label_team">Project team</string>
   <string name="label_tos">Terms of Service</string>
   <string name="label_understood">Got It!</string>
 
@@ -154,5 +154,6 @@
   <string name="or">or</string>
   <string name="disclaimer">
     <![CDATA[* By signing up for an account, you agree to our <a href=\'#\'>privacy policy</a> and <a href=\'#\'>terms of service</a>.]]></string>
+  <string name="team_invite">%s has invited you to join the %s project.</string>
 
 </resources>

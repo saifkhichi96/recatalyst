@@ -43,6 +43,9 @@ class MyApplication : Application() {
         fun refToProjectMessages(uid: String, pid: String) = refToProject(uid, pid).child("chats/")
         fun refToProjectTeam(uid: String, pid: String) = refToProject(uid, pid).child("team/")
 
+        fun refToReceivedInvites(uid: String) = refToUser(uid).child("incoming_invites/")
+        fun refToSentInvites(uid: String) = refToUser(uid).child("outgoing_invites/")
+
         fun refToNews(uid: String, pid: String) = refToProject(uid, pid).child("news/")
     }
 

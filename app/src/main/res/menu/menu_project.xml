@@ -13,4 +13,9 @@
       android:icon="@drawable/ic_tasks"
       app:showAsAction="ifRoom"/>
 
+  <item
+      android:id="@+id/action_team"
+      android:title="@string/label_team"
+      app:showAsAction="never"/>
+
 </menu>

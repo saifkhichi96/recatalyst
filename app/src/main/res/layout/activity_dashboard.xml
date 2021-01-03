@@ -37,7 +37,7 @@
           android:background="?attr/colorPrimary"/>
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/attendanceButton"
+          android:id="@+id/connectionsButton"
           style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
           android:layout_width="64dp"
           android:layout_height="64dp"
@@ -54,7 +54,7 @@
           android:background="?attr/colorPrimary"/>
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/gradesButton"
+          android:id="@+id/invitesButton"
           style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
           android:layout_width="64dp"
           android:layout_height="64dp"
@@ -71,7 +71,7 @@
           android:background="?attr/colorPrimary"/>
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/classAnnouncementsButton"
+          android:id="@+id/notificationsButton"
           style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
           android:layout_width="64dp"
           android:layout_height="64dp"

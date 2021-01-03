@@ -9,24 +9,24 @@ import kotlinx.android.parcel.Parcelize
  *
  * @property id The id of the invitation.
  * @property project Name of the project to which this team belongs.
- * @property team Name of the project team for which this invitation is created.
- * @property inviter User id of the invitation sender. This is usually the team manager.
- * @property invitee Email address of the invitation recipient.
- * @property status The [InvitationStatus].
+ * @property sender User id of the invitation sender. This is usually the team manager.
+ * @property recipient User id of the invitation recipient.
  */
 @Parcelize
-data class Invitation(
+data class TeamInvite(
         val id: String,
-        val inviter: String,
-        val invitee: String,
-        val status: InvitationStatus = InvitationStatus.Pending,
+        val project: String,
+        val sender: String,
+        val recipient: String,
 ) : Parcelable, BaseModel() {
+
+    constructor() : this("", "", "", "")
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Invitation
+        other as TeamInvite
 
         if (id != other.id) return false
 
@@ -36,5 +36,4 @@ data class Invitation(
     override fun hashCode(): Int {
         return id.hashCode()
     }
-
 }

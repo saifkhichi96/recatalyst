@@ -10,11 +10,14 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardActivity
 import co.aspirasoft.catalyst.dao.ProjectsDao
+import co.aspirasoft.catalyst.dao.TeamDao
 import co.aspirasoft.catalyst.dialogs.CreateProjectDialog
 import co.aspirasoft.catalyst.dialogs.SettingsDialog
 import co.aspirasoft.catalyst.models.Project
+import co.aspirasoft.catalyst.models.Team
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.ProjectView
+import co.aspirasoft.catalyst.views.TeamView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -40,6 +43,16 @@ class DashboardActivity : DashboardActivity() {
      */
     private lateinit var projectAdapter: ProjectAdapter
 
+    /**
+     * List of teams the current user has joined.
+     */
+    private val teams: ArrayList<Team> = ArrayList()
+
+    /**
+     * An adapter to populate a UI with user's [teams].
+     */
+    private lateinit var teamAdapter: TeamAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -47,12 +60,17 @@ class DashboardActivity : DashboardActivity() {
         projectAdapter = ProjectAdapter(this, projects)
         projectsList.adapter = projectAdapter
 
-        attendanceButton.setOnClickListener { startSecurely(ConnectionsActivity::class.java) }
-        createProjectButton.setOnClickListener { onCreateProjectClicked() }
+        teamAdapter = TeamAdapter(this, teams)
+        teamsList.adapter = teamAdapter
 
-        settingsButton.setOnClickListener {
-            SettingsDialog.Builder(this).show()
-        }
+        // Set click listeners for sidebar buttons
+        connectionsButton.setOnClickListener { startSecurely(ConnectionsActivity::class.java) }
+        invitesButton.setOnClickListener { startSecurely(TeamInvitesActivity::class.java) }
+        notificationsButton.setOnClickListener { }
+        settingsButton.setOnClickListener { SettingsDialog.Builder(this).show() }
+
+        // Set other click listeners
+        createProjectButton.setOnClickListener { onCreateProjectClicked() }
     }
 
     override fun onResume() {
@@ -74,6 +92,7 @@ class DashboardActivity : DashboardActivity() {
         }
 
         getProjectsList(currentUser.id)
+        getTeamsList(currentUser.id)
     }
 
     private fun createProject(okListener: ((project: Project) -> Unit)) {
@@ -88,6 +107,15 @@ class DashboardActivity : DashboardActivity() {
             projects.addAll(it)
             projects.sortBy { team -> team.name }
             projectAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun getTeamsList(uid: String) {
+        TeamDao.getAll(uid) {
+            teams.clear()
+            teams.addAll(it)
+            teams.sortBy { team -> team.project }
+            teamAdapter.notifyDataSetChanged()
         }
     }
 
@@ -116,6 +144,24 @@ class DashboardActivity : DashboardActivity() {
                 startSecurely(ProjectActivity::class.java, Intent().apply {
                     putExtra(MyApplication.EXTRA_PROJECT, projects[position])
                 })
+            }
+            return v
+        }
+
+    }
+
+    private inner class TeamAdapter(context: Context, val teams: List<Team>)
+        : ModelViewAdapter<Team>(context, teams, TeamView::class) {
+
+        override fun notifyDataSetChanged() {
+            super.notifyDataSetChanged()
+            teamsSpace.visibility = if (teams.isNotEmpty()) View.GONE else View.VISIBLE
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val v = super.getView(position, convertView, parent)
+            v.setOnClickListener {
+                // TODO: Open the project which owns this team
             }
             return v
         }

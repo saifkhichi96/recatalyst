@@ -52,6 +52,11 @@
               android:configChanges="orientation|screenSize"
               android:parentActivityName=".activities.ConnectionsActivity"/>
 
+    <activity android:name=".activities.TeamInvitesActivity"
+              android:label="Collaboration"
+              android:parentActivityName=".activities.DashboardActivity"
+              android:configChanges="orientation|screenSize"/>
+
     <activity android:name=".activities.ProjectActivity"
               android:label="@string/title_project_details"
               android:parentActivityName=".activities.DashboardActivity"
@@ -60,6 +65,11 @@
     <activity android:name=".activities.ChatroomActivity"
               android:label="@string/title_chatroom"
               android:parentActivityName=".activities.ProjectActivity"
+              android:configChanges="orientation|screenSize"/>
+
+    <activity android:name=".activities.TeamActivity"
+              android:label="@string/title_team"
+              android:parentActivityName=".activities.ChatroomActivity"
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.TasksActivity"

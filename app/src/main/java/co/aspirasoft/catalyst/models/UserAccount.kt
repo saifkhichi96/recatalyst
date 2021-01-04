@@ -4,66 +4,38 @@ import co.aspirasoft.model.BaseModel
 import java.util.*
 
 /**
- * A data class representing a single user of the app.
+ * Account of an app user.
  *
  * @property id A unique id for this user.
  * @property name Name of the user.
  * @property email Email address of the user.
+ * @property bio More info about the user.
+ * @property blog Link to user's blog / website.
+ * @property github Link to user's Github profile.
+ * @property headline Headline of the user's profile.
+ * @property location Location of the user.
  * @property phone Phone number of the user.
  * @property password Password of the user's account.
  *
  * @author saifkhichi96
  * @since 1.0.0
  */
-data class UserAccount(
-    var id: String,
-    var name: String,
-    var email: String,
-    @Transient var password: String
-) : BaseModel() {
+data class UserAccount(var id: String = "") : BaseModel() {
 
-    // no-arg constructor needed for Firebase
-    constructor() : this("", "", "", "")
-
-    init {
-        email = email.toLowerCase(Locale.getDefault())
-    }
+    var name: String = ""
+    var email: String = ""
+        set(value) {
+            field = value.toLowerCase(Locale.getDefault())
+        }
 
     var bio: String? = null
-        set(value) {
-            field = value
-            setChanged()
-        }
-
     var blog: String? = null
-        set(value) {
-            field = value
-            setChanged()
-        }
-
     var github: String? = null
-        set(value) {
-            field = value
-            setChanged()
-        }
-
     var headline: String? = null
-        set(value) {
-            field = value
-            setChanged()
-        }
-
-    var phone: String? = null
-        set(value) {
-            field = value
-            setChanged()
-        }
-
     var location: String? = null
-        set(value) {
-            field = value
-            setChanged()
-        }
+    var phone: String? = null
+
+    @Transient
+    var password: String = ""
 
 }
-

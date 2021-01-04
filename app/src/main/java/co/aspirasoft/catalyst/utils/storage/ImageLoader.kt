@@ -29,26 +29,27 @@ object ImageLoader {
 
         fun into(target: ImageView) {
             FileManager.newInstance(context, "users/${uid}/").download(
-                    filename,
-                    {
-                        try {
-                            Glide.with(context)
-                                    .load(it)
-                                    .skipMemoryCache(true)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .into(target)
-                        } catch (ignored: Exception) {
+                filename,
+                {
+                    try {
+                        Glide.with(context)
+                            .load(it)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .placeholder(R.drawable.placeholder_avatar)
+                            .into(target)
+                    } catch (ignored: Exception) {
 
-                        }
-                    },
-                    {
-                        try {
-                            Glide.with(context).load(R.drawable.placeholder_avatar).into(target)
-                        } catch (ignored: Exception) {
+                    }
+                },
+                {
+                    try {
+                        Glide.with(context).load(R.drawable.placeholder_avatar).into(target)
+                    } catch (ignored: Exception) {
 
-                        }
-                    },
-                    skip
+                    }
+                },
+                skip
             )
 
         }

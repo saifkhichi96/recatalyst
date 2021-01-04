@@ -17,10 +17,7 @@ import co.aspirasoft.model.BaseModel
  * @author saifkhichi96
  * @since 1.0.0
  */
-class Project(var name: String, var ownerId: String) : BaseModel() {
-
-    // no-arg constructor required for Firebase
-    constructor() : this("", "")
+data class Project(val name: String = "", val ownerId: String = "") : BaseModel() {
 
     var description: String? = null
 
@@ -47,28 +44,6 @@ class Project(var name: String, var ownerId: String) : BaseModel() {
 
     private fun updateDocument(name: String, updatedDocument: Document) {
         getDocument(name)?.updateWith(updatedDocument)
-    }
-
-    override fun toString(): String {
-        return name
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Project
-
-        if (name != other.name) return false
-        if (ownerId != other.ownerId) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + ownerId.hashCode()
-        return result
     }
 
 }

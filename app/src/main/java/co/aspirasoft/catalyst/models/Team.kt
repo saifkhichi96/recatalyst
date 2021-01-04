@@ -16,18 +16,11 @@ import co.aspirasoft.model.BaseModel
  * @author saifkhichi96
  * @since 1.0.0
  */
-class Team(var project: String, var manager: String) : BaseModel() {
+data class Team(val project: String = "", val manager: String = "") : BaseModel() {
 
-    /**
-     * Default public constructor.
-     *
-     * A no-argument constructor is required for serialization.
-     */
-    constructor() : this("", "")
+    private val members = HashMap<String, String>()
 
-    private var members = HashMap<String, String>()
-
-    private var invitedMembers = HashMap<String, String>()
+    private val invitedMembers = HashMap<String, String>()
 
     /**
      * Checks if a user has been invited to the team.

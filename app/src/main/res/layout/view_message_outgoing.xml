@@ -72,21 +72,16 @@
 
       </LinearLayout>
 
-      <com.google.android.material.card.MaterialCardView
+      <com.google.android.material.imageview.ShapeableImageView
+          style="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
           android:id="@+id/senderAvatar"
-          android:layout_width="24dp"
+          android:layout_width="23dp"
           android:layout_height="24dp"
           android:layout_marginEnd="4dp"
-          app:cardCornerRadius="12dp">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/userImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/placeholder_avatar"/>
-
-      </com.google.android.material.card.MaterialCardView>
+          android:scaleType="centerCrop"
+          android:src="@drawable/placeholder_avatar"
+          app:cardCornerRadius="12dp"
+          tools:src="@tools:sample/avatars"/>
 
     </LinearLayout>
 

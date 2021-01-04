@@ -41,12 +41,10 @@ object TeamInviteBO {
                 val key = ref.key!!
 
                 // Create a new invite
-                val invite = TeamInvite(
-                    id = key,
-                    project = team.project,
-                    sender = team.manager,
-                    recipient = uid
-                )
+                val invite = TeamInvite(key)
+                invite.project = team.project
+                invite.sender = team.manager
+                invite.recipient = uid
 
                 // Save invite in database
                 ref.setValue(invite).await()

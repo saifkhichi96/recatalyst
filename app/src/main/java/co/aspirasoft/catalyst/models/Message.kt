@@ -4,39 +4,28 @@ import co.aspirasoft.model.BaseModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Message(
-    var content: String,
-    var sender: String,
+/**
+ * A chat message sent by a user.
+ *
+ * @property id The unique id of the message.
+ * @property content The body of the message.
+ * @property sender The id of the message sender.
+ * @property timestamp The local system time in milliseconds when message was sent.
+ * @property datetime The [timestamp] as a formatted string.
+ * @property isIncoming True if this is an incoming message, and False if outgoing.
+ *
+ * @author saifkhichi96
+ * @since 1.0.0
+ */
+data class Message(var id: String = "") : BaseModel() {
+
+    var content: String = ""
+    var sender: String = ""
     var timestamp: Date = Date(System.currentTimeMillis())
-) :
-    BaseModel() {
-
-    constructor() : this("", "", Date(System.currentTimeMillis()))
-
-    var id: String = ""
-
     val datetime: String
-        get() {
-            val formatter = SimpleDateFormat("hh:mm a, EE dd MMM, yyyy", Locale.getDefault())
-            return formatter.format(timestamp)
-        }
+        get() = SimpleDateFormat("hh:mm a, EE, MMM dd", Locale.getDefault()).format(timestamp)
 
     @Transient
-    var incoming: Boolean = true
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Message
-
-        if (id != other.id) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
+    var isIncoming: Boolean = true
 
 }

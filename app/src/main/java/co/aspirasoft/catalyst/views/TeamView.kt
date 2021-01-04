@@ -4,12 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.annotation.ColorInt
 import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.ViewTeamBinding
 import co.aspirasoft.catalyst.models.Team
 import co.aspirasoft.view.BaseView
-import com.google.android.material.card.MaterialCardView
 
 class TeamView : BaseView<Team> {
 
@@ -19,21 +18,16 @@ class TeamView : BaseView<Team> {
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
-    private val projectColor: MaterialCardView
-    private val projectName: TextView
-    private val projectDescription: TextView
-
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_team, this)
-        projectColor = findViewById(R.id.projectColor)
-        projectName = findViewById(R.id.projectName)
-        projectDescription = findViewById(R.id.projectDescription)
-    }
+    private val binding = ViewTeamBinding.inflate(
+        LayoutInflater.from(context),
+        this,
+        true
+    )
 
     override fun updateView(model: Team) {
-        projectName.text = model.project
-        projectDescription.text = model.manager
-        projectColor.setCardBackgroundColor(convertToColor(model))
+        binding.projectName.text = model.project
+        binding.projectDescription.text = model.manager
+        binding.projectColor.setCardBackgroundColor(convertToColor(model))
     }
 
     @ColorInt

@@ -45,7 +45,7 @@ class TeamActivity : DashboardChildActivity() {
         setContentView(binding.root)
 
         val project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
-        team = Team(project.name, project.ownerId)
+        team = project.team
         isEditable = project.ownerId == currentUser.id
         if (isEditable) {
             binding.addButton.visibility = View.VISIBLE

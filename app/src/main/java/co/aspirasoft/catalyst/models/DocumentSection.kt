@@ -8,9 +8,9 @@ import java.io.Serializable
  * This class represents a segment of a document comprising of a heading, and content
  * which may include text and pictures.
  */
-class DocumentSection internal constructor(val name: String, var body: String) : Serializable {
+data class DocumentSection internal constructor(val name: String = "") : Serializable {
 
-    constructor() : this("", "")
+    var body: String = ""
 
     var isSubsection: Boolean = name.split(".").dropLastWhile { it.isEmpty() }.size > 2
 

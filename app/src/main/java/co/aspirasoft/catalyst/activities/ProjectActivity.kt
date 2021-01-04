@@ -18,9 +18,9 @@ import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.adapters.DocumentAdapter
 import co.aspirasoft.catalyst.adapters.FileAdapter
 import co.aspirasoft.catalyst.databinding.ActivityProjectBinding
-import co.aspirasoft.catalyst.models.Asset
 import co.aspirasoft.catalyst.models.DocumentType
 import co.aspirasoft.catalyst.models.Project
+import co.aspirasoft.catalyst.models.RemoteFile
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.FileUtils.getLastPathSegmentOnly
 import co.aspirasoft.catalyst.utils.storage.FileManager
@@ -58,7 +58,7 @@ class ProjectActivity : DashboardChildActivity() {
     private lateinit var project: Project
     private lateinit var projectDocumentsAdapter: DocumentAdapter
     private lateinit var projectFilesAdapter: FileAdapter
-    private val projectFiles = ArrayList<Asset>()
+    private val projectFiles = ArrayList<RemoteFile>()
     private var isEditable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,7 +148,7 @@ class ProjectActivity : DashboardChildActivity() {
             val metadata = reference.metadata.await()
             val filename = reference.name
 
-            projectFiles.add(Asset(filename, metadata))
+            projectFiles.add(RemoteFile(filename, metadata))
             projectFilesAdapter.notifyDataSetChanged()
 
             binding.assetsSpace.visibility = View.GONE
@@ -241,7 +241,7 @@ class ProjectActivity : DashboardChildActivity() {
         status.show()
         try {
             fm.upload(filename, data)?.let { metadata ->
-                projectFilesAdapter.add(Asset(filename, metadata))
+                projectFilesAdapter.add(RemoteFile(filename, metadata))
                 projectFilesAdapter.notifyDataSetChanged()
 
                 runOnUiThread {

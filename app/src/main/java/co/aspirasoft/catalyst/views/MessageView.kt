@@ -4,10 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.dao.AccountsDao
+import co.aspirasoft.catalyst.databinding.ViewMessageBinding
+import co.aspirasoft.catalyst.databinding.ViewMessageOutgoingBinding
 import co.aspirasoft.catalyst.models.Message
 import co.aspirasoft.catalyst.utils.storage.ImageLoader
 import co.aspirasoft.view.BaseView
@@ -20,49 +19,58 @@ class MessageView : BaseView<Message> {
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
-    private lateinit var senderAvatar: ImageView
-    private lateinit var senderName: TextView
-    private lateinit var body: TextView
-    private lateinit var timestamp: TextView
+    private var incomingBinding: ViewMessageBinding? = null
+    private var outgoingBinding: ViewMessageOutgoingBinding? = null
+
+    private val senderAvatar get() = incomingBinding?.senderAvatar ?: outgoingBinding?.senderAvatar
+    private val senderName get() = incomingBinding?.messageSender ?: outgoingBinding?.messageSender
+    private val body get() = incomingBinding?.messageBody ?: outgoingBinding?.messageBody
+    private val timestamp get() = incomingBinding?.messageTimestamp ?: outgoingBinding?.messageTimestamp
+
+    private fun createBindingsWith(message: Message) {
+        this.removeAllViews()
+        val inflater = LayoutInflater.from(context)
+        if (message.isIncoming) {
+            incomingBinding = ViewMessageBinding.inflate(inflater, this, true)
+            outgoingBinding = null
+        } else {
+            incomingBinding = null
+            outgoingBinding = ViewMessageOutgoingBinding.inflate(inflater, this, true)
+        }
+    }
 
     override fun updateView(model: Message) {
-        this.removeAllViews()
-        LayoutInflater.from(context).inflate(
-                if (model.incoming) R.layout.view_message else R.layout.view_message_outgoing,
-                this
-        )
-        senderAvatar = findViewById(R.id.userImage)
-        senderName = findViewById(R.id.messageSender)
-        body = findViewById(R.id.messageBody)
-        timestamp = findViewById(R.id.messageTimestamp)
+        createBindingsWith(model)
 
-        body.text = model.content
-        timestamp.text = model.datetime
-        ImageLoader.with(context)
+        body?.text = model.content
+        timestamp?.text = model.datetime
+        senderAvatar?.let {
+            ImageLoader.with(context)
                 .load(model.sender)
-                .into(senderAvatar)
+                .into(it)
+        }
 
-        senderName.text = ""
-        if (model.incoming) {
+        senderName?.text = ""
+        if (model.isIncoming) {
             AccountsDao.getById(model.sender) {
-                senderName.text = it?.name?.split(' ')?.get(0)
+                senderName?.text = it?.name?.split(' ')?.get(0)
             }
         } else {
-            findViewById<View>(R.id.senderAvatar).visibility = View.GONE
-            senderName.visibility = View.GONE
+            senderAvatar?.visibility = View.GONE
+            senderName?.visibility = View.GONE
         }
     }
 
     fun hideTimestamp() {
-        timestamp.visibility = View.GONE
+        timestamp?.visibility = View.GONE
     }
 
     fun hideSenderName() {
-        senderName.visibility = View.GONE
+        senderName?.visibility = View.GONE
     }
 
     fun hideSenderAvatar() {
-        senderAvatar.visibility = View.INVISIBLE
+        senderAvatar?.visibility = View.INVISIBLE
     }
 
 }

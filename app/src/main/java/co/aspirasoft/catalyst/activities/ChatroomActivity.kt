@@ -79,7 +79,9 @@ class ChatroomActivity : DashboardChildActivity() {
         if (messageContent.isNotBlank()) {
             lifecycleScope.launch {
                 try {
-                    val message = Message(messageContent, currentUser.id)
+                    val message = Message()
+                    message.content = messageContent
+                    message.sender = currentUser.id
 
                     ChatroomDao.add(project, message)
                     binding.messageInput.setText("")

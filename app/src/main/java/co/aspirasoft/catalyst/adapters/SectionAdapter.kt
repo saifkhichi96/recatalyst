@@ -11,11 +11,11 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
-import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.DrawingActivity
+import co.aspirasoft.catalyst.databinding.ViewSectionBinding
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.DocumentSection
-import co.aspirasoft.catalyst.views.DocumentSectionView
+import co.aspirasoft.catalyst.views.holders.SectionViewHolder
 import java.util.*
 
 class SectionAdapter(
@@ -32,14 +32,16 @@ class SectionAdapter(
 
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val binding = ViewSectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val viewHolder = SectionViewHolder(binding)
+        val view = binding.root
+
         val section = filteredProperties[position]
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_section, parent, false)
-        val holder = DocumentSectionView(view)
-        holder.sectionContents.setText(section.body)
-        holder.sectionHeader.hint = section.name
+        viewHolder.sectionContents.setText(section.body)
+        viewHolder.sectionHeader.hint = section.name
 
         // Bind property field with property object
-        holder.sectionContents.addTextChangedListener(object : TextWatcher {
+        viewHolder.sectionContents.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 filteredProperties[position].body = charSequence.toString()
@@ -49,12 +51,12 @@ class SectionAdapter(
         })
 
         // Header and footer properties have no sketches
-        if (position < 4 || position == filteredProperties.size - 1) holder.addImageButton.visibility = View.GONE
-        holder.addImageButton.setOnClickListener {
+        if (position < 4 || position == filteredProperties.size - 1) viewHolder.addImageButton.visibility = View.GONE
+        viewHolder.addImageButton.setOnClickListener {
             val intent = Intent(context, DrawingActivity::class.java)
             intent.putExtra("index", position)
-            intent.putExtra("property", section.name)
-            intent.putExtra("doorWindow", document.version)
+            intent.putExtra("section", section.name)
+            intent.putExtra("version", document.version)
             intent.putExtra("project", document.projectId)
             context.startActivity(intent)
         }

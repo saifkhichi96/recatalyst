@@ -15,7 +15,7 @@ import co.aspirasoft.catalyst.databinding.ViewDocumentBinding
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.DocumentType
 import co.aspirasoft.catalyst.models.Project
-import co.aspirasoft.catalyst.views.DocumentView
+import co.aspirasoft.catalyst.views.holders.DocumentViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
@@ -23,7 +23,7 @@ import kotlin.reflect.KClass
 class DocumentAdapter(
     private val activity: SecureActivity,
     private val project: Project,
-    private val documents: Array<KClass<out DocumentType>>,
+    private val documents: List<KClass<out DocumentType>>,
 ) : ArrayAdapter<KClass<out DocumentType>>(activity, -1, documents) {
 
     private val gradients = arrayOf(
@@ -35,33 +35,33 @@ class DocumentAdapter(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
-        val documentView = when (view) {
+        val viewHolder = when (view) {
             null -> {
                 val binding = ViewDocumentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                val viewHolder = DocumentView(binding)
+                val holder = DocumentViewHolder(binding)
                 view = binding.root
-                view.tag = viewHolder
-                viewHolder
+                view.tag = holder
+                holder
             }
-            else -> view.tag as DocumentView
+            else -> view.tag as DocumentViewHolder
         }
 
         val documentType = documents[position].constructors.elementAt(0).call()
-        documentView.itemCard.setBackgroundResource(gradients[position % gradients.size])
-        documentView.nameView.text = documentType.name
+        viewHolder.itemCard.setBackgroundResource(gradients[position % gradients.size])
+        viewHolder.nameView.text = documentType.name
         when (val document = project.getDocument(documentType.name)) {
-            null -> showBlankDocument(documentView, documentType)
-            else -> showExistingDocument(documentView, document)
+            null -> showBlankDocument(viewHolder, documentType)
+            else -> showExistingDocument(viewHolder, document)
         }
         return view
     }
 
-    private fun showBlankDocument(holder: DocumentView, type: DocumentType) {
+    private fun showBlankDocument(holder: DocumentViewHolder, type: DocumentType) {
         holder.versionView.text = String.format("Version: N/A")
         holder.itemCard.setOnClickListener { createNewDocument(type) }
     }
 
-    private fun showExistingDocument(holder: DocumentView, document: Document) {
+    private fun showExistingDocument(holder: DocumentViewHolder, document: Document) {
         holder.versionView.text = String.format("Version: ${document.version}")
         holder.itemCard.setOnClickListener { openDocumentInEditor(document) }
         holder.itemCard.setOnLongClickListener {

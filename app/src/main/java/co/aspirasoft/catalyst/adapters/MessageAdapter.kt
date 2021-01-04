@@ -23,7 +23,7 @@ class MessageAdapter(
         val v = super.getView(position, convertView, parent)
 
         val curr = messages[position]
-        curr.incoming = curr.sender != currentUser.id
+        curr.isIncoming = curr.sender != currentUser.id
         curr.notifyObservers()
 
         if (position > 0) {

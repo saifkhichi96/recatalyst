@@ -104,10 +104,7 @@ class Document : Serializable {
 
         private fun createSections(type: DocumentType): List<DocumentSection> {
             val sections = ArrayList<DocumentSection>()
-            for (heading in type.headings) {
-                val section = DocumentSection(heading, "")
-                sections.add(section)
-            }
+            type.headings.mapTo(sections) { DocumentSection(it) }
             return sections
         }
 

@@ -81,7 +81,9 @@ class TaskActivity : DashboardChildActivity() {
         val isCompleted = binding.completeButton.isChecked
 
         if (binding.nameField.isNotBlank(true) && binding.descriptionField.isNotBlank(true)) {
-            val task = Task(name, description)
+            val task = Task()
+            task.name = name
+            task.description = description
             task.deadline = deadline
             task.isCompleted = isCompleted
             saveTask(task)

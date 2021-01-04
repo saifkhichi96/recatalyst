@@ -5,15 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.R
-import co.aspirasoft.catalyst.models.Asset
+import co.aspirasoft.catalyst.models.RemoteFile
 import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
 import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.catalyst.views.ProjectFileView
 import co.aspirasoft.util.ViewUtils
 import java.io.IOException
 
-class FileAdapter(val context: Activity, val material: ArrayList<Asset>, private val fileManager: FileManager) :
-    ModelViewAdapter<Asset>(context, material, ProjectFileView::class) {
+class FileAdapter(val context: Activity, val material: ArrayList<RemoteFile>, private val fileManager: FileManager) :
+    ModelViewAdapter<RemoteFile>(context, material, ProjectFileView::class) {
 
     override fun notifyDataSetChanged() {
         material.sortBy { it.metadata.creationTimeMillis }

@@ -126,6 +126,7 @@ class EditorActivity : DashboardChildActivity() {
     }
 
     private fun saveProject() {
+        // FIXME: Chats, members, and tasks are deleted when saving project!!!
         val status = Snackbar.make(binding.sectionsList, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
         status.show()
 
@@ -158,19 +159,19 @@ class EditorActivity : DashboardChildActivity() {
 
     override fun onBackPressed() {
         MaterialAlertDialogBuilder(this)
-                .setTitle(getString(R.string.close_editor))
-                .setMessage(getString(R.string.ignore_unsaved_changes))
-                .setPositiveButton(android.R.string.yes) { _, _ ->
-                    super@EditorActivity.onBackPressed()
-                }
-                .setNeutralButton(R.string.save) { _, _ ->
-                    saveProject()
-                    super@EditorActivity.onBackPressed()
-                }
-                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            .setTitle(getString(R.string.close_editor))
+            .setMessage(getString(R.string.ignore_unsaved_changes))
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                super@EditorActivity.onBackPressed()
+            }
+            .setNeutralButton(R.string.save) { _, _ ->
+                saveProject()
+                super@EditorActivity.onBackPressed()
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
 }

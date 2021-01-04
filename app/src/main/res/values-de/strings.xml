@@ -4,6 +4,7 @@
   <string name="tagline_1">Die ultimative Requirements Engineering</string>
   <string name="tagline_2">Lösung für Ihre Softwareprojekte</string>
 
+  <string name="about">Über Mich</string>
   <string name="accept">Akzeptieren</string>
   <string name="account">Konto</string>
   <string name="add">Hinzufügen</string>
@@ -16,6 +17,7 @@
   <string name="client_details">Kundendetails</string>
   <string name="close_editor">Editor Schließen</string>
   <string name="collaboration">Kollaboration</string>
+  <string name="connect">Verbinden</string>
   <string name="connection_request_explanation">Um eine Verbindung mit einem anderen Benutzer herzustellen, müssen Sie
     die mit seinem Konto verknüpfte E-Mail-Adresse kennen, mit der Sie eine Verbindungsanfrage senden können.\n\nSobald
     sie die Anfrage angenommen haben, können Sie mit der Zusammenarbeit beginnen.
@@ -51,6 +53,7 @@
   <string name="delete_document_confirm">Das Dokument wird dauerhaft gelöscht. Sind Sie sicher?</string>
   <string name="description">Beschreibung</string>
   <string name="description_short">Kurze Beschreibung</string>
+  <string name="disconnect">Endverbindung</string>
   <string name="dont_have_an_account">Noch keinen Account?</string>
   <string name="email">E-Mail</string>
   <string name="email_error">Ungültige E-Mail Adresse.</string>

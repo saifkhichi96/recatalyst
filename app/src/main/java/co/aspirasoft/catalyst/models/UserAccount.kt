@@ -15,7 +15,12 @@ import java.util.*
  * @author saifkhichi96
  * @since 1.0.0
  */
-data class UserAccount(var id: String, var name: String, var email: String, @Transient var password: String) : BaseModel() {
+data class UserAccount(
+    var id: String,
+    var name: String,
+    var email: String,
+    @Transient var password: String
+) : BaseModel() {
 
     // no-arg constructor needed for Firebase
     constructor() : this("", "", "", "")
@@ -37,6 +42,12 @@ data class UserAccount(var id: String, var name: String, var email: String, @Tra
         }
 
     var github: String? = null
+        set(value) {
+            field = value
+            setChanged()
+        }
+
+    var headline: String? = null
         set(value) {
             field = value
             setChanged()

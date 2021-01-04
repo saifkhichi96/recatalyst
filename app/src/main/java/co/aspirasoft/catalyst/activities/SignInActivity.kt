@@ -141,10 +141,10 @@ class SignInActivity : SilentSignInActivity() {
             email = userInfo["email"].toString()
             name = userInfo["name"].toString()
 
-            bio = userInfo.getOrDefault("bio", "").toString()
-            blog = userInfo.getOrDefault("blog", "").toString()
-            github = userInfo.getOrDefault("html_url", "").toString()
-            location = userInfo.getOrDefault("location", "").toString()
+            headline = (userInfo["bio"] ?: "").toString()
+            blog = (userInfo["blog"] ?: "").toString()
+            github = (userInfo["html_url"] ?: "").toString()
+            location = (userInfo["location"] ?: "").toString()
         }
         startActivity(Intent(this, SignUpActivity::class.java).apply {
             putExtra(MyApplication.EXTRA_USER, newUser)

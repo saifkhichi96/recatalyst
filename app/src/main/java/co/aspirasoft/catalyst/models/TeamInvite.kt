@@ -1,8 +1,6 @@
 package co.aspirasoft.catalyst.models
 
-import android.os.Parcelable
 import co.aspirasoft.model.BaseModel
-import kotlinx.android.parcel.Parcelize
 
 /**
  * A data class which represents an invitation to join a project team.
@@ -12,13 +10,12 @@ import kotlinx.android.parcel.Parcelize
  * @property sender User id of the invitation sender. This is usually the team manager.
  * @property recipient User id of the invitation recipient.
  */
-@Parcelize
 data class TeamInvite(
-        val id: String,
-        val project: String,
-        val sender: String,
-        val recipient: String,
-) : Parcelable, BaseModel() {
+    val id: String,
+    val project: String,
+    val sender: String,
+    val recipient: String,
+) : BaseModel() {
 
     constructor() : this("", "", "", "")
 

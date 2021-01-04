@@ -194,7 +194,7 @@ class ConnectionsActivity : DashboardChildActivity() {
             (v as IncomingRequestView).apply {
                 setOnAcceptListener { onAcceptClickListener?.let { it(position) } }
                 setOnRejectListener { onRejectClickListener?.let { it(position) } }
-                setOnProfileButtonClickedListener {
+                setOnAvatarClickedListener {
                     startSecurely(ProfileActivity::class.java, Intent().apply {
                         putExtra(MyApplication.EXTRA_PROFILE_USER, users[position])
                     })
@@ -220,7 +220,8 @@ class ConnectionsActivity : DashboardChildActivity() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val v = super.getView(position, convertView, parent)
             (v as UserView).apply {
-                setOnProfileButtonClickedListener {
+                openProfileOnClick = true
+                setOnAvatarClickedListener {
                     startSecurely(ProfileActivity::class.java, Intent().apply {
                         putExtra(MyApplication.EXTRA_PROFILE_USER, users[position])
                     })

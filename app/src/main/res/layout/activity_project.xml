@@ -47,11 +47,12 @@
 
       </LinearLayout>
 
-      <co.aspirasoft.view.NestedListView
+      <co.aspirasoft.view.NestedGridView
           android:id="@+id/documentsList"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:divider="@null"/>
+          android:divider="@null"
+          android:numColumns="2"/>
 
       <LinearLayout
           android:layout_width="match_parent"

@@ -10,20 +10,14 @@
     android:paddingHorizontal="@dimen/activity_horizontal_margin"
     android:paddingBottom="4dp">
 
-  <com.google.android.material.card.MaterialCardView
+  <com.google.android.material.imageview.ShapeableImageView
+      style="@style/Widget.App.ShapeableImageView"
+      android:id="@+id/account_avatar"
       android:layout_width="32dp"
-      android:layout_height="32dp"
-      app:cardBackgroundColor="?android:attr/colorBackground"
-      app:cardCornerRadius="16dp">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/userImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder_avatar"/>
-
-  </com.google.android.material.card.MaterialCardView>
+      android:layout_height="33dp"
+      android:scaleType="centerCrop"
+      app:srcCompat="@drawable/placeholder_avatar"
+      tools:src="@tools:sample/avatars"/>
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -31,7 +25,7 @@
       android:layout_marginStart="8dp">
 
     <LinearLayout
-        android:id="@+id/actionLayout"
+        android:id="@+id/action_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -39,7 +33,7 @@
         android:orientation="horizontal">
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/rejectButton"
+          android:id="@+id/reject_button"
           style="@style/Widget.MaterialComponents.Button.OutlinedButton"
           android:layout_width="32dp"
           android:layout_height="42dp"
@@ -53,7 +47,7 @@
           app:strokeWidth="1dp"/>
 
       <com.google.android.material.button.MaterialButton
-          android:id="@+id/acceptButton"
+          android:id="@+id/accept_button"
           style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
           android:layout_width="32dp"
           android:layout_height="42dp"
@@ -69,24 +63,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@id/actionLayout"
+        android:layout_toStartOf="@id/action_layout"
         android:orientation="vertical">
 
       <com.google.android.material.textview.MaterialTextView
           style="@style/TextAppearance.MaterialComponents.Body1"
-          android:id="@+id/userNameLabel"
+          android:id="@+id/account_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:textStyle="bold"
+          android:maxLines="1"
           tools:text="@tools:sample/full_names"/>
 
       <com.google.android.material.textview.MaterialTextView
           style="@style/TextAppearance.MaterialComponents.Body2"
-          android:id="@+id/userEmailLabel"
+          android:id="@+id/account_short_bio"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:autoLink="email"
-          android:text="@string/ph_email"/>
+          android:maxLines="1"
+          tools:text="@tools:sample/lorem"/>
 
     </LinearLayout>
 

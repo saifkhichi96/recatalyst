@@ -1,14 +1,15 @@
 package co.aspirasoft.catalyst.models
 
-import android.os.Parcelable
 import co.aspirasoft.model.BaseModel
-import kotlinx.android.parcel.Parcelize
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Parcelize
-class Message(var content: String, var sender: String, var timestamp: Date = Date(System.currentTimeMillis()))
-    : BaseModel(), Parcelable {
+class Message(
+    var content: String,
+    var sender: String,
+    var timestamp: Date = Date(System.currentTimeMillis())
+) :
+    BaseModel() {
 
     constructor() : this("", "", Date(System.currentTimeMillis()))
 

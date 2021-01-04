@@ -19,47 +19,47 @@ object TeamInviteBO {
     /**
      * Sends a [TeamInvite] to a user.
      *
-     * @param recipient The user id of the recipient.
+     * @param uid The user id of the recipient.
      * @param team The team for which to send the invite.
      * @throws IllegalArgumentException Exception thrown if recipient already member of team.
      * @throws IllegalStateException Exception thrown if recipient has already been invited.
      */
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
-    suspend fun send(recipient: String, team: Team) {
+    suspend fun send(uid: String, team: Team) {
         when {
             // FIXME: case: user already in team (as member or manager)
-            team.hasMember(recipient) -> throw IllegalArgumentException()
-            team.manager == recipient -> throw IllegalArgumentException()
+            team.hasMember(uid) -> throw IllegalArgumentException()
+            team.manager == uid -> throw IllegalArgumentException()
 
             // FIXME: case: user invited before
-            team.hasInvited(recipient) -> throw IllegalStateException()
+            team.hasInvited(uid) -> throw IllegalStateException()
 
             // case: all okay, send the invitation
             else -> {
                 // Create a new unique key for the invite
-                val ref = MyApplication.refToReceivedInvites(recipient).push()
+                val ref = MyApplication.refToReceivedInvites(uid).push()
                 val key = ref.key!!
 
                 // Create a new invite
                 val invite = TeamInvite(
-                        id = key,
-                        project = team.project,
-                        sender = team.manager,
-                        recipient = recipient
+                    id = key,
+                    project = team.project,
+                    sender = team.manager,
+                    recipient = uid
                 )
 
                 // Save invite in database
                 ref.setValue(invite).await()
                 MyApplication.refToSentInvites(team.manager)
-                        .child(key)
-                        .setValue(invite)
-                        .await()
+                    .child(key)
+                    .setValue(invite)
+                    .await()
 
                 MyApplication.refToProjectTeam(team.manager, team.project)
-                        .child("invitedMembers/")
-                        .child(invite.recipient)
-                        .setValue(invite.recipient)
-                        .await()
+                    .child("invitedMembers/")
+                    .child(invite.recipient)
+                    .setValue(invite.recipient)
+                    .await()
             }
         }
     }
@@ -72,18 +72,18 @@ object TeamInviteBO {
     suspend fun accept(invite: TeamInvite) {
         // Add recipient to the invited team
         MyApplication.refToProjectTeam(invite.sender, invite.project)
-                .child("members/")
-                .child(invite.recipient)
-                .setValue(invite.recipient)
-                .await()
+            .child("members/")
+            .child(invite.recipient)
+            .setValue(invite.recipient)
+            .await()
 
         MyApplication.refToUser(invite.recipient)
-                .child("teams/")
-                .push()
-                .setValue(Team(
-                        project = invite.project,
-                        manager = invite.sender
-                ))
+            .child("teams/")
+            .push()
+            .setValue(Team(
+                project = invite.project,
+                manager = invite.sender
+            ))
 
         // Remove invitation logs
         reject(invite)
@@ -97,15 +97,15 @@ object TeamInviteBO {
     suspend fun reject(invite: TeamInvite) {
         // Remove invite from received invites list
         MyApplication.refToReceivedInvites(invite.recipient)
-                .child(invite.id)
-                .removeValue()
-                .await()
+            .child(invite.id)
+            .removeValue()
+            .await()
 
         // Remove invite from sent invites list
         MyApplication.refToSentInvites(invite.sender)
-                .child(invite.id)
-                .removeValue()
-                .await()
+            .child(invite.id)
+            .removeValue()
+            .await()
     }
 
 }

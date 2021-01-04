@@ -1,13 +1,12 @@
 package co.aspirasoft.catalyst.views
 
-import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.ViewDocumentBinding
 
+class DocumentView(binding: ViewDocumentBinding) : RecyclerView.ViewHolder(binding.root) {
 
-class DocumentView(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var itemCard: View = itemView.findViewById(R.id.itemCard)
-    var versionView: TextView = itemView.findViewById(R.id.idView)
-    var nameView: TextView = itemView.findViewById(R.id.typeView)
+    val itemCard = binding.itemCard
+    val versionView = binding.idView
+    val nameView = binding.typeView
+
 }

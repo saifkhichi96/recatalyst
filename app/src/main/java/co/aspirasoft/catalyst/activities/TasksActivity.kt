@@ -1,31 +1,29 @@
 package co.aspirasoft.catalyst.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
+import co.aspirasoft.catalyst.adapters.TaskAdapter
 import co.aspirasoft.catalyst.dao.TasksDao
 import co.aspirasoft.catalyst.databinding.ActivityListBinding
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.Task
 import co.aspirasoft.catalyst.models.UserAccount
-import co.aspirasoft.catalyst.views.TaskView
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.getValue
 
-
 /**
- * TestsActivity displays names of all tests of a subject
+ * The tasks page of a [Project].
  *
- * Purpose of this activity is to show a mappedList of all graded tests
- * in a subject, and allow teachers to create and update test
- * grades.
+ * Project members can see and manage project tasks here.
+ *
+ * @property binding The bindings to XML views.
+ * @property project The [Project] whose tasks to show.
+ * @property adapter A [TaskAdapter] to show the [tasks] list.
+ * @property tasks List of project [Task]s.
  *
  * @author saifkhichi96
  * @since 1.0.0
@@ -33,9 +31,8 @@ import com.google.firebase.database.ktx.getValue
 class TasksActivity : DashboardChildActivity() {
 
     private lateinit var binding: ActivityListBinding
-
-    private lateinit var adapter: TaskAdapter
     private lateinit var project: Project
+    private lateinit var adapter: TaskAdapter
     private val tasks = ArrayList<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,96 +41,57 @@ class TasksActivity : DashboardChildActivity() {
         setContentView(binding.root)
 
         this.project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
-        binding.addButton.setOnClickListener { onAddTaskClicked() }
+        binding.addButton.setOnClickListener { createNewTask() }
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        adapter = TaskAdapter(this, tasks)
+        adapter = TaskAdapter(this, tasks, project)
         binding.contentList.adapter = adapter
+
         TasksDao.getProjectTasks(project, object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                snapshot.getValue<Task>()?.let { task ->
-                    if (!tasks.contains(task)) {
-                        adapter.add(task)
-                        adapter.notifyDataSetChanged()
-                    }
-                }
+                snapshot.getValue<Task>()?.let { onTaskReceived(it) }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.getValue<Task>()?.let { task ->
-                    if (tasks.contains(task)) {
-                        var oldTask: Task? = null
-                        for (t in tasks) {
-                            if (t == task) {
-                                oldTask = t
-                                break
-                            }
-                        }
-
-                        oldTask?.let {
-                            adapter.remove(oldTask)
-                            adapter.add(task)
-                            adapter.notifyDataSetChanged()
-                        }
-                    }
+                    tasks.firstOrNull { it == task }?.let { adapter.remove(it) }
+                    onTaskReceived(task)
                 }
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 snapshot.getValue<Task>()?.let { task ->
-                    if (tasks.contains(task)) {
-                        var oldTask: Task? = null
-                        for (t in tasks) {
-                            if (t == task) {
-                                oldTask = t
-                                break
-                            }
-                        }
-
-                        oldTask?.let {
-                            adapter.remove(oldTask)
-                            adapter.notifyDataSetChanged()
-                        }
+                    tasks.firstOrNull { it == task }?.let {
+                        adapter.remove(it)
+                        adapter.notifyDataSetChanged()
                     }
                 }
             }
 
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 
-    private fun onAddTaskClicked() {
+    /**
+     * Called when a new task is received from database.
+     *
+     * New task is added to the tasks list if it does not already exist.
+     *
+     * @param task: The new [Task] received.
+     */
+    private fun onTaskReceived(task: Task) {
+        if (!tasks.contains(task)) {
+            adapter.add(task)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun createNewTask() {
         startSecurely(TaskActivity::class.java, Intent().apply {
             putExtra(MyApplication.EXTRA_PROJECT, project)
         })
-    }
-
-    private inner class TaskAdapter(context: Context, val tasks: List<Task>)
-        : ModelViewAdapter<Task>(context, tasks, TaskView::class) {
-
-        override fun notifyDataSetChanged() {
-            tasks.sortedByDescending { it.deadline }
-            super.notifyDataSetChanged()
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val v = super.getView(position, convertView, parent)
-            v.setOnClickListener {
-                startSecurely(TaskActivity::class.java, Intent().apply {
-                    putExtra(MyApplication.EXTRA_PROJECT, project)
-                    putExtra(MyApplication.EXTRA_TASK, tasks[position])
-                })
-            }
-            return v
-        }
-
     }
 
 }

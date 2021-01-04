@@ -1,55 +1,58 @@
 package co.aspirasoft.catalyst.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
+import co.aspirasoft.catalyst.adapters.MessageAdapter
 import co.aspirasoft.catalyst.dao.ChatroomDao
 import co.aspirasoft.catalyst.databinding.ActivityChatroomBinding
 import co.aspirasoft.catalyst.models.Message
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
-import co.aspirasoft.catalyst.views.MessageView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
+/**
+ * The chat page for a [Project] team.
+ *
+ * Project members who belong to the same team talk to each other on this screen.
+ *
+ * @property binding The bindings to XML views.
+ * @property adapter A [MessageAdapter] for showing the messages.
+ * @property project The [Project] to which this chatroom belongs.
+ * @property messages List of all messages in the chatroom.
+ *
+ * @author saifkhichi96
+ * @since 1.0.0
+ */
 class ChatroomActivity : DashboardChildActivity() {
 
     private lateinit var binding: ActivityChatroomBinding
-
-    private val messages = ArrayList<Message>()
-    private lateinit var messageAdapter: MessageAdapter
-
+    private lateinit var adapter: MessageAdapter
     private lateinit var project: Project
+    private val messages = ArrayList<Message>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatroomBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.messageInput.requestFocus()
-
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
-        messageAdapter = MessageAdapter(this, messages)
-        ChatroomDao.observeChatroom(project) {
-            if (!messages.contains(it)) {
-                messages.add(it)
-                messageAdapter.notifyDataSetChanged()
-            }
-        }
-
-        binding.sendMessage.setOnClickListener { onSendMessageClicked() }
+        adapter = MessageAdapter(this, messages, currentUser)
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        binding.messagesList.adapter = messageAdapter
+        // Start observing chatroom for new messages
+        ChatroomDao.observeChatroom(project) { onMessageReceived(it) }
+        binding.messagesList.adapter = adapter
+
+        // Move keyboard focus to input field
+        binding.messageInput.requestFocus()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,11 +62,19 @@ class ChatroomActivity : DashboardChildActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_search -> false
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun onSendMessageClicked() {
+    private fun onMessageReceived(message: Message) {
+        if (!messages.contains(message)) {
+            messages.add(message)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    fun sendMessage(v: View) {
         val messageContent = binding.messageInput.text.toString().trim()
         if (messageContent.isNotBlank()) {
             lifecycleScope.launch {
@@ -80,43 +91,6 @@ class ChatroomActivity : DashboardChildActivity() {
                     ).show()
                 }
             }
-        }
-
-    }
-
-    inner class MessageAdapter(context: Context, private val messages: MutableList<Message>)
-        : ModelViewAdapter<Message>(context, messages, MessageView::class) {
-
-        override fun notifyDataSetChanged() {
-            messages.sortBy { it.timestamp }
-            super.notifyDataSetChanged()
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val v = super.getView(position, convertView, parent)
-
-            val curr = messages[position]
-            curr.incoming = curr.sender != currentUser.id
-            curr.notifyObservers()
-
-            if (position > 0) {
-                val prev = messages[position - 1]
-                if (curr.timestamp.time - prev.timestamp.time < 30 * 60 * 1000) {
-                    (v as MessageView).hideTimestamp()
-                    if (prev.sender == curr.sender) {
-                        v.hideSenderName()
-                        if (curr.sender != currentUser.id) {
-                            v.hideSenderAvatar()
-                        }
-                    }
-                }
-            }
-
-            return v
-        }
-
-        override fun isEnabled(position: Int): Boolean {
-            return false
         }
     }
 

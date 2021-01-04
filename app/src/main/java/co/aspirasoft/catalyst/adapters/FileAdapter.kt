@@ -10,12 +10,10 @@ import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
 import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.catalyst.views.ProjectFileView
 import co.aspirasoft.util.ViewUtils
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import java.io.IOException
 
-class FileAdapter(val context: Activity, val material: ArrayList<Asset>, private val fileManager: FileManager)
-    : ModelViewAdapter<Asset>(context, material, ProjectFileView::class) {
+class FileAdapter(val context: Activity, val material: ArrayList<Asset>, private val fileManager: FileManager) :
+    ModelViewAdapter<Asset>(context, material, ProjectFileView::class) {
 
     override fun notifyDataSetChanged() {
         material.sortBy { it.metadata.creationTimeMillis }
@@ -34,19 +32,19 @@ class FileAdapter(val context: Activity, val material: ArrayList<Asset>, private
         v.setOnClickListener {
             v.setStatus(ProjectFileView.FileStatus.Downloading)
             fileManager.download(
-                    item.name,
-                    OnSuccessListener { file ->
-                        v.setStatus(ProjectFileView.FileStatus.Local)
-                        try {
-                            file.openInExternalApp(context)
-                        } catch (ex: IOException) {
-                            ViewUtils.showError(v, ex.message ?: context.getString(R.string.file_open_error))
-                        }
-                    },
-                    OnFailureListener {
-                        v.setStatus(ProjectFileView.FileStatus.Cloud)
-                        ViewUtils.showError(v, it.message ?: context.getString(R.string.file_download_error))
+                item.name,
+                { file ->
+                    v.setStatus(ProjectFileView.FileStatus.Local)
+                    try {
+                        file.openInExternalApp(context)
+                    } catch (ex: IOException) {
+                        ViewUtils.showError(v, ex.message ?: context.getString(R.string.file_open_error))
                     }
+                },
+                {
+                    v.setStatus(ProjectFileView.FileStatus.Cloud)
+                    ViewUtils.showError(v, it.message ?: context.getString(R.string.file_download_error))
+                }
             )
         }
 

@@ -18,8 +18,11 @@ import co.aspirasoft.catalyst.models.DocumentSection
 import co.aspirasoft.catalyst.views.DocumentSectionView
 import java.util.*
 
-class SectionAdapter(private val context: Context, private val document: Document, private val properties: List<DocumentSection>)
-    : BaseAdapter(), Filterable {
+class SectionAdapter(
+    private val context: Context,
+    private val document: Document,
+    private val properties: List<DocumentSection>,
+) : BaseAdapter(), Filterable {
 
     private var filteredProperties: List<DocumentSection>
 

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +17,6 @@ import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.adapters.DocumentAdapter
 import co.aspirasoft.catalyst.adapters.FileAdapter
-import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.databinding.ActivityProjectBinding
 import co.aspirasoft.catalyst.models.Asset
 import co.aspirasoft.catalyst.models.DocumentType
@@ -27,14 +27,26 @@ import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-
 /**
- * SubjectActivity shows details of a [Project].
+ * The homepage of a [Project].
+ *
+ * Shows details of a project. This page is where users see projects, and
+ * perform and allowed actions on them. If the project owner is viewing
+ * their own project, they can edit the project. Other users only see what
+ * they are allowed to see, depending on their relationship with the
+ * project.
+ *
+ * @property binding The bindings to XML views.
+ * @property fm The [FileManager] for managing project files.
+ * @property project The project to display.
+ * @property projectDocumentsAdapter A [DocumentAdapter] for showing project documents.
+ * @property projectFilesAdapter A [FileAdapter] for showing project files.
+ * @property projectFiles List of project files.
+ * @property isEditable True if owner is viewing project, else false.
  *
  * @author saifkhichi96
  * @since 1.0.0
@@ -42,17 +54,12 @@ import kotlinx.coroutines.tasks.await
 class ProjectActivity : DashboardChildActivity() {
 
     private lateinit var binding: ActivityProjectBinding
-
+    private lateinit var fm: FileManager
     private lateinit var project: Project
-    private var editable: Boolean = false
-
-    private lateinit var mAssetManager: FileManager
-    private var mAssetAdapter: FileAdapter? = null
-    private val mAssets = ArrayList<Asset>()
-
-    private var mDocAdapter: DocumentAdapter? = null
-
-    private var pickRequestCode = RESULT_ACTION_PICK_ASSETS
+    private lateinit var projectDocumentsAdapter: DocumentAdapter
+    private lateinit var projectFilesAdapter: FileAdapter
+    private val projectFiles = ArrayList<Asset>()
+    private var isEditable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,22 +67,25 @@ class ProjectActivity : DashboardChildActivity() {
         setContentView(binding.root)
 
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
-        editable = project.ownerId == currentUser.id
-        if (editable) {
+        isEditable = project.ownerId == currentUser.id
+        if (isEditable) {
             binding.addAssetButton.visibility = View.VISIBLE
         }
 
-        mAssetManager = FileManager.newInstance(this, "${project.ownerId}/projects/${project.name}/assets/")
+        fm = FileManager.newInstance(this, "${project.ownerId}/projects/${project.name}/assets/")
+        projectFilesAdapter = FileAdapter(this, projectFiles, fm)
+        binding.contentList.adapter = projectFilesAdapter
+
+        projectDocumentsAdapter = DocumentAdapter(this, project, DocumentType.values())
+        binding.documentsList.adapter = projectDocumentsAdapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                RESULT_ACTION_PICK_ASSETS -> {
-                    data?.data?.getLastPathSegmentOnly(this)?.let { filename ->
-                        uploadFile(mAssetManager, filename, data.data!!, mAssetAdapter)
-                    }
+                RC_PICK_FILE -> data?.data?.getLastPathSegmentOnly(this)?.let {
+                    confirmFileUpload(it, data.data!!)
                 }
             }
         }
@@ -84,9 +94,8 @@ class ProjectActivity : DashboardChildActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == RC_WRITE_PERMISSION) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                pickFile(pickRequestCode)
-            }
+            val allowed = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+            if (allowed) pickFile()
         }
     }
 
@@ -98,15 +107,15 @@ class ProjectActivity : DashboardChildActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_chatroom -> {
-                onChatroomClicked()
+                openChatroom()
                 true
             }
             R.id.action_tasks -> {
-                onTasksClicked()
+                showTask()
                 true
             }
             R.id.action_team -> {
-                onTeamClicked()
+                showProjectTeam()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -114,7 +123,6 @@ class ProjectActivity : DashboardChildActivity() {
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        // Show subject details
         supportActionBar?.title = project.name
         binding.clientName.text = "" // FIXME: project.clientName
         binding.clientContact.text = "" // FIXME: project.clientContact
@@ -123,157 +131,134 @@ class ProjectActivity : DashboardChildActivity() {
             else -> project.description
         }
 
-        // Show project assets
-        showProjectContents()
+        projectFiles.clear()
+        fm.listAll { items -> items.forEach { onProjectFileReceived(it) } }
     }
 
-    fun onAddAssetsClicked(v: View) {
-        if (PermissionUtils.requestPermissionIfNeeded(
-                        this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        getString(R.string.permission_storage),
-                        RC_WRITE_PERMISSION
-                )) {
-            pickFile(RESULT_ACTION_PICK_ASSETS)
+    /**
+     * Called when a project file is received.
+     *
+     * Displays the file details in project files list.
+     *
+     * @param reference A [StorageReference] to the file.
+     */
+    private fun onProjectFileReceived(reference: StorageReference) = lifecycleScope.launch {
+        try {
+            // Read file metadata
+            val metadata = reference.metadata.await()
+            val filename = reference.name
+
+            projectFiles.add(Asset(filename, metadata))
+            projectFilesAdapter.notifyDataSetChanged()
+
+            binding.assetsSpace.visibility = View.GONE
+        } catch (ex: Exception) {
+            Log.d(getString(R.string.app_name), ex.message ?: ex.javaClass.simpleName)
         }
     }
 
-    private fun onChatroomClicked() {
+    /**
+     * Opens the project chatroom.
+     */
+    private fun openChatroom() {
         startSecurely(ChatroomActivity::class.java, Intent().apply {
             putExtra(MyApplication.EXTRA_PROJECT, project)
         })
     }
 
-    private fun onTasksClicked() {
+    /**
+     * Opens the project tasks page.
+     */
+    private fun showTask() {
         startSecurely(TasksActivity::class.java, Intent().apply {
             putExtra(MyApplication.EXTRA_PROJECT, project)
         })
     }
 
-    private fun onTeamClicked() {
+    /**
+     * Opens the project team page.
+     */
+    private fun showProjectTeam() {
         startSecurely(TeamActivity::class.java, Intent().apply {
             putExtra(MyApplication.EXTRA_PROJECT, project)
         })
     }
 
-    private fun showProjectContents() {
-        showProjectAssets()
-        showProjectDocs()
+    /**
+     * Asks permission (if not already granted) before picking a file from device storage.
+     *
+     * When asking permission, retries picking the file in [onRequestPermissionsResult]
+     * if user grants permission.
+     */
+    fun pickFileIfAllowed(v: View) {
+        if (PermissionUtils.requestPermissionIfNeeded(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                getString(R.string.permission_storage),
+                RC_WRITE_PERMISSION
+            )
+        ) pickFile()
     }
 
-    private fun showProjectAssets() {
-        if (mAssetAdapter == null) {
-            mAssetAdapter = FileAdapter(this, mAssets, mAssetManager)
-            binding.contentList.adapter = mAssetAdapter
-        }
-
-        mAssetManager.listAll { items ->
-            mAssets.clear()
-            items.forEach { reference ->
-                lifecycleScope.launch {
-                    try {
-                        val metadata = reference.metadata.await()
-                        mAssets.add(Asset(reference.name, metadata))
-                        mAssetAdapter?.notifyDataSetChanged()
-                    } catch (ex: Exception) {
-                        // TODO: Handle failure
-                    }
-                }
-            }
-
-            runOnUiThread {
-                binding.assetsSpace.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
-            }
-        }
-    }
-
-    private fun showProjectDocs() {
-        if (mDocAdapter == null) {
-            mDocAdapter = DocumentAdapter(this, project, DocumentType.values()).apply {
-                setOnItemCreateListener {
-                    project.addDocument(it)
-                    try {
-                        lifecycleScope.launch { ProjectsDao.add(project) }
-                        notifyDataSetChanged()
-                    } catch (ex: Exception) {
-                        // TODO
-                    }
-                }
-
-                setOnItemEditListener {
-                    startSecurely(EditorActivity::class.java, Intent().apply {
-                        putExtra(MyApplication.EXTRA_DOCUMENT, it)
-                        putExtra(MyApplication.EXTRA_PROJECT, project)
-                    })
-                }
-
-                setOnItemDeleteListener { document ->
-                    MaterialAlertDialogBuilder(context)
-                            .setTitle(getString(R.string.delete_document))
-                            .setMessage(getString(R.string.delete_document_confirm))
-                            .setPositiveButton(R.string.delete) { _, _ ->
-                                if (project.removeDocument(document.name)) {
-                                    try {
-                                        lifecycleScope.launch { ProjectsDao.add(project) }
-                                        notifyDataSetChanged()
-                                    } catch (ex: Exception) {
-                                        // TODO:
-                                    }
-                                }
-                            }
-                        .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
-                        .show()
-                }
-            }
-            binding.documentsList.adapter = mDocAdapter
-        }
-    }
-
-    private fun pickFile(requestCode: Int) {
-        this.pickRequestCode = requestCode
-
+    /**
+     * Picks a file from device storage.
+     */
+    private fun pickFile() {
         val i = Intent(Intent.ACTION_GET_CONTENT)
         i.type = "application/*"
         i.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(i, requestCode)
+        startActivityForResult(i, RC_PICK_FILE)
     }
 
-    private fun uploadFile(fm: FileManager, filename: String, data: Uri, adapter: FileAdapter?) {
+    /**
+     * Asks for confirmation before uploading a file.
+     *
+     * @param filename The name of the file to upload.
+     * @param data The contents ot the file.
+     */
+    private fun confirmFileUpload(filename: String, data: Uri) {
         MaterialAlertDialogBuilder(this)
-                .setTitle(String.format(getString(R.string.file_upload), project.name, project.ownerId))
-                .setMessage(String.format(getString(R.string.upload_confirm), filename))
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                    dialog.dismiss()
-                    val status =
-                        Snackbar.make(binding.contentList, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
-                    status.show()
-                    GlobalScope.launch(Dispatchers.Main) {
-                        try {
-                            fm.upload(filename, data)?.let { metadata ->
-                                adapter?.add(Asset(filename, metadata))
-                                adapter?.notifyDataSetChanged()
+            .setTitle(String.format(getString(R.string.file_upload), project.name, project.ownerId))
+            .setMessage(String.format(getString(R.string.upload_confirm), filename))
+            .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                dialog.dismiss()
+                uploadFile(filename, data)
+            }
+            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
+    }
 
-                                runOnUiThread {
-                                    status.setText(getString(R.string.uploaded))
-                                    Handler().postDelayed({ status.dismiss() }, 2500L)
-                                }
-                            }
-                        } catch (ex: Exception) {
-                            runOnUiThread {
-                                status.setText(ex.message ?: getString(R.string.upload_failed))
-                                Handler().postDelayed({ status.dismiss() }, 2500L)
-                            }
-                        }
-                    }
+    /**
+     * Uploads a file to server.
+     *
+     * @param filename The name of the file to upload.
+     * @param data The contents ot the file.
+     */
+    private fun uploadFile(filename: String, data: Uri) = lifecycleScope.launch {
+        val status = Snackbar.make(binding.contentList, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
+        status.show()
+        try {
+            fm.upload(filename, data)?.let { metadata ->
+                projectFilesAdapter.add(Asset(filename, metadata))
+                projectFilesAdapter.notifyDataSetChanged()
+
+                runOnUiThread {
+                    status.setText(getString(R.string.uploaded))
+                    Handler().postDelayed({ status.dismiss() }, 2500L)
                 }
-                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.cancel()
-                }
-                .show()
+            }
+        } catch (ex: Exception) {
+            runOnUiThread {
+                status.setText(ex.message ?: getString(R.string.upload_failed))
+                Handler().postDelayed({ status.dismiss() }, 2500L)
+            }
+        }
     }
 
     companion object {
-        private const val RESULT_ACTION_PICK_ASSETS = 100
+        private const val RC_PICK_FILE = 100
         private const val RC_WRITE_PERMISSION = 200
     }
 

@@ -102,6 +102,7 @@
         android:layout_marginStart="-38dp"
         android:layout_marginBottom="0dp"
         android:padding="11dp"
+        android:onClick="sendMessage"
         app:cornerRadius="19dp"
         app:icon="@drawable/ic_action_send"
         app:iconSize="18dp"

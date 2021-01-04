@@ -17,6 +17,8 @@ import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.bo.AccountsBO
 import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.dao.AccountsDao
+import co.aspirasoft.catalyst.dao.ConnectionsDao
+import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.databinding.ActivityProfileBinding
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.storage.FileManager
@@ -39,32 +41,15 @@ class ProfileActivity : DashboardChildActivity() {
     private lateinit var binding: ActivityProfileBinding
     private lateinit var mFileManager: FileManager
 
+    private lateinit var user: UserAccount
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val user = intent.getSerializableExtra(MyApplication.EXTRA_PROFILE_USER) as UserAccount? ?: currentUser
-        if (user.id != currentUser.id) {
-            binding.changeUserImageButton.visibility = View.GONE
-            binding.changePasswordButton.visibility = View.GONE
-            binding.deleteAccountButton.visibility = View.GONE
-            binding.connectButton.visibility = View.VISIBLE // FIXME: Show Connect button only if user not a Connection
-        }
-        currentUser = user
-        mFileManager = FileManager.newInstance(this, "users/${currentUser.id}/")
-
-        binding.changeUserImageButton.setOnClickListener {
-            if (PermissionUtils.requestPermissionIfNeeded(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    getString(R.string.permission_storage),
-                    RC_WRITE_PERMISSION
-                )
-            ) {
-                pickImage()
-            }
-        }
+        user = intent.getSerializableExtra(MyApplication.EXTRA_PROFILE_USER) as UserAccount? ?: currentUser
+        mFileManager = FileManager.newInstance(this, "users/${user.id}/")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -133,38 +118,12 @@ class ProfileActivity : DashboardChildActivity() {
 
     override fun updateUI(currentUser: UserAccount) {
         showUserImage()
-
-        // HEADLINE
-        binding.accountName.text = currentUser.name
-        if (!currentUser.headline.isNullOrBlank()) {
-            binding.accountShortBio.text = currentUser.headline
-            binding.accountShortBio.visibility = View.VISIBLE
-        }
-        if (!currentUser.location.isNullOrBlank()) {
-            binding.accountLocation.text = currentUser.location
-            binding.accountLocation.visibility = View.VISIBLE
-        }
+        binding.user = user
+        binding.isOwnProfile = user == currentUser
 
         // STATS SECTION
-        binding.accountConnectionCount.text = "0" // FIXME: Show actual # of connections
-        binding.accountProjectCount.text = "0" // FIXME: Show actual # of projects
-
-        // ABOUT SECTION
-        if (!currentUser.bio.isNullOrBlank()) {
-            binding.accountLongBio.text = currentUser.bio
-            binding.aboutSection.visibility = View.VISIBLE
-        }
-
-        // CONTACT SECTION
-        binding.accountEmail.text = currentUser.email
-        if (!currentUser.phone.isNullOrBlank()) {
-            binding.accountPhone.text = currentUser.phone
-            binding.accountPhone.visibility = View.VISIBLE
-        }
-        if (!currentUser.blog.isNullOrBlank()) {
-            binding.accountBlog.text = currentUser.blog
-            binding.accountBlog.visibility = View.VISIBLE
-        }
+        ConnectionsDao.getUserConnections(user.id) { binding.connections = it.size }
+        ProjectsDao.getUserProjects(user.id) { binding.projects = it.size }
 
         // ACCOUNT SETTINGS
         // TODO: Allow password reset
@@ -172,6 +131,9 @@ class ProfileActivity : DashboardChildActivity() {
         binding.deleteAccountButton.setOnClickListener { binding.deleteSection.visibility = View.VISIBLE }
         binding.cancelDeleteButton.setOnClickListener { binding.deleteSection.visibility = View.GONE }
         binding.confirmDeleteButton.setOnClickListener { onDeleteAccountClicked() }
+
+        // CONNECT SECTION
+        // TODO: Show Connect button only if user not a Connection
     }
 
     private fun onDeleteAccountClicked() {
@@ -179,10 +141,10 @@ class ProfileActivity : DashboardChildActivity() {
             try {
                 binding.confirmDeleteButton.isEnabled = false
                 // Delete user data from database
-                AccountsDao.delete(currentUser.id) {
+                AccountsDao.delete(user.id) {
                     lifecycleScope.launch {
                         val password = binding.passwordField.text.toString().trim()
-                        AccountsBO.deleteAccount(currentUser.email, password)
+                        AccountsBO.deleteAccount(user.email, password)
                         AuthBO.signOut()
                         finish()
                     }
@@ -197,7 +159,7 @@ class ProfileActivity : DashboardChildActivity() {
 
     private fun showUserImage(invalidate: Boolean = false) {
         ImageLoader.with(this)
-            .load(currentUser.id)
+            .load(user.id)
             .skipCache(invalidate)
             .into(binding.accountAvatar)
     }
@@ -205,6 +167,16 @@ class ProfileActivity : DashboardChildActivity() {
     private fun pickImage() {
         val i = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(i, RESULT_ACTION_LOAD)
+    }
+
+    fun pickImageIfAllowed(v: View) {
+        if (PermissionUtils.requestPermissionIfNeeded(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                getString(R.string.permission_storage),
+                RC_WRITE_PERMISSION
+            )
+        ) pickImage()
     }
 
     companion object {

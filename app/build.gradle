@@ -14,6 +14,7 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
+    buildFeatures.dataBinding = true
     buildFeatures.viewBinding = true
     buildTypes {
         release {

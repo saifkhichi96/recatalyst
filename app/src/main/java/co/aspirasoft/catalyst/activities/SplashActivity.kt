@@ -8,12 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.SilentSignInActivity
+import co.aspirasoft.catalyst.databinding.ActivitySplashBinding
 import co.aspirasoft.catalyst.utils.DynamicLinksUtils
 import co.aspirasoft.util.ViewUtils
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.text.ParseException
@@ -30,9 +30,12 @@ import java.text.ParseException
  */
 class SplashActivity : SilentSignInActivity() {
 
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onStart() {
@@ -112,7 +115,7 @@ class SplashActivity : SilentSignInActivity() {
                 }
             }
         } catch (ex: Exception) {
-            ViewUtils.showError(splashScreen, ex.message ?: getString(R.string.url_error))
+            ViewUtils.showError(binding.splashScreen, ex.message ?: getString(R.string.url_error))
         }
     }
 

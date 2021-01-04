@@ -6,27 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.adapter.ModelViewAdapter
-import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.bo.TeamInviteBO
 import co.aspirasoft.catalyst.dao.TeamInviteDao
+import co.aspirasoft.catalyst.databinding.ActivityListBinding
 import co.aspirasoft.catalyst.models.TeamInvite
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.IncomingInviteView
-import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.coroutines.launch
 
+
 class TeamInvitesActivity : DashboardChildActivity() {
+
+    private lateinit var binding: ActivityListBinding
 
     private lateinit var inviteAdapter: IncomingInviteAdapter
     private val invites = ArrayList<TeamInvite>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
+        binding = ActivityListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         inviteAdapter = IncomingInviteAdapter(this, invites)
-        contentList.adapter = inviteAdapter
+        binding.contentList.adapter = inviteAdapter
     }
 
     override fun updateUI(currentUser: UserAccount) {

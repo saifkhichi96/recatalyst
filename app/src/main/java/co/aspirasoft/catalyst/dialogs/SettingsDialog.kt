@@ -2,9 +2,8 @@ package co.aspirasoft.catalyst.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
-import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.SecureActivity
-import kotlinx.android.synthetic.main.dialog_settings.*
+import co.aspirasoft.catalyst.databinding.DialogSettingsBinding
 
 /**
  * AccountSwitcher allows switching between user accounts.
@@ -18,23 +17,26 @@ import kotlinx.android.synthetic.main.dialog_settings.*
  */
 class SettingsDialog private constructor(private val activity: SecureActivity) : Dialog(activity) {
 
+    private lateinit var binding: DialogSettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_settings)
+        binding = DialogSettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         // Show sign out confirmation when sign out button is clicked
-        signOutButton.setOnClickListener {
+        binding.signOutButton.setOnClickListener {
             LogoutConfirmationDialog.show(activity)
             dismiss()
         }
 
         // TODO: Handle clicks on `Privacy` and `ToS` buttons.
-        privacyButton.setOnClickListener {
+        binding.privacyButton.setOnClickListener {
 
         }
 
-        tosButton.setOnClickListener {
+        binding.tosButton.setOnClickListener {
 
         }
     }

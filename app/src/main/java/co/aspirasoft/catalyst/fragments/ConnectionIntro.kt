@@ -4,30 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.FragmentIntroBinding
 import co.aspirasoft.view.WizardViewStep
 
 class ConnectionIntro : WizardViewStep("") {
 
-    private lateinit var iconView: ImageView
-    private lateinit var headlineView: TextView
-    private lateinit var bodyView: TextView
+    private var _binding: FragmentIntroBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_intro, container, false)
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
-        // Get UI references
-        iconView = v.findViewById(R.id.icon)
-        headlineView = v.findViewById(R.id.headline)
-        bodyView = v.findViewById(R.id.body)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentIntroBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        iconView.setImageResource(R.drawable.intro_connect)
-        headlineView.text = getString(R.string.connections)
-        bodyView.text = getString(R.string.connections_explanation)
+        binding.icon.setImageResource(R.drawable.intro_connect)
+        binding.headline.text = getString(R.string.connections)
+        binding.body.text = getString(R.string.connections_explanation)
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun isDataValid(): Boolean {

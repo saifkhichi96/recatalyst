@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.SignupStepIntroductionBinding
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.InputUtils.markRequired
 import co.aspirasoft.view.WizardViewStep
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -22,20 +22,28 @@ import com.google.android.material.textfield.TextInputLayout
  */
 class IntroductionStep : WizardViewStep("") {
 
-    private lateinit var nameField: TextInputEditText
+    private var _binding: SignupStepIntroductionBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.signup_step_introduction, container, false)
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
-        nameField = v.findViewById(R.id.nameField)
-        (nameField.parent.parent as TextInputLayout).markRequired()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = SignupStepIntroductionBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        return v
+        (binding.nameField.parent.parent as TextInputLayout).markRequired()
+
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun isDataValid(): Boolean {
-        return if (nameField.isNotBlank(true)) {
-            val name = nameField.text.toString().trim()
+        return if (binding.nameField.isNotBlank(true)) {
+            val name = binding.nameField.text.toString().trim()
             data.put(R.id.nameField, name)
             true
         } else false

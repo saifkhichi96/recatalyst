@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
-import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardActivity
 import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.dao.TeamDao
+import co.aspirasoft.catalyst.databinding.ActivityDashboardBinding
 import co.aspirasoft.catalyst.dialogs.CreateProjectDialog
 import co.aspirasoft.catalyst.dialogs.SettingsDialog
 import co.aspirasoft.catalyst.models.Project
@@ -19,7 +19,6 @@ import co.aspirasoft.catalyst.models.Team
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.ProjectView
 import co.aspirasoft.catalyst.views.TeamView
-import kotlinx.android.synthetic.main.activity_dashboard.*
 
 /**
  * Dashboard is the homepage of a user.
@@ -31,6 +30,8 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
  * @since 1.0.0
  */
 class DashboardActivity : DashboardActivity() {
+
+    private lateinit var binding: ActivityDashboardBinding
 
     /**
      * List of projects owned by the current user.
@@ -54,22 +55,23 @@ class DashboardActivity : DashboardActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         projectAdapter = ProjectAdapter(this, projects)
-        projectsList.adapter = projectAdapter
+        binding.projectsList.adapter = projectAdapter
 
         teamAdapter = TeamAdapter(this, teams)
-        teamsList.adapter = teamAdapter
+        binding.teamsList.adapter = teamAdapter
 
         // Set click listeners for sidebar buttons
-        connectionsButton.setOnClickListener { startSecurely(ConnectionsActivity::class.java) }
-        invitesButton.setOnClickListener { startSecurely(TeamInvitesActivity::class.java) }
-        notificationsButton.setOnClickListener { }
-        settingsButton.setOnClickListener { SettingsDialog.Builder(this).show() }
+        binding.connectionsButton.setOnClickListener { startSecurely(ConnectionsActivity::class.java) }
+        binding.invitesButton.setOnClickListener { startSecurely(TeamInvitesActivity::class.java) }
+        binding.notificationsButton.setOnClickListener { }
+        binding.settingsButton.setOnClickListener { SettingsDialog.Builder(this).show() }
 
         // Set other click listeners
-        createProjectButton.setOnClickListener { onCreateProjectClicked() }
+        binding.createProjectButton.setOnClickListener { onCreateProjectClicked() }
     }
 
     override fun onResume() {
@@ -81,9 +83,9 @@ class DashboardActivity : DashboardActivity() {
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        userSummaryView.apply {
+        binding.userSummaryView.apply {
             this.bindWithModel(currentUser)
-            this.setOnProfileButtonClickedListener {
+            this.setOnAvatarClickedListener {
                 startSecurely(ProfileActivity::class.java, Intent().apply {
                     putExtra(MyApplication.EXTRA_PROFILE_USER, currentUser)
                 })
@@ -134,7 +136,7 @@ class DashboardActivity : DashboardActivity() {
 
         override fun notifyDataSetChanged() {
             super.notifyDataSetChanged()
-            projectsSpace.visibility = if (projects.isNotEmpty()) View.GONE else View.VISIBLE
+            binding.projectsSpace.visibility = if (projects.isNotEmpty()) View.GONE else View.VISIBLE
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -154,7 +156,7 @@ class DashboardActivity : DashboardActivity() {
 
         override fun notifyDataSetChanged() {
             super.notifyDataSetChanged()
-            teamsSpace.visibility = if (teams.isNotEmpty()) View.GONE else View.VISIBLE
+            binding.teamsSpace.visibility = if (teams.isNotEmpty()) View.GONE else View.VISIBLE
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

@@ -4,57 +4,59 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.dao.ProjectsDao
+import co.aspirasoft.catalyst.databinding.DialogCreateProjectBinding
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.ViewUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
+
 
 class CreateProjectDialog : BottomSheetDialogFragment() {
 
-    private lateinit var ownerId: String
+    private var _binding: DialogCreateProjectBinding? = null
 
-    private lateinit var projectNameField: TextInputEditText
-    private lateinit var descriptionField: TextInputEditText
-    private lateinit var okButton: Button
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
+    private lateinit var ownerId: String
 
     var onOkListener: ((project: Project) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.dialog_create_project, container, false)
+        _binding = DialogCreateProjectBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         try {
             val args = requireArguments()
             ownerId = args.getString(ARG_OWNER_ID)!!
         } catch (ex: Exception) {
-            ex.message?.let { ViewUtils.showError(v, it) }
+            ex.message?.let { ViewUtils.showError(view, it) }
             dismiss()
             return null
         }
 
-        // Get UI references
-        projectNameField = v.findViewById(R.id.projectNameField)
-        descriptionField = v.findViewById(R.id.descriptionField)
+        binding.okButton.setOnClickListener { onOk() }
 
-        okButton = v.findViewById(R.id.okButton)
-        okButton.setOnClickListener { onOk() }
+        return view
+    }
 
-        return v
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun onOk() {
-        if (projectNameField.isNotBlank(true)) {
+        if (binding.projectNameField.isNotBlank(true)) {
             isCancelable = false
-            okButton.isEnabled = false
+            binding.okButton.isEnabled = false
 
-            val projectName = projectNameField.text.toString().trim()
+            val projectName = binding.projectNameField.text.toString().trim()
             val project = Project(projectName, ownerId).apply {
-                this.description = descriptionField.text.toString().trim()
+                this.description = binding.descriptionField.text.toString().trim()
             }
 
             lifecycleScope.launch {
@@ -70,9 +72,9 @@ class CreateProjectDialog : BottomSheetDialogFragment() {
     }
 
     private fun onError(error: String? = null) {
-        ViewUtils.showError(projectNameField, error ?: getString(R.string.create_project_error))
+        ViewUtils.showError(binding.projectNameField, error ?: getString(R.string.create_project_error))
         isCancelable = true
-        okButton.isEnabled = true
+        binding.okButton.isEnabled = true
     }
 
     companion object {

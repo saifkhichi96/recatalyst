@@ -8,13 +8,13 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.dao.TasksDao
+import co.aspirasoft.catalyst.databinding.ActivityTaskDetailsBinding
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.Task
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.util.InputUtils.isNotBlank
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_task_details.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,11 +25,14 @@ import java.util.*
  */
 class TaskActivity : DashboardChildActivity() {
 
+    private lateinit var binding: ActivityTaskDetailsBinding
+
     private lateinit var project: Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task_details)
+        binding = ActivityTaskDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Must know which subject's grades we are managing
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
@@ -41,10 +44,10 @@ class TaskActivity : DashboardChildActivity() {
             setEditEnabled(false)
 
             // Show test name in action bar
-            nameField.setText(task.name)
-            descriptionField.setText(task.description)
-            deadlineField.setText(task.deadline)
-            completeButton.isChecked = task.isCompleted
+            binding.nameField.setText(task.name)
+            binding.descriptionField.setText(task.description)
+            binding.deadlineField.setText(task.deadline)
+            binding.completeButton.isChecked = task.isCompleted
         }
 
         // if NO, then we are creating a new test
@@ -53,14 +56,14 @@ class TaskActivity : DashboardChildActivity() {
             setEditEnabled(true)
 
             val formatter = SimpleDateFormat(Task.DATE_FORMAT, Locale.getDefault())
-            deadlineField.setText(formatter.format(System.currentTimeMillis()))
-            deadlineButton.setOnClickListener {
+            binding.deadlineField.setText(formatter.format(System.currentTimeMillis()))
+            binding.deadlineButton.setOnClickListener {
                 val picker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText(getString(R.string.deadline))
-                        .build()
+                    .setTitleText(getString(R.string.deadline))
+                    .build()
 
                 picker.addOnPositiveButtonClickListener {
-                    deadlineField.setText(formatter.format(Date(it)))
+                    binding.deadlineField.setText(formatter.format(Date(it)))
                 }
                 picker.show(supportFragmentManager, picker.toString())
             }
@@ -72,12 +75,12 @@ class TaskActivity : DashboardChildActivity() {
     }
 
     fun onSaveButtonClicked(v: View) {
-        val name = nameField.text.toString().trim()
-        val description = descriptionField.text.toString().trim()
-        val deadline = deadlineField.text.toString().trim()
-        val isCompleted = completeButton.isChecked
+        val name = binding.nameField.text.toString().trim()
+        val description = binding.descriptionField.text.toString().trim()
+        val deadline = binding.deadlineField.text.toString().trim()
+        val isCompleted = binding.completeButton.isChecked
 
-        if (nameField.isNotBlank(true) && descriptionField.isNotBlank(true)) {
+        if (binding.nameField.isNotBlank(true) && binding.descriptionField.isNotBlank(true)) {
             val task = Task(name, description)
             task.deadline = deadline
             task.isCompleted = isCompleted
@@ -86,7 +89,7 @@ class TaskActivity : DashboardChildActivity() {
     }
 
     private fun saveTask(task: Task) {
-        val status = Snackbar.make(nameField, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
+        val status = Snackbar.make(binding.nameField, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
         status.show()
         try {
             lifecycleScope.launch { TasksDao.add(task, project) }
@@ -101,13 +104,13 @@ class TaskActivity : DashboardChildActivity() {
     }
 
     private fun setEditEnabled(enabled: Boolean) {
-        nameField.isEnabled = enabled
-        descriptionField.isEnabled = enabled
-        deadlineButton.isEnabled = enabled
-        completeButton.isEnabled = enabled
+        binding.nameField.isEnabled = enabled
+        binding.descriptionField.isEnabled = enabled
+        binding.deadlineButton.isEnabled = enabled
+        binding.completeButton.isEnabled = enabled
 
-        completeButton.visibility = if (enabled) View.GONE else View.VISIBLE
-        saveButton.visibility = if (enabled) View.VISIBLE else View.GONE
+        binding.completeButton.visibility = if (enabled) View.GONE else View.VISIBLE
+        binding.saveButton.visibility = if (enabled) View.VISIBLE else View.GONE
     }
 
 }

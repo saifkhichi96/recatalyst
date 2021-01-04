@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
-import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.dao.TasksDao
+import co.aspirasoft.catalyst.databinding.ActivityListBinding
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.Task
 import co.aspirasoft.catalyst.models.UserAccount
@@ -18,7 +18,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.getValue
-import kotlinx.android.synthetic.main.activity_list.*
+
 
 /**
  * TestsActivity displays names of all tests of a subject
@@ -32,21 +32,24 @@ import kotlinx.android.synthetic.main.activity_list.*
  */
 class TasksActivity : DashboardChildActivity() {
 
+    private lateinit var binding: ActivityListBinding
+
     private lateinit var adapter: TaskAdapter
     private lateinit var project: Project
     private val tasks = ArrayList<Task>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
+        binding = ActivityListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         this.project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
-        addButton.setOnClickListener { onAddTaskClicked() }
+        binding.addButton.setOnClickListener { onAddTaskClicked() }
     }
 
     override fun updateUI(currentUser: UserAccount) {
         adapter = TaskAdapter(this, tasks)
-        contentList.adapter = adapter
+        binding.contentList.adapter = adapter
         TasksDao.getProjectTasks(project, object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 snapshot.getValue<Task>()?.let { task ->

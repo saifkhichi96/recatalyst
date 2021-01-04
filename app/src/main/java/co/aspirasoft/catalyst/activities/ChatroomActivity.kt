@@ -12,15 +12,17 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.dao.ChatroomDao
+import co.aspirasoft.catalyst.databinding.ActivityChatroomBinding
 import co.aspirasoft.catalyst.models.Message
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.MessageView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_chatroom.*
 import kotlinx.coroutines.launch
 
 class ChatroomActivity : DashboardChildActivity() {
+
+    private lateinit var binding: ActivityChatroomBinding
 
     private val messages = ArrayList<Message>()
     private lateinit var messageAdapter: MessageAdapter
@@ -29,8 +31,10 @@ class ChatroomActivity : DashboardChildActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chatroom)
-        messageInput.requestFocus()
+        binding = ActivityChatroomBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.messageInput.requestFocus()
 
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
         messageAdapter = MessageAdapter(this, messages)
@@ -41,11 +45,11 @@ class ChatroomActivity : DashboardChildActivity() {
             }
         }
 
-        sendMessage.setOnClickListener { onSendMessageClicked() }
+        binding.sendMessage.setOnClickListener { onSendMessageClicked() }
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        messagesList.adapter = messageAdapter
+        binding.messagesList.adapter = messageAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,18 +64,20 @@ class ChatroomActivity : DashboardChildActivity() {
     }
 
     private fun onSendMessageClicked() {
-        val messageContent = messageInput.text.toString().trim()
+        val messageContent = binding.messageInput.text.toString().trim()
         if (messageContent.isNotBlank()) {
             lifecycleScope.launch {
                 try {
                     val message = Message(messageContent, currentUser.id)
 
                     ChatroomDao.add(project, message)
-                    messageInput.setText("")
+                    binding.messageInput.setText("")
                 } catch (ex: Exception) {
-                    Snackbar.make(messagesList,
-                            ex.message ?: getString(R.string.send_message_failed),
-                            Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.messagesList,
+                        ex.message ?: getString(R.string.send_message_failed),
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
         }

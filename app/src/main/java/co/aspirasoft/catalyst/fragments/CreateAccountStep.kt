@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.SignupStepCreateAccountBinding
 import co.aspirasoft.util.InputUtils.isEmail
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.InputUtils.markRequired
 import co.aspirasoft.view.WizardViewStep
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -25,37 +25,43 @@ import com.google.android.material.textfield.TextInputLayout
  */
 class CreateAccountStep : WizardViewStep("") {
 
-    private lateinit var emailField: TextInputEditText
+    private var _binding: SignupStepCreateAccountBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.signup_step_create_account, container, false)
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
-        // Get UI references
-        emailField = v.findViewById(R.id.emailField)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = SignupStepCreateAccountBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         // Mark required fields
-        (emailField.parent.parent as TextInputLayout).markRequired()
+        (binding.emailField.parent.parent as TextInputLayout).markRequired()
 
         // Validate email as it is typed
-        emailField.addTextChangedListener(object : TextWatcher {
+        binding.emailField.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                emailField.error = null
+                binding.emailField.error = null
                 if (!s.toString().trim().isEmail()) {
-                    emailField.error = getString(R.string.email_error)
+                    binding.emailField.error = getString(R.string.email_error)
                 }
             }
         })
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun isDataValid(): Boolean {
-        return if (emailField.isNotBlank(true)) {
-            val email = emailField.text.toString().trim()
+        return if (binding.emailField.isNotBlank(true)) {
+            val email = binding.emailField.text.toString().trim()
             if (!email.isEmail()) {
-                emailField.error = getString(R.string.email_error)
+                binding.emailField.error = getString(R.string.email_error)
                 false
             } else {
                 data.put(R.id.emailField, email)

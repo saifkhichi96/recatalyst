@@ -16,12 +16,12 @@ import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.bo.ConnectionRequestBO
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.dao.ConnectionsDao
+import co.aspirasoft.catalyst.databinding.ActivityConnectionsBinding
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.IncomingRequestView
 import co.aspirasoft.catalyst.views.UserView
 import co.aspirasoft.util.InputUtils.isEmail
 import co.aspirasoft.util.ViewUtils
-import kotlinx.android.synthetic.main.activity_connections.*
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,6 +37,8 @@ import kotlin.collections.ArrayList
  * @since 1.0.0
  */
 class ConnectionsActivity : DashboardChildActivity() {
+
+    private lateinit var binding: ActivityConnectionsBinding
 
     /**
      * List of people current user has pending connection requests from.
@@ -60,18 +62,19 @@ class ConnectionsActivity : DashboardChildActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_connections)
+        binding = ActivityConnectionsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        placeholderText.text = getString(R.string.connections_none)
-        learnMoreButton.setOnClickListener { onLearnMoreClicked() }
+        binding.placeholderText.text = getString(R.string.connections_none)
+        binding.learnMoreButton.setOnClickListener { onLearnMoreClicked() }
 
         requestsAdapter = IncomingRequestAdapter(this, requests)
         requestsAdapter.onAcceptClickListener = { position ->
             val sender = requests[position]
             lifecycleScope.launch {
                 ConnectionRequestBO.accept(
-                        uid = currentUser.id,
-                        sender = sender.id
+                    uid = currentUser.id,
+                    sender = sender.id
                 )
                 requests.removeAt(position)
                 requestsAdapter.notifyDataSetChanged()
@@ -82,27 +85,27 @@ class ConnectionsActivity : DashboardChildActivity() {
             val sender = requests[position]
             lifecycleScope.launch {
                 ConnectionRequestBO.reject(
-                        uid = currentUser.id,
-                        sender = sender.id
+                    uid = currentUser.id,
+                    sender = sender.id
                 )
                 requests.removeAt(position)
                 requestsAdapter.notifyDataSetChanged()
             }
         }
-        requestsList.adapter = requestsAdapter
+        binding.requestsList.adapter = requestsAdapter
 
         connectionsAdapter = ConnectionAdapter(this, connections)
-        connectionsList.adapter = connectionsAdapter
+        binding.connectionsList.adapter = connectionsAdapter
 
-        inviteButton.setOnClickListener {
-            content.post {
-                content.smoothScrollTo(0, inviteeEmailInput.bottom)
-                inviteeEmailInput.requestFocus()
+        binding.inviteButton.setOnClickListener {
+            binding.content.post {
+                binding.content.smoothScrollTo(0, binding.inviteeEmailInput.bottom)
+                binding.inviteeEmailInput.requestFocus()
                 val im = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 im.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
             }
         }
-        sendRequestButton.setOnClickListener { onSendRequestClicked() }
+        binding.sendRequestButton.setOnClickListener { onSendRequestClicked() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,7 +141,7 @@ class ConnectionsActivity : DashboardChildActivity() {
         ConnectionsDao.getUserConnections(currentUser.id) {
             connections.clear()
             if (it.isNotEmpty()) {
-                placeholder.visibility = View.GONE
+                binding.placeholder.visibility = View.GONE
             }
 
             it.forEach { uid ->
@@ -158,25 +161,27 @@ class ConnectionsActivity : DashboardChildActivity() {
     }
 
     private fun onSendRequestClicked() {
-        val email = inviteeEmailInput.text.toString().trim()
+        val email = binding.inviteeEmailInput.text.toString().trim()
         // Validate provided email address
         if (!email.isEmail()) {
-            ViewUtils.showError(placeholder, getString(R.string.email_error))
+            ViewUtils.showError(binding.placeholder, getString(R.string.email_error))
             return
         }
 
         // Send a connection request
         ConnectionRequestBO.send(currentUser.id, email.toLowerCase(Locale.getDefault())) { ex ->
-            runOnUiThread { inviteeEmailInput.setText("") }
+            runOnUiThread { binding.inviteeEmailInput.setText("") }
             if (ex == null) {
-                ViewUtils.showMessage(placeholder, getString(R.string.connection_requested))
+                ViewUtils.showMessage(binding.placeholder, getString(R.string.connection_requested))
             } else {
-                ViewUtils.showError(placeholder, when (ex) {
-                    is IllegalArgumentException -> getString(R.string.invite_user_error)
-                    is IllegalStateException -> getString(R.string.invite_conflict)
-                    is NoSuchElementException -> getString(R.string.no_such_user)
-                    else -> ex.message ?: getString(R.string.invite_error)
-                })
+                ViewUtils.showError(
+                    binding.placeholder, when (ex) {
+                        is IllegalArgumentException -> getString(R.string.invite_user_error)
+                        is IllegalStateException -> getString(R.string.invite_conflict)
+                        is NoSuchElementException -> getString(R.string.no_such_user)
+                        else -> ex.message ?: getString(R.string.invite_error)
+                    }
+                )
             }
         }
     }

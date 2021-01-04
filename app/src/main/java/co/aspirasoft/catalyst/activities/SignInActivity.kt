@@ -8,10 +8,10 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.SilentSignInActivity
 import co.aspirasoft.catalyst.bo.AuthBO
+import co.aspirasoft.catalyst.databinding.ActivitySignInBinding
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.util.InputUtils.isNotBlank
 import com.google.firebase.auth.*
-import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.coroutines.launch
 
 
@@ -26,18 +26,21 @@ import kotlinx.coroutines.launch
  */
 class SignInActivity : SilentSignInActivity() {
 
+    private lateinit var binding: ActivitySignInBinding
+
     private var signUpCredentials: AuthCredential? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get intent extras
         signUpCredentials = intent.getParcelableExtra(MyApplication.EXTRA_NEW_SIGN_UP)
 
-        signInButton.setOnClickListener { signIn(SignInMethod.DEFAULT) }
-        githubButton.setOnClickListener { signIn(SignInMethod.GITHUB) }
-        signUpButton.setOnClickListener { signUp() }
+        binding.signInButton.setOnClickListener { signIn(SignInMethod.DEFAULT) }
+        binding.githubButton.setOnClickListener { signIn(SignInMethod.GITHUB) }
+        binding.signUpButton.setOnClickListener { signUp() }
     }
 
     override fun onStart() {
@@ -55,9 +58,9 @@ class SignInActivity : SilentSignInActivity() {
      * @param method The sign-in method to use.
      */
     private fun signIn(method: SignInMethod, args: Any? = null) {
-        errorSection.visibility = View.INVISIBLE
-        signInButton.isEnabled = false
-        githubButton.isEnabled = false
+        binding.errorSection.visibility = View.INVISIBLE
+        binding.signInButton.isEnabled = false
+        binding.githubButton.isEnabled = false
 
         try {
             lifecycleScope.launch {
@@ -70,8 +73,8 @@ class SignInActivity : SilentSignInActivity() {
         } catch (ex: Exception) {
             onFailure(ex)
         } finally {
-            signInButton.isEnabled = true
-            githubButton.isEnabled = true
+            binding.signInButton.isEnabled = true
+            binding.githubButton.isEnabled = true
         }
     }
 
@@ -84,9 +87,9 @@ class SignInActivity : SilentSignInActivity() {
      */
     @Throws(NullPointerException::class)
     private suspend fun signIn() {
-        if (emailField.isNotBlank(true) && passwordField.isNotBlank(true)) {
-            val email = emailField.text.toString().trim()
-            val password = passwordField.text.toString().trim()
+        if (binding.emailField.isNotBlank(true) && binding.passwordField.isNotBlank(true)) {
+            val email = binding.emailField.text.toString().trim()
+            val password = binding.passwordField.text.toString().trim()
 
             val user = AuthBO.signInWithEmailPassword(email, password)
             onAuthenticated(user!!)
@@ -159,7 +162,7 @@ class SignInActivity : SilentSignInActivity() {
      * could not be fetched from the database.
      */
     private fun onFailure(ex: Exception) {
-        errorMessage.text = when (ex) {
+        binding.errorMessage.text = when (ex) {
             is FirebaseAuthInvalidUserException,
             is FirebaseAuthInvalidCredentialsException,
             -> getString(R.string.sign_in_credentials_error)
@@ -168,7 +171,7 @@ class SignInActivity : SilentSignInActivity() {
             is NullPointerException -> getString(R.string.sign_in_failed)
             else -> "${ex.javaClass.simpleName}: ${ex.message}"
         }
-        errorSection.visibility = View.VISIBLE
+        binding.errorSection.visibility = View.VISIBLE
         AuthBO.signOut()
     }
 

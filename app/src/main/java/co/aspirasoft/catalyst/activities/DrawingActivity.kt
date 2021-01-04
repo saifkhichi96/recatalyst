@@ -10,12 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.ActivityDrawingBinding
 import co.aspirasoft.catalyst.utils.FileUtils.getBitmap
 import co.aspirasoft.catalyst.utils.FileUtils.saveBitmap
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_drawing.*
 
 class DrawingActivity : AppCompatActivity(), View.OnClickListener {
+
+    private lateinit var binding: ActivityDrawingBinding
 
     private var selectedBrush: ImageButton? = null
 
@@ -30,7 +32,8 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_drawing)
+        binding = ActivityDrawingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Get intent extras
@@ -42,22 +45,22 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
         project = intent.getStringExtra("project") ?: return finish()
 
         this.title = property
-        drawingView.setBaseBitmap(getBitmap(index, doorWindow, project))
+        binding.drawingView.setBaseBitmap(getBitmap(index, doorWindow, project))
 
         // Getting the initial paint color.
-        selectedBrush = paintColors.getChildAt(1) as ImageButton
+        selectedBrush = binding.paintColors.getChildAt(1) as ImageButton
         selectedBrush!!.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_pressed))
 
         // Set initial brush size
         smallBrush = resources.getInteger(R.integer.small_size).toFloat()
         mediumBrush = resources.getInteger(R.integer.medium_size).toFloat()
         largeBrush = resources.getInteger(R.integer.large_size).toFloat()
-        drawingView.setBrushSize(smallBrush)
+        binding.drawingView.setBrushSize(smallBrush)
 
         // Set up click listeners
-        brushButton.setOnClickListener(this)
-        eraseButton.setOnClickListener(this)
-        newButton.setOnClickListener(this)
+        binding.brushButton.setOnClickListener(this)
+        binding.eraseButton.setOnClickListener(this)
+        binding.newButton.setOnClickListener(this)
     }
 
     /**
@@ -70,14 +73,14 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
             // Update the color
             val imageButton = view as ImageButton
             val colorTag = imageButton.tag.toString()
-            drawingView.setColor(colorTag)
+            binding.drawingView.setColor(colorTag)
 
             // Swap the backgrounds for last active and currently active image button.
             imageButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_pressed))
             selectedBrush!!.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet))
             selectedBrush = view
-            drawingView.setErase(false)
-            drawingView.setBrushSize(drawingView.lastBrushSize)
+            binding.drawingView.setErase(false)
+            binding.drawingView.setBrushSize(binding.drawingView.lastBrushSize)
         }
     }
 
@@ -95,23 +98,23 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
         brushDialog.setTitle(getString(R.string.brush_size))
         val smallBtn = brushDialog.findViewById<ImageButton>(R.id.smallSize)
         smallBtn.setOnClickListener {
-            drawingView.setBrushSize(smallBrush)
-            drawingView.lastBrushSize = smallBrush
+            binding.drawingView.setBrushSize(smallBrush)
+            binding.drawingView.lastBrushSize = smallBrush
             brushDialog.dismiss()
         }
         val mediumBtn = brushDialog.findViewById<ImageButton>(R.id.mediumSize)
         mediumBtn.setOnClickListener {
-            drawingView.setBrushSize(mediumBrush)
-            drawingView.lastBrushSize = mediumBrush
+            binding.drawingView.setBrushSize(mediumBrush)
+            binding.drawingView.lastBrushSize = mediumBrush
             brushDialog.dismiss()
         }
         val largeBtn = brushDialog.findViewById<ImageButton>(R.id.largeSize)
         largeBtn.setOnClickListener {
-            drawingView.setBrushSize(largeBrush)
-            drawingView.lastBrushSize = largeBrush
+            binding.drawingView.setBrushSize(largeBrush)
+            binding.drawingView.lastBrushSize = largeBrush
             brushDialog.dismiss()
         }
-        drawingView.setErase(false)
+        binding.drawingView.setErase(false)
         brushDialog.show()
     }
 
@@ -122,22 +125,22 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
 
         val smallButton = brushDialog.findViewById<ImageButton>(R.id.smallSize)
         smallButton.setOnClickListener {
-            drawingView.setErase(true)
-            drawingView.setBrushSize(smallBrush)
+            binding.drawingView.setErase(true)
+            binding.drawingView.setBrushSize(smallBrush)
             brushDialog.dismiss()
         }
 
         val mediumButton = brushDialog.findViewById<ImageButton>(R.id.mediumSize)
         mediumButton.setOnClickListener {
-            drawingView.setErase(true)
-            drawingView.setBrushSize(mediumBrush)
+            binding.drawingView.setErase(true)
+            binding.drawingView.setBrushSize(mediumBrush)
             brushDialog.dismiss()
         }
 
         val largeButton = brushDialog.findViewById<ImageButton>(R.id.largeSize)
         largeButton.setOnClickListener {
-            drawingView.setErase(true)
-            drawingView.setBrushSize(largeBrush)
+            binding.drawingView.setErase(true)
+            binding.drawingView.setBrushSize(largeBrush)
             brushDialog.dismiss()
         }
         brushDialog.show()
@@ -148,7 +151,7 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
         newDialog.setTitle(getString(R.string.create_drawing))
         newDialog.setMessage(getString(R.string.create_drawing_confirm))
         newDialog.setPositiveButton(android.R.string.yes) { dialog, _ ->
-            drawingView.reset()
+            binding.drawingView.reset()
             dialog.dismiss()
         }
         newDialog.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
@@ -160,23 +163,26 @@ class DrawingActivity : AppCompatActivity(), View.OnClickListener {
         saveDialog.setTitle(getString(R.string.save))
         saveDialog.setMessage(getString(R.string.save_drawing, property))
         saveDialog.setPositiveButton(android.R.string.yes) { _, _ -> // Get canvas bitmap
-            drawingView.isDrawingCacheEnabled = true
-            val bitmap = drawingView.drawingCache
+            binding.drawingView.isDrawingCacheEnabled = true
+            val bitmap = binding.drawingView.drawingCache
 
             // Save bitmap to file
             val saved = saveBitmap(bitmap, index, doorWindow, project)
             if (saved) {
-                Toast.makeText(this@DrawingActivity,
-                        getString(R.string.save_drawing_success), Toast.LENGTH_SHORT)
-                        .show()
+                Toast.makeText(
+                    this@DrawingActivity,
+                    getString(R.string.save_drawing_success), Toast.LENGTH_SHORT
+                )
+                    .show()
                 finish()
             } else {
-                Toast.makeText(this@DrawingActivity,
+                Toast.makeText(
+                    this@DrawingActivity,
                         getString(R.string.save_error), Toast.LENGTH_SHORT)
                         .show()
             }
             // Destroy the current cache.
-            drawingView.destroyDrawingCache()
+            binding.drawingView.destroyDrawingCache()
         }
         saveDialog.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
         saveDialog.show()

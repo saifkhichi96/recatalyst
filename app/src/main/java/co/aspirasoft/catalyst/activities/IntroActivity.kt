@@ -2,10 +2,9 @@ package co.aspirasoft.catalyst.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.ActivityIntroBinding
 import co.aspirasoft.catalyst.fragments.ConnectionIntro
 import co.aspirasoft.catalyst.fragments.ConnectionRequestIntro
-import kotlinx.android.synthetic.main.activity_intro.*
 
 
 /**
@@ -14,28 +13,32 @@ import kotlinx.android.synthetic.main.activity_intro.*
  */
 class IntroActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityIntroBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_intro)
+        binding = ActivityIntroBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        wizardView.apply {
-            setupWithWizardSteps(supportFragmentManager, listOf(
+        binding.wizardView.apply {
+            setupWithWizardSteps(
+                supportFragmentManager, listOf(
                     ConnectionIntro(),
                     ConnectionRequestIntro()
-            ))
+                )
+            )
             setOnSubmitListener { finish() }
         }
 
-        closeButton.setOnClickListener {
+        binding.closeButton.setOnClickListener {
             finish()
         }
     }
 
     override fun onBackPressed() {
-        if (!wizardView.onBackPressed()) {
+        if (!binding.wizardView.onBackPressed()) {
             super.onBackPressed()
         }
     }
-
 
 }

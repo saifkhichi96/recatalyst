@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.aspirasoft.catalyst.R
+import co.aspirasoft.catalyst.databinding.SignupStepCreatePasswordBinding
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.InputUtils.markRequired
 import co.aspirasoft.view.WizardViewStep
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -24,44 +24,50 @@ import com.google.android.material.textfield.TextInputLayout
  */
 class CreatePasswordStep : WizardViewStep("") {
 
-    private lateinit var passwordField: TextInputEditText
-    private lateinit var passwordRepeatField: TextInputEditText
+    private var _binding: SignupStepCreatePasswordBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.signup_step_create_password, container, false)
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
 
-        // Get UI references
-        passwordField = v.findViewById(R.id.passwordField)
-        passwordRepeatField = v.findViewById(R.id.passwordRepeatField)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = SignupStepCreatePasswordBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         // Mark required fields
-        (passwordField.parent.parent as TextInputLayout).markRequired()
-        (passwordRepeatField.parent.parent as TextInputLayout).markRequired()
+        (binding.passwordField.parent.parent as TextInputLayout).markRequired()
+        (binding.passwordRepeatField.parent.parent as TextInputLayout).markRequired()
 
         // Validate passwords as they are typed
-        passwordField.addTextChangedListener(object : TextWatcher {
+        binding.passwordField.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                passwordField.isNotBlank(true)
+                binding.passwordField.isNotBlank(true)
             }
         })
-        passwordRepeatField.addTextChangedListener(object : TextWatcher {
+        binding.passwordRepeatField.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                passwordRepeatField.isNotBlank(true)
+                binding.passwordRepeatField.isNotBlank(true)
                 checkPasswordValid()
             }
         })
 
-        return v
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun checkPasswordValid(): Boolean {
-        passwordField.error = null
-        if (passwordField.text.isNullOrBlank() || passwordField.text.toString() != passwordRepeatField.text.toString()) {
-            passwordField.error = getString(R.string.password_mismatch_error)
+        binding.passwordField.error = null
+        if (binding.passwordField.text.isNullOrBlank() ||
+            binding.passwordField.text.toString() != binding.passwordRepeatField.text.toString()
+        ) {
+            binding.passwordField.error = getString(R.string.password_mismatch_error)
             return false
         }
 
@@ -69,10 +75,11 @@ class CreatePasswordStep : WizardViewStep("") {
     }
 
     override fun isDataValid(): Boolean {
-        return if (passwordField.isNotBlank(true) &&
-                passwordRepeatField.isNotBlank(true) &&
-                checkPasswordValid()) {
-            val password = passwordField.text.toString().trim()
+        return if (binding.passwordField.isNotBlank(true) &&
+            binding.passwordRepeatField.isNotBlank(true) &&
+            checkPasswordValid()
+        ) {
+            val password = binding.passwordField.text.toString().trim()
             data.put(R.id.passwordField, password)
             true
         } else false

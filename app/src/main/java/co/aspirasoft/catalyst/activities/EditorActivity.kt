@@ -10,6 +10,7 @@ import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.adapters.SectionAdapter
 import co.aspirasoft.catalyst.dao.ProjectsDao
+import co.aspirasoft.catalyst.databinding.ActivityEditorBinding
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
@@ -20,11 +21,12 @@ import co.aspirasoft.util.ViewUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_editor.*
 import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 
 class EditorActivity : DashboardChildActivity() {
+
+    private lateinit var binding: ActivityEditorBinding
 
     private lateinit var sectionAdapter: SectionAdapter
     private val sectionNumbers = ArrayList<String>()
@@ -35,7 +37,8 @@ class EditorActivity : DashboardChildActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editor)
+        binding = ActivityEditorBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get intent extras
         val i = intent
@@ -44,7 +47,7 @@ class EditorActivity : DashboardChildActivity() {
         fm = FileManager.projectDocsManager(this, project)
 
         // Display door/window details
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             title = document.name
             subtitle = String.format("v%s", document.version)
@@ -52,48 +55,48 @@ class EditorActivity : DashboardChildActivity() {
 
         // Display property fields
         sectionAdapter = SectionAdapter(this@EditorActivity, document, document.editableSections())
-        sectionsList.adapter = sectionAdapter
+        binding.sectionsList.adapter = sectionAdapter
 
-        headingsView.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.headingsView.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
             override fun onTabSelected(tab: TabLayout.Tab) {
-                selectedSection.text = tab.text
+                binding.selectedSection.text = tab.text
             }
         })
 
         val sectionHeadings = document.headings()
-        sectionHeadings.forEach { headingsView.addTab(headingsView.newTab().setText(it)) }
+        sectionHeadings.forEach { binding.headingsView.addTab(binding.headingsView.newTab().setText(it)) }
 
-        backButton.isEnabled = false
-        if (sectionHeadings.size <= 1) nextButton.isEnabled = false
+        binding.backButton.isEnabled = false
+        if (sectionHeadings.size <= 1) binding.nextButton.isEnabled = false
 
         sectionNumbers.apply { sectionHeadings.forEach { this.add(it.split("[.:]".toRegex())[0]) } }
         sectionAdapter.filter.filter(sectionNumbers[0])
 
-        nextButton.setOnClickListener { nextSection() }
-        backButton.setOnClickListener { prevSection() }
+        binding.nextButton.setOnClickListener { nextSection() }
+        binding.backButton.setOnClickListener { prevSection() }
     }
 
     private fun prevSection() {
-        val selected = headingsView.selectedTabPosition
+        val selected = binding.headingsView.selectedTabPosition
         navigateTo(selected - 1)
 
-        backButton.isEnabled = selected - 1 != 0
-        nextButton.isEnabled = true
+        binding.backButton.isEnabled = selected - 1 != 0
+        binding.nextButton.isEnabled = true
     }
 
     private fun nextSection() {
-        val selected = headingsView.selectedTabPosition
+        val selected = binding.headingsView.selectedTabPosition
         navigateTo(selected + 1)
 
-        nextButton.isEnabled = selected + 1 != headingsView.tabCount - 1
-        backButton.isEnabled = true
+        binding.nextButton.isEnabled = selected + 1 != binding.headingsView.tabCount - 1
+        binding.backButton.isEnabled = true
     }
 
     private fun navigateTo(position: Int) {
-        if (position >= 0 && position < headingsView.tabCount) {
-            headingsView.getTabAt(position)?.select()
+        if (position >= 0 && position < binding.headingsView.tabCount) {
+            binding.headingsView.getTabAt(position)?.select()
             sectionAdapter.filter.filter(sectionNumbers[position])
         }
     }
@@ -123,7 +126,7 @@ class EditorActivity : DashboardChildActivity() {
     }
 
     private fun saveProject() {
-        val status = Snackbar.make(sectionsList, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
+        val status = Snackbar.make(binding.sectionsList, getString(R.string.saving), Snackbar.LENGTH_INDEFINITE)
         status.show()
 
         project.addDocument(document)
@@ -137,7 +140,7 @@ class EditorActivity : DashboardChildActivity() {
         } catch (ex: Exception) {
             status.dismiss()
             val error = ex.message ?: getString(R.string.save_changes_error)
-            ViewUtils.showError(sectionsList, error)
+            ViewUtils.showError(binding.sectionsList, error)
         }
     }
 

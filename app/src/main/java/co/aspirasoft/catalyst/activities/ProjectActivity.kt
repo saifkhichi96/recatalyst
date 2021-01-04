@@ -17,6 +17,7 @@ import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.adapters.DocumentAdapter
 import co.aspirasoft.catalyst.adapters.FileAdapter
 import co.aspirasoft.catalyst.dao.ProjectsDao
+import co.aspirasoft.catalyst.databinding.ActivityProjectBinding
 import co.aspirasoft.catalyst.models.Asset
 import co.aspirasoft.catalyst.models.DocumentType
 import co.aspirasoft.catalyst.models.Project
@@ -26,7 +27,6 @@ import co.aspirasoft.catalyst.utils.storage.FileManager
 import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_project.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,6 +41,8 @@ import kotlinx.coroutines.tasks.await
  */
 class ProjectActivity : DashboardChildActivity() {
 
+    private lateinit var binding: ActivityProjectBinding
+
     private lateinit var project: Project
     private var editable: Boolean = false
 
@@ -54,12 +56,13 @@ class ProjectActivity : DashboardChildActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_project)
+        binding = ActivityProjectBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
         editable = project.ownerId == currentUser.id
         if (editable) {
-            addAssetButton.visibility = View.VISIBLE
+            binding.addAssetButton.visibility = View.VISIBLE
         }
 
         mAssetManager = FileManager.newInstance(this, "${project.ownerId}/projects/${project.name}/assets/")
@@ -113,9 +116,9 @@ class ProjectActivity : DashboardChildActivity() {
     override fun updateUI(currentUser: UserAccount) {
         // Show subject details
         supportActionBar?.title = project.name
-        clientName.text = "" // FIXME: project.clientName
-        clientContact.text = "" // FIXME: project.clientContact
-        comments.text = when {
+        binding.clientName.text = "" // FIXME: project.clientName
+        binding.clientContact.text = "" // FIXME: project.clientContact
+        binding.comments.text = when {
             project.description.isNullOrBlank() -> getString(R.string.notes_none)
             else -> project.description
         }
@@ -161,7 +164,7 @@ class ProjectActivity : DashboardChildActivity() {
     private fun showProjectAssets() {
         if (mAssetAdapter == null) {
             mAssetAdapter = FileAdapter(this, mAssets, mAssetManager)
-            contentList.adapter = mAssetAdapter
+            binding.contentList.adapter = mAssetAdapter
         }
 
         mAssetManager.listAll { items ->
@@ -179,7 +182,7 @@ class ProjectActivity : DashboardChildActivity() {
             }
 
             runOnUiThread {
-                assetsSpace.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
+                binding.assetsSpace.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
             }
         }
     }
@@ -218,11 +221,11 @@ class ProjectActivity : DashboardChildActivity() {
                                     }
                                 }
                             }
-                            .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
-                            .show()
+                        .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+                        .show()
                 }
             }
-            documentsList.adapter = mDocAdapter
+            binding.documentsList.adapter = mDocAdapter
         }
     }
 
@@ -241,7 +244,8 @@ class ProjectActivity : DashboardChildActivity() {
                 .setMessage(String.format(getString(R.string.upload_confirm), filename))
                 .setPositiveButton(android.R.string.yes) { dialog, _ ->
                     dialog.dismiss()
-                    val status = Snackbar.make(contentList, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
+                    val status =
+                        Snackbar.make(binding.contentList, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
                     status.show()
                     GlobalScope.launch(Dispatchers.Main) {
                         try {

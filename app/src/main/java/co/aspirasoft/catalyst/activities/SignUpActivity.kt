@@ -10,6 +10,7 @@ import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.bo.AccountsBO
 import co.aspirasoft.catalyst.bo.AuthBO
+import co.aspirasoft.catalyst.databinding.ActivitySignUpBinding
 import co.aspirasoft.catalyst.fragments.CreateAccountStep
 import co.aspirasoft.catalyst.fragments.CreatePasswordStep
 import co.aspirasoft.catalyst.fragments.IntroductionStep
@@ -18,7 +19,6 @@ import co.aspirasoft.util.ViewUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.coroutines.launch
 
 
@@ -36,6 +36,8 @@ import kotlinx.coroutines.launch
  */
 class SignUpActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySignUpBinding
+
     private var signUpCompleted = false
     private var linkUser: UserAccount? = null
     private var linkCredential: AuthCredential? = null
@@ -48,7 +50,8 @@ class SignUpActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get intent extras
         val i = intent
@@ -56,17 +59,17 @@ class SignUpActivity : AppCompatActivity() {
         linkCredential = i.getParcelableExtra(MyApplication.EXTRA_CREDENTIALS)
 
         // Set up views
-        wizardView.setupWithWizardSteps(
-                supportFragmentManager,
-                when {
-                    // case: new sign up
-                    linkUser == null || linkCredential == null -> {
-                        linkUser = null
-                        linkCredential = null
-                        listOf(
-                                CreateAccountStep(),
-                                IntroductionStep(),
-                                CreatePasswordStep()
+        binding.wizardView.setupWithWizardSteps(
+            supportFragmentManager,
+            when {
+                // case: new sign up
+                linkUser == null || linkCredential == null -> {
+                    linkUser = null
+                    linkCredential = null
+                    listOf(
+                        CreateAccountStep(),
+                        IntroductionStep(),
+                        CreatePasswordStep()
                         )
                     }
                     // case: continue sign up with Github
@@ -74,7 +77,7 @@ class SignUpActivity : AppCompatActivity() {
                 }
         )
 
-        wizardView.setOnSubmitListener {
+        binding.wizardView.setOnSubmitListener {
             findViewById<Button>(R.id.nextButton).text = getString(R.string.signing_in)
             findViewById<Button>(R.id.nextButton).isEnabled = false
             onSubmit(it)
@@ -125,7 +128,7 @@ class SignUpActivity : AppCompatActivity() {
      * @param error An (optional) description of cause of failure.
      */
     private fun onFailure(error: String) {
-        ViewUtils.showError(wizardView, error)
+        ViewUtils.showError(binding.wizardView, error)
         findViewById<Button>(R.id.nextButton).text = getString(R.string.create_account)
         findViewById<Button>(R.id.nextButton).isEnabled = true
     }
@@ -151,17 +154,17 @@ class SignUpActivity : AppCompatActivity() {
      * Asks for a confirmation before closing the activity and canceling sign up.
      */
     override fun onBackPressed() {
-        if (!wizardView.onBackPressed()) {
+        if (!binding.wizardView.onBackPressed()) {
             MaterialAlertDialogBuilder(this)
-                    .setMessage(getString(R.string.sign_up_cancel_confirm))
-                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                        super.onBackPressed()
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.no) { dialog, _ ->
-                        dialog.cancel()
-                    }
-                    .show()
+                .setMessage(getString(R.string.sign_up_cancel_confirm))
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    super.onBackPressed()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(android.R.string.no) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
         }
     }
 

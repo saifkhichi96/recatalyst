@@ -13,6 +13,9 @@ android {
         versionName "1.0.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
     }
     buildFeatures.dataBinding = true
     buildFeatures.viewBinding = true
@@ -50,6 +53,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
+
+    // Snapchat API for Bitmoji Kit
+    implementation([
+            'com.snapchat.kit.sdk:bitmoji:1.6.8',
+            'com.snapchat.kit.sdk:login:1.6.8',
+            'com.snapchat.kit.sdk:core:1.6.8',
+    ])
 
     // Utils
     implementation 'com.google.code.gson:gson:2.8.6'

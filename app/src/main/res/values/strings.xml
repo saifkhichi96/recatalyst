@@ -5,6 +5,8 @@
   <string name="tagline_1">The Ultimate Requirements Engineering</string>
   <string name="tagline_2">Solution for Software Projects</string>
 
+  <string name="snapchat_app_id" translatable="false">5e6765ce-7328-43a3-b6e3-3ba81cd6cf1b</string>
+
   <string name="format_date" translatable="false">%02d:%02d</string>
   <string name="format_date_12" translatable="false">hh:mma</string>
   <string name="format_date_24" translatable="false">hh:mm</string>

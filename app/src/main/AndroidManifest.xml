@@ -16,6 +16,32 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:theme="@style/AppTheme">
 
+    <meta-data
+        android:name="com.snapchat.kit.sdk.clientId"
+        android:value="@string/snapchat_app_id"/>
+    <meta-data
+        android:name="com.snapchat.kit.sdk.redirectUrl"
+        android:value="aspirasoft://recatalyst/oauth2"/>
+    <meta-data
+        android:name="com.snapchat.kit.sdk.scopes"
+        android:resource="@array/snap_kit_scopes"/>
+
+    <activity
+        android:name="com.snapchat.kit.sdk.SnapKitActivity"
+        android:launchMode="singleTask">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+
+        <data
+            android:host="recatalyst"
+            android:path="/oauth2"
+            android:scheme="aspirasoft"/>
+      </intent-filter>
+    </activity>
+
     <activity android:name=".activities.SplashActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -39,48 +65,49 @@
               android:configChanges="orientation|screenSize"/>
 
     <activity android:name=".activities.ProfileActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/profile"
-              android:parentActivityName=".activities.DashboardActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.DashboardActivity"/>
+
+    <activity android:name=".activities.ProfileAvatarActivity"/>
 
     <activity android:name=".activities.ConnectionsActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/connections"
-              android:parentActivityName=".activities.DashboardActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.DashboardActivity"/>
 
     <activity android:name=".activities.IntroActivity"
               android:configChanges="orientation|screenSize"
               android:parentActivityName=".activities.ConnectionsActivity"/>
 
     <activity android:name=".activities.TeamInvitesActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/collaboration"
-              android:parentActivityName=".activities.DashboardActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.DashboardActivity"/>
 
     <activity android:name=".activities.ProjectActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/project_details"
-              android:parentActivityName=".activities.DashboardActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.DashboardActivity"/>
 
     <activity android:name=".activities.ChatroomActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/chatroom"
-              android:parentActivityName=".activities.ProjectActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.ProjectActivity"/>
 
     <activity android:name=".activities.TeamActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/project_team"
-              android:parentActivityName=".activities.ChatroomActivity"
-              android:configChanges="orientation|screenSize"/>
-
+              android:parentActivityName=".activities.ChatroomActivity"/>
     <activity android:name=".activities.TasksActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/project_tasks"
-              android:parentActivityName=".activities.ProjectActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.ProjectActivity"/>
 
     <activity android:name=".activities.TaskActivity"
+              android:configChanges="orientation|screenSize"
               android:label="@string/task_details"
-              android:parentActivityName=".activities.ProjectActivity"
-              android:configChanges="orientation|screenSize"/>
+              android:parentActivityName=".activities.ProjectActivity"/>
 
     <activity android:name=".activities.EditorActivity"
               android:configChanges="orientation|screenSize"

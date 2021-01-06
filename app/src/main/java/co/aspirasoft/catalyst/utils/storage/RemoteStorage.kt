@@ -7,6 +7,10 @@ import com.google.firebase.storage.ktx.storage
 
 object RemoteStorage {
 
+    fun defaultAvatars() : StorageReference {
+        return Firebase.storage.getReference("default_avatars/")
+    }
+
     fun userData(uid: String): StorageReference {
         return Firebase.storage.getReference("users/$uid/")
     }

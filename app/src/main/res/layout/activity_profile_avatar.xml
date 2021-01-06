@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingHorizontal="@dimen/activity_horizontal_margin"
+              android:paddingVertical="@dimen/activity_vertical_margin"
+              android:orientation="vertical"
+              tools:context=".activities.ProfileAvatarActivity">
+
+  <!-- Header -->
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+    <!-- Profile Photo -->
+    <com.google.android.material.imageview.ShapeableImageView
+        style="@style/Widget.App.ShapeableImageView"
+        android:id="@+id/account_avatar"
+        android:layout_width="112dp"
+        android:layout_height="113dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="top"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/avatars"/>
+
+    <!-- Import Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+      <!-- Import from Bitmoju -->
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.TextButton"
+          android:id="@+id/import_bitmoji_button"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="0dp"
+          android:onClick="importFromBitmoji"
+          android:text="Import Your Bitmoji"
+          android:textAllCaps="false"
+          android:textColor="?attr/colorOnBackground"/>
+
+      <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimary"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:alpha="0.5"/>
+
+      <!-- Import from Github -->
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.TextButton"
+          android:id="@+id/import_github_button"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="0dp"
+          android:onClick="importFromGithub"
+          android:text="Import Github Avatar"
+          android:textAllCaps="false"
+          android:textColor="?attr/colorOnBackground"/>
+
+      <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorPrimary"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:alpha="0.5"/>
+
+      <!-- Pick from Device -->
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.TextButton"
+          android:id="@+id/pick_photo_button"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="0dp"
+          android:onClick="importFromDevice"
+          android:text="Select from Device"
+          android:textAllCaps="false"
+          android:textColor="?attr/colorOnBackground"/>
+
+      <!-- Pick from Device -->
+      <com.google.android.material.button.MaterialButton
+          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+          android:id="@+id/upload_photo_button"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:onClick="saveAvatar"
+          android:text="Save Avatar"
+          app:backgroundTint="?attr/colorAccent"
+          app:cornerRadius="16dp"/>
+
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <!-- Default Avatars Section -->
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="avatar gallery"
+        android:textAllCaps="true"
+        android:textStyle="bold"/>
+
+    <GridView
+        android:id="@+id/avatar_gallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="80dp"
+        android:numColumns="auto_fit"/>
+
+  </LinearLayout>
+</LinearLayout>

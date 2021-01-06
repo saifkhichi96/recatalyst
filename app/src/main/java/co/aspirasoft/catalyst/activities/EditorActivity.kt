@@ -14,15 +14,13 @@ import co.aspirasoft.catalyst.databinding.ActivityEditorBinding
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.UserAccount
-import co.aspirasoft.catalyst.utils.FileUtils
 import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
-import co.aspirasoft.catalyst.utils.storage.FileManager
+import co.aspirasoft.catalyst.utils.storage.ProjectStorage
 import co.aspirasoft.util.ViewUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
-import java.io.FileOutputStream
 
 class EditorActivity : DashboardChildActivity() {
 
@@ -33,7 +31,7 @@ class EditorActivity : DashboardChildActivity() {
 
     private lateinit var project: Project
     private lateinit var document: Document
-    private lateinit var fm: FileManager
+    private lateinit var projectStorage: ProjectStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,7 @@ class EditorActivity : DashboardChildActivity() {
         val i = intent
         document = i.getSerializableExtra(MyApplication.EXTRA_DOCUMENT) as Document? ?: return finish()
         project = i.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
-        fm = FileManager.projectDocsManager(this, project)
+        projectStorage = ProjectStorage(this, project)
 
         // Display door/window details
         setSupportActionBar(binding.toolbar)
@@ -134,7 +132,6 @@ class EditorActivity : DashboardChildActivity() {
         try {
             lifecycleScope.launch {
                 ProjectsDao.add(project)
-                fm.upload(document)
             }
             status.setText(getString(R.string.save_changes_success))
             Handler().postDelayed({ finish() }, 2500L)
@@ -146,14 +143,7 @@ class EditorActivity : DashboardChildActivity() {
     }
 
     private fun shareProject() {
-        // Save document as a PDF
-        val name = String.format("%s (v%s).pdf", document.name, document.version)
-        val file = FileUtils.createTempFile(name, fm.cache)
-        FileOutputStream(file).use { fos ->
-            fos.write(document.toByteArray())
-        }
-
-        // Open PDF in external app
+        val file = projectStorage.cache(document)
         file.openInExternalApp(this)
     }
 

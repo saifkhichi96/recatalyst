@@ -1,15 +1,15 @@
 package co.aspirasoft.catalyst.adapters
 
-import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.models.Message
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.MessageView
 
 class MessageAdapter(
-    context: Context,
+    context: AppCompatActivity,
     private val messages: MutableList<Message>,
     private val currentUser: UserAccount,
 ) : ModelViewAdapter<Message>(context, messages, MessageView::class) {

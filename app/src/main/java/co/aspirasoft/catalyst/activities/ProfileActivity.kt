@@ -21,7 +21,7 @@ import co.aspirasoft.catalyst.dao.ConnectionsDao
 import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.databinding.ActivityProfileBinding
 import co.aspirasoft.catalyst.models.UserAccount
-import co.aspirasoft.catalyst.utils.storage.FileManager
+import co.aspirasoft.catalyst.utils.storage.AccountStorage
 import co.aspirasoft.catalyst.utils.storage.ImageLoader
 import co.aspirasoft.util.InputUtils.isNotBlank
 import co.aspirasoft.util.PermissionUtils
@@ -39,9 +39,8 @@ import java.io.ByteArrayOutputStream
 class ProfileActivity : DashboardChildActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-    private lateinit var mFileManager: FileManager
-
     private lateinit var user: UserAccount
+    private lateinit var accountStorage: AccountStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +48,7 @@ class ProfileActivity : DashboardChildActivity() {
         setContentView(binding.root)
 
         user = intent.getSerializableExtra(MyApplication.EXTRA_PROFILE_USER) as UserAccount? ?: currentUser
-        mFileManager = FileManager.newInstance(this, "users/${user.id}/")
+        accountStorage = AccountStorage(this, user.id)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -117,9 +116,11 @@ class ProfileActivity : DashboardChildActivity() {
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        showUserImage()
         binding.user = user
         binding.isOwnProfile = user == currentUser
+
+        // AVATAR
+        ImageLoader.loadUserAvatar(this, user.id, binding.accountAvatar)
 
         // STATS SECTION
         ConnectionsDao.getUserConnections(user.id) { binding.connections = it.size }

@@ -23,7 +23,7 @@ import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.RemoteFile
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.FileUtils.getLastPathSegmentOnly
-import co.aspirasoft.catalyst.utils.storage.FileManager
+import co.aspirasoft.catalyst.utils.storage.ProjectStorage
 import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -41,11 +41,11 @@ import kotlinx.coroutines.tasks.await
  * project.
  *
  * @property binding The bindings to XML views.
- * @property fm The [FileManager] for managing project files.
  * @property project The project to display.
  * @property projectDocumentsAdapter A [DocumentAdapter] for showing project documents.
  * @property projectFilesAdapter A [FileAdapter] for showing project files.
  * @property projectFiles List of project files.
+ * @property projectStorage Reference to the project storage in remote database.
  * @property isEditable True if owner is viewing project, else false.
  *
  * @author saifkhichi96
@@ -54,10 +54,10 @@ import kotlinx.coroutines.tasks.await
 class ProjectActivity : DashboardChildActivity() {
 
     private lateinit var binding: ActivityProjectBinding
-    private lateinit var fm: FileManager
     private lateinit var project: Project
     private lateinit var projectDocumentsAdapter: DocumentAdapter
     private lateinit var projectFilesAdapter: FileAdapter
+    private lateinit var projectStorage: ProjectStorage
     private val projectFiles = ArrayList<RemoteFile>()
     private var isEditable: Boolean = false
 
@@ -67,13 +67,13 @@ class ProjectActivity : DashboardChildActivity() {
         setContentView(binding.root)
 
         project = intent.getSerializableExtra(MyApplication.EXTRA_PROJECT) as Project? ?: return finish()
+        projectStorage = ProjectStorage(this, project)
         isEditable = project.ownerId == currentUser.id
         if (isEditable) {
             binding.addAssetButton.visibility = View.VISIBLE
         }
 
-        fm = FileManager.newInstance(this, "${project.ownerId}/projects/${project.name}/assets/")
-        projectFilesAdapter = FileAdapter(this, projectFiles, fm)
+        projectFilesAdapter = FileAdapter(this, projectFiles, projectStorage)
         binding.contentList.adapter = projectFilesAdapter
 
         projectDocumentsAdapter = DocumentAdapter(this, project, DocumentType.values())
@@ -132,7 +132,9 @@ class ProjectActivity : DashboardChildActivity() {
         }
 
         projectFiles.clear()
-        fm.listAll { items -> items.forEach { onProjectFileReceived(it) } }
+        lifecycleScope.launch {
+            projectStorage.getAllFiles().forEach { onProjectFileReceived(it) }
+        }
     }
 
     /**
@@ -240,14 +242,13 @@ class ProjectActivity : DashboardChildActivity() {
         val status = Snackbar.make(binding.contentList, getString(R.string.uploading), Snackbar.LENGTH_INDEFINITE)
         status.show()
         try {
-            fm.upload(filename, data)?.let { metadata ->
-                projectFilesAdapter.add(RemoteFile(filename, metadata))
-                projectFilesAdapter.notifyDataSetChanged()
-
-                runOnUiThread {
-                    status.setText(getString(R.string.uploaded))
-                    Handler().postDelayed({ status.dismiss() }, 2500L)
-                }
+            val metadata = projectStorage.upload(filename, data) ?: throw Exception()
+            projectFiles.add(RemoteFile(filename, metadata))
+            projectFilesAdapter.notifyDataSetChanged()
+            runOnUiThread {
+                binding.assetsSpace.visibility = View.GONE
+                status.setText(getString(R.string.uploaded))
+                Handler().postDelayed({ status.dismiss() }, 2500L)
             }
         } catch (ex: Exception) {
             runOnUiThread {

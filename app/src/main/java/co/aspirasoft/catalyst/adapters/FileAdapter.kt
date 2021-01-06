@@ -1,58 +1,62 @@
 package co.aspirasoft.catalyst.adapters
 
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.models.RemoteFile
 import co.aspirasoft.catalyst.utils.FileUtils.openInExternalApp
-import co.aspirasoft.catalyst.utils.storage.FileManager
+import co.aspirasoft.catalyst.utils.storage.ProjectStorage
 import co.aspirasoft.catalyst.views.ProjectFileView
 import co.aspirasoft.util.ViewUtils
+import kotlinx.coroutines.launch
 import java.io.IOException
 
-class FileAdapter(val context: Activity, val material: ArrayList<RemoteFile>, private val fileManager: FileManager) :
-    ModelViewAdapter<RemoteFile>(context, material, ProjectFileView::class) {
+class FileAdapter(
+    private val context: AppCompatActivity,
+    private val files: ArrayList<RemoteFile>,
+    private val storage: ProjectStorage,
+) : ModelViewAdapter<RemoteFile>(context, files, ProjectFileView::class) {
 
     override fun notifyDataSetChanged() {
-        material.sortBy { it.metadata.creationTimeMillis }
+        files.sortBy { it.metadata.creationTimeMillis }
         super.notifyDataSetChanged()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val v = super.getView(position, convertView, parent) as ProjectFileView
-        val item = material[position]
-        if (fileManager.hasInCache(item.name)) {
-            v.setStatus(ProjectFileView.FileStatus.Local)
-        } else {
-            v.setStatus(ProjectFileView.FileStatus.Cloud)
-        }
+        val item = files[position]
+        v.setStatus(when (storage.hasFileInCache(item.name)) {
+            true -> ProjectFileView.FileStatus.Local
+            else -> ProjectFileView.FileStatus.Cloud
+        })
 
-        v.setOnClickListener {
-            v.setStatus(ProjectFileView.FileStatus.Downloading)
-            fileManager.download(
-                item.name,
-                { file ->
-                    v.setStatus(ProjectFileView.FileStatus.Local)
-                    try {
-                        file.openInExternalApp(context)
-                    } catch (ex: IOException) {
-                        ViewUtils.showError(v, ex.message ?: context.getString(R.string.file_open_error))
-                    }
-                },
-                {
-                    v.setStatus(ProjectFileView.FileStatus.Cloud)
-                    ViewUtils.showError(v, it.message ?: context.getString(R.string.file_download_error))
-                }
-            )
-        }
-
+        v.setOnClickListener { downloadFile(v, item.name) }
         v.setOnLongClickListener {
             // TODO: Delete file in editable mode
             false
         }
         return v
+    }
+
+    private fun downloadFile(v: ProjectFileView, path: String) = context.lifecycleScope.launch {
+        v.setStatus(ProjectFileView.FileStatus.Downloading)
+        try {
+            val file = storage.getFile(path)
+            v.setStatus(ProjectFileView.FileStatus.Local)
+            context.runOnUiThread {
+                try {
+                    file.openInExternalApp(context)
+                } catch (ex: IOException) {
+                    ViewUtils.showError(v, ex.message ?: context.getString(R.string.file_open_error))
+                }
+            }
+        } catch (ex: Exception) {
+            v.setStatus(ProjectFileView.FileStatus.Cloud)
+            ViewUtils.showError(v, ex.message ?: context.getString(R.string.file_download_error))
+        }
     }
 
 }

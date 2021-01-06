@@ -3,6 +3,7 @@ package co.aspirasoft.catalyst.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
 import co.aspirasoft.catalyst.databinding.ViewRequestIncomingBinding
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.utils.storage.ImageLoader
@@ -40,9 +41,11 @@ class IncomingRequestView : BaseView<UserAccount> {
         binding.root.setOnClickListener { onAvatarClickedListener?.let { it(model) } }
         binding.accountName.text = model.name
         binding.accountShortBio.text = model.headline
-        ImageLoader.with(context)
-            .load(model.id)
-            .into(binding.accountAvatar)
+        ImageLoader.loadUserAvatar(
+            (context as AppCompatActivity),
+            model.id,
+            binding.accountAvatar
+        )
     }
 
 }

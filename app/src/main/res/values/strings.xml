@@ -138,6 +138,7 @@
   </string>
   <string name="signing_in">Signing up…</string>
   <string name="stakeholders">Stakeholders</string>
+  <string name="storage_access_denied">Cannot access device storage.</string>
   <string name="task_details">Task Details</string>
   <string name="tasks">Tasks</string>
   <string name="teams">Teams</string>

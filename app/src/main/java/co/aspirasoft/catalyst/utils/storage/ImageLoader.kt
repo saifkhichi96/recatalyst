@@ -1,57 +1,37 @@
 package co.aspirasoft.catalyst.utils.storage
 
-import android.content.Context
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.coroutines.launch
 
 object ImageLoader {
 
-    fun with(context: Context): ImageLoadTask {
-        return ImageLoadTask(context)
-    }
-
-    class ImageLoadTask(val context: Context) {
-        fun load(uid: String): UserImageTask {
-            return UserImageTask(context, uid)
-        }
-    }
-
-    class UserImageTask(val context: Context, val uid: String) {
-        private var skip: Boolean = false
-        private val filename = "photo.png"
-
-        fun skipCache(skip: Boolean): UserImageTask {
-            this.skip = skip
-            return this
-        }
-
-        fun into(target: ImageView) {
-            FileManager.newInstance(context, "users/${uid}/").download(
-                filename,
-                {
-                    try {
-                        Glide.with(context)
-                            .load(it)
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .placeholder(R.drawable.placeholder_avatar)
-                            .into(target)
-                    } catch (ignored: Exception) {
-
-                    }
-                },
-                {
-                    try {
-                        Glide.with(context).load(R.drawable.placeholder_avatar).into(target)
-                    } catch (ignored: Exception) {
-
-                    }
-                },
-                skip
-            )
-
+    /**
+     * Shows a user's avatar in an [ImageView].
+     *
+     * @param context An instance of the activity where this view would be displayed.
+     * @param uid The id of the user account.
+     * @param view The [ImageView] where to show the avatar.
+     */
+    fun loadUserAvatar(context: AppCompatActivity, uid: String, view: ImageView) = context.lifecycleScope.launch {
+        val storage = AccountStorage(context, uid)
+        try {
+            // Quickly load and display the cached avatar
+            val cachedAvatar = storage.downloadAvatar(preferCache = true)
+            Glide.with(context)
+                .load(cachedAvatar)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(R.drawable.placeholder_avatar)
+                .apply { context.runOnUiThread { this.into(view) } }
+        } catch (ex: Exception) {
+            Glide.with(context)
+                .load(R.drawable.placeholder_avatar)
+                .apply { context.runOnUiThread { this.into(view) } }
         }
     }
 

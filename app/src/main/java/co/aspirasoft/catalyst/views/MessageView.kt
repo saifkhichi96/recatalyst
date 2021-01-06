@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.databinding.ViewMessageBinding
 import co.aspirasoft.catalyst.databinding.ViewMessageOutgoingBinding
@@ -45,9 +46,11 @@ class MessageView : BaseView<Message> {
         body?.text = model.content
         timestamp?.text = model.datetime
         senderAvatar?.let {
-            ImageLoader.with(context)
-                .load(model.sender)
-                .into(it)
+            ImageLoader.loadUserAvatar(
+                (context as AppCompatActivity),
+                model.id,
+                it
+            )
         }
 
         senderName?.text = ""

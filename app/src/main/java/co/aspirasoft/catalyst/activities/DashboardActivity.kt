@@ -1,6 +1,5 @@
 package co.aspirasoft.catalyst.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.activities.abs.DashboardActivity
+import co.aspirasoft.catalyst.activities.abs.SecureActivity
 import co.aspirasoft.catalyst.bo.AuthBO
 import co.aspirasoft.catalyst.dao.ProjectsDao
 import co.aspirasoft.catalyst.dao.TeamDao
@@ -131,7 +131,7 @@ class DashboardActivity : DashboardActivity() {
         }
     }
 
-    private inner class ProjectAdapter(context: Context, val projects: List<Project>)
+    private inner class ProjectAdapter(context: SecureActivity, val projects: List<Project>)
         : ModelViewAdapter<Project>(context, projects, ProjectView::class) {
 
         override fun notifyDataSetChanged() {
@@ -151,7 +151,7 @@ class DashboardActivity : DashboardActivity() {
 
     }
 
-    private inner class TeamAdapter(context: Context, val teams: List<Team>)
+    private inner class TeamAdapter(context: SecureActivity, val teams: List<Team>)
         : ModelViewAdapter<Team>(context, teams, TeamView::class) {
 
         override fun notifyDataSetChanged() {

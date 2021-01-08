@@ -3,6 +3,7 @@ package co.aspirasoft.catalyst.models
 import co.aspirasoft.model.BaseModel
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.reflect.full.memberProperties
 
 /**
  * A chat message sent by a user.
@@ -21,11 +22,16 @@ data class Message(var id: String = "") : BaseModel() {
 
     var content: String = ""
     var sender: String = ""
-    var timestamp: Date = Date(System.currentTimeMillis())
+    var timestamp: Long = System.currentTimeMillis()
     val datetime: String
         get() = SimpleDateFormat("hh:mm a, EE, MMM dd", Locale.getDefault()).format(timestamp)
 
     @Transient
     var isIncoming: Boolean = true
+
+    fun asMap(): Map<String, Any?> {
+        val props = Message::class.memberProperties.associateBy { it.name }
+        return props.keys.associateWith { props[it]?.get(this) }
+    }
 
 }

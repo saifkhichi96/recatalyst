@@ -6,6 +6,7 @@ import co.aspirasoft.catalyst.models.Project
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ktx.getValue
 import kotlinx.coroutines.tasks.await
 
@@ -29,9 +30,13 @@ object ChatroomDao {
      */
     suspend fun add(project: Project, message: Message) {
         MyApplication.refToProjectMessages(project.ownerId, project.name)
-                .push().apply { message.id = this.key.toString() }
-                .setValue(message)
-                .await()
+            .push().apply { message.id = this.key.toString() }
+
+        val map = message.asMap().toMutableMap()
+        map["timestamp"] = ServerValue.TIMESTAMP
+        MyApplication.refToProjectMessages(project.ownerId, project.name).child(message.id)
+            .setValue(map)
+            .await()
     }
 
     /**

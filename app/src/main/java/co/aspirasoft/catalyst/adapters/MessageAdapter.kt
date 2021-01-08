@@ -28,7 +28,7 @@ class MessageAdapter(
 
         if (position > 0) {
             val prev = messages[position - 1]
-            if (curr.timestamp.time - prev.timestamp.time < 30 * 60 * 1000) {
+            if (curr.timestamp - prev.timestamp < 30 * 60 * 1000) {
                 (v as MessageView).hideTimestamp()
                 if (prev.sender == curr.sender) {
                     v.hideSenderName()

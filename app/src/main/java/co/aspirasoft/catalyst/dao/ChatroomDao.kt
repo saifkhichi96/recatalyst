@@ -1,8 +1,8 @@
 package co.aspirasoft.catalyst.dao
 
-import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.models.Message
 import co.aspirasoft.catalyst.models.Project
+import co.aspirasoft.catalyst.utils.db.RealtimeDatabase
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,12 +29,12 @@ object ChatroomDao {
      * @param message The message to send.
      */
     suspend fun add(project: Project, message: Message) {
-        MyApplication.refToProjectMessages(project.ownerId, project.name)
+        RealtimeDatabase.chatroom(project.ownerId, project.name)
             .push().apply { message.id = this.key.toString() }
 
         val map = message.asMap().toMutableMap()
         map["timestamp"] = ServerValue.TIMESTAMP
-        MyApplication.refToProjectMessages(project.ownerId, project.name).child(message.id)
+        RealtimeDatabase.chatroom(project.ownerId, project.name).child(message.id)
             .setValue(map)
             .await()
     }
@@ -46,17 +46,17 @@ object ChatroomDao {
      * @param observer Callback for receiving the results.
      */
     fun observeChatroom(project: Project, observer: (Message) -> Unit) {
-        MyApplication.refToProjectMessages(project.ownerId, project.name)
-                .addChildEventListener(object : ChildEventListener {
-                    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                        snapshot.getValue<Message>()?.let { observer(it) }
-                    }
+        RealtimeDatabase.chatroom(project.ownerId, project.name)
+            .addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    snapshot.getValue<Message>()?.let { observer(it) }
+                }
 
-                    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-                    override fun onChildRemoved(snapshot: DataSnapshot) {}
-                    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-                    override fun onCancelled(error: DatabaseError) {}
-                })
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+                override fun onChildRemoved(snapshot: DataSnapshot) {}
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+                override fun onCancelled(error: DatabaseError) {}
+            })
     }
 
 }

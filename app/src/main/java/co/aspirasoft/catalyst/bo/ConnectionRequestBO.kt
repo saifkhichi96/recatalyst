@@ -1,11 +1,9 @@
 package co.aspirasoft.catalyst.bo
 
-import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.dao.AccountsDao
 import co.aspirasoft.catalyst.dao.ConnectionsDao
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 /**
  * Defines business-level logic for managing connection requests.
@@ -49,18 +47,7 @@ object ConnectionRequestBO {
 
                 GlobalScope.launch {
                     try {
-                        // Add outgoing request to the sender's account
-                        MyApplication.refToUserConnectionsOutgoing(sender)
-                                .child(recipient.id)
-                                .setValue(recipient.id)
-                                .await()
-
-                        // Add incoming request to the recipient's account
-                        MyApplication.refToUserConnectionsIncoming(recipient.id)
-                                .child(sender)
-                                .setValue(sender)
-                                .await()
-
+                        ConnectionsDao.addConnectionRequest(sender, recipient.id)
                         receiver(null)
                     } catch (ex: Exception) {
                         receiver(ex)
@@ -73,43 +60,23 @@ object ConnectionRequestBO {
     /**
      * Accepts a connection request.
      *
-     * @param uid The id of the user who wants to accept a received request.
+     * @param recipient The id of the user who wants to accept a received request.
      * @param sender The user id of the request sender.
      */
-    suspend fun accept(uid: String, sender: String) {
-        // Add it to accepted requests list of both users
-        MyApplication.refToUserConnections(uid)
-                .child(sender)
-                .setValue(sender)
-                .await()
-
-        MyApplication.refToUserConnections(sender)
-                .child(uid)
-                .setValue(uid)
-                .await()
-
-        // Remove connection logs
-        reject(uid, sender)
+    suspend fun accept(recipient: String, sender: String) {
+        ConnectionsDao.addConnection(recipient, sender)
+        reject(recipient, sender)
     }
 
     /**
      * Rejects a connection request.
      *
-     * @param uid The id of the user who wants to reject a received request.
+     * @param recipient The id of the user who wants to reject a received request.
      * @param sender The user id of the request sender.
      */
-    suspend fun reject(uid: String, sender: String) {
-        // Remove request from incoming requests list
-        MyApplication.refToUserConnectionsIncoming(uid)
-                .child(sender)
-                .removeValue()
-                .await()
-
-        // Remove outgoing request from the sender's account
-        MyApplication.refToUserConnectionsOutgoing(sender)
-                .child(uid)
-                .removeValue()
-                .await()
+    suspend fun reject(recipient: String, sender: String) {
+        ConnectionsDao.deleteSentRequest(sender, recipient)
+        ConnectionsDao.deleteReceivedRequest(sender, recipient)
     }
 
 }

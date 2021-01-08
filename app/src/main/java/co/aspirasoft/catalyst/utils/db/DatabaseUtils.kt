@@ -1,4 +1,4 @@
-package co.aspirasoft.catalyst.utils
+package co.aspirasoft.catalyst.utils.db
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

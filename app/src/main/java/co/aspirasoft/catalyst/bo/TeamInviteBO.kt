@@ -1,9 +1,8 @@
 package co.aspirasoft.catalyst.bo
 
-import co.aspirasoft.catalyst.MyApplication
+import co.aspirasoft.catalyst.dao.TeamDao
 import co.aspirasoft.catalyst.models.Team
 import co.aspirasoft.catalyst.models.TeamInvite
-import kotlinx.coroutines.tasks.await
 
 /**
  * Defines business-level logic for managing connection requests.
@@ -35,30 +34,7 @@ object TeamInviteBO {
             team.hasInvited(uid) -> throw IllegalStateException()
 
             // case: all okay, send the invitation
-            else -> {
-                // Create a new unique key for the invite
-                val ref = MyApplication.refToReceivedInvites(uid).push()
-                val key = ref.key!!
-
-                // Create a new invite
-                val invite = TeamInvite(key)
-                invite.project = team.project
-                invite.sender = team.manager
-                invite.recipient = uid
-
-                // Save invite in database
-                ref.setValue(invite).await()
-                MyApplication.refToSentInvites(team.manager)
-                    .child(key)
-                    .setValue(invite)
-                    .await()
-
-                MyApplication.refToProjectTeam(team.manager, team.project)
-                    .child("invitedMembers/")
-                    .child(invite.recipient)
-                    .setValue(invite.recipient)
-                    .await()
-            }
+            else -> TeamDao.addInvite(uid, team)
         }
     }
 
@@ -68,22 +44,7 @@ object TeamInviteBO {
      * @param invite The invite to accept.
      */
     suspend fun accept(invite: TeamInvite) {
-        // Add recipient to the invited team
-        MyApplication.refToProjectTeam(invite.sender, invite.project)
-            .child("members/")
-            .child(invite.recipient)
-            .setValue(invite.recipient)
-            .await()
-
-        MyApplication.refToUser(invite.recipient)
-            .child("teams/")
-            .push()
-            .setValue(Team(
-                project = invite.project,
-                manager = invite.sender
-            ))
-
-        // Remove invitation logs
+        TeamDao.addTeamMember(invite.recipient, Team(project = invite.project, manager = invite.sender))
         reject(invite)
     }
 
@@ -93,17 +54,8 @@ object TeamInviteBO {
      * @param invite The invite to reject.
      */
     suspend fun reject(invite: TeamInvite) {
-        // Remove invite from received invites list
-        MyApplication.refToReceivedInvites(invite.recipient)
-            .child(invite.id)
-            .removeValue()
-            .await()
-
-        // Remove invite from sent invites list
-        MyApplication.refToSentInvites(invite.sender)
-            .child(invite.id)
-            .removeValue()
-            .await()
+        TeamDao.deleteReceivedInvite(invite.recipient, invite.id)
+        TeamDao.deleteSentInvite(invite.sender, invite.id)
     }
 
 }

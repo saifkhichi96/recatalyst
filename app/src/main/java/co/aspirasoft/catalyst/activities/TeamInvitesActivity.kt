@@ -3,7 +3,7 @@ package co.aspirasoft.catalyst.activities
 import android.os.Bundle
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.adapters.IncomingInviteAdapter
-import co.aspirasoft.catalyst.dao.TeamInviteDao
+import co.aspirasoft.catalyst.dao.TeamDao
 import co.aspirasoft.catalyst.databinding.ActivityListBinding
 import co.aspirasoft.catalyst.models.TeamInvite
 import co.aspirasoft.catalyst.models.UserAccount
@@ -28,7 +28,7 @@ class TeamInvitesActivity : DashboardChildActivity() {
     }
 
     override fun updateUI(currentUser: UserAccount) {
-        TeamInviteDao.getReceivedInvites(currentUser.id) {
+        TeamDao.getReceivedInvites(currentUser.id) {
             invites.clear()
             invites.addAll(it)
             inviteAdapter.notifyDataSetChanged()

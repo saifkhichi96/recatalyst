@@ -1,9 +1,9 @@
 package co.aspirasoft.catalyst.dao
 
-import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.models.Project
-import co.aspirasoft.catalyst.utils.getOrNull
-import co.aspirasoft.catalyst.utils.list
+import co.aspirasoft.catalyst.utils.db.RealtimeDatabase
+import co.aspirasoft.catalyst.utils.db.getOrNull
+import co.aspirasoft.catalyst.utils.db.list
 import kotlinx.coroutines.tasks.await
 
 
@@ -24,9 +24,9 @@ object ProjectsDao {
      * @param project The project to add.
      */
     suspend fun add(project: Project) {
-        MyApplication.refToProject(project.ownerId, project.name)
-                .setValue(project)
-                .await()
+        RealtimeDatabase.project(project.ownerId, project.name)
+            .setValue(project)
+            .await()
     }
 
     /**
@@ -37,7 +37,7 @@ object ProjectsDao {
      * @param receiver Callback for receiving the result.
      */
     fun get(uid: String, project: String, receiver: (Project?) -> Unit) {
-        MyApplication.refToProject(uid, project).getOrNull(receiver)
+        RealtimeDatabase.project(uid, project).getOrNull(receiver)
     }
 
     /**
@@ -47,7 +47,7 @@ object ProjectsDao {
      * @param receiver Callback for receiving the result.
      */
     fun getUserProjects(uid: String, receiver: (List<Project>) -> Unit) {
-        MyApplication.refToProjects(uid).list(receiver)
+        RealtimeDatabase.projects(uid).list(receiver)
     }
 
 }

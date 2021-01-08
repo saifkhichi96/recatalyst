@@ -1,8 +1,6 @@
 package co.aspirasoft.catalyst
 
 import android.app.Application
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 /**
  * An [Application] subclass represents this application.
@@ -26,27 +24,6 @@ class MyApplication : Application() {
         // the PARAM_* strings are used to define parameters
         // used in dynamic links
         const val PARAM_LINK_TARGET = "continueUrl"
-
-        // the refTo* functions return a reference to resources
-        // in the Firebase database
-        private val db get() = Firebase.database
-
-        fun refToUsers() = db.getReference("users/")
-        fun refToUser(uid: String) = refToUsers().child(uid)
-        fun refToUserAccount(uid: String) = refToUser(uid).child("account/")
-        fun refToUserConnections(uid: String) = refToUser(uid).child("connections/")
-        fun refToUserConnectionsIncoming(uid: String) = refToUser(uid).child("incoming_request/")
-        fun refToUserConnectionsOutgoing(uid: String) = refToUser(uid).child("outgoing_request/")
-
-        fun refToProjects(uid: String) = refToUser(uid).child("projects/")
-        fun refToProject(uid: String, pid: String) = refToProjects(uid).child(pid)
-        fun refToProjectMessages(uid: String, pid: String) = refToProject(uid, pid).child("chats/")
-        fun refToProjectTeam(uid: String, pid: String) = refToProject(uid, pid).child("team/")
-
-        fun refToReceivedInvites(uid: String) = refToUser(uid).child("incoming_invites/")
-        fun refToSentInvites(uid: String) = refToUser(uid).child("outgoing_invites/")
-
-        fun refToNews(uid: String, pid: String) = refToProject(uid, pid).child("news/")
     }
 
 }

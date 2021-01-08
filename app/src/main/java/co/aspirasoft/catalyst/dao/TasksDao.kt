@@ -1,8 +1,8 @@
 package co.aspirasoft.catalyst.dao
 
-import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.Task
+import co.aspirasoft.catalyst.utils.db.RealtimeDatabase
 import com.google.firebase.database.ChildEventListener
 import kotlinx.coroutines.tasks.await
 
@@ -16,9 +16,9 @@ object TasksDao {
      * @param project The project to add the task to.
      */
     suspend fun add(task: Task, project: Project) {
-        val ref = MyApplication.refToProject(project.ownerId, project.name)
-                .child("tasks/")
-                .push()
+        val ref = RealtimeDatabase.project(project.ownerId, project.name)
+            .child("tasks/")
+            .push()
         ref.key?.let {
             task.id = it
             ref.setValue(task).await()
@@ -32,9 +32,9 @@ object TasksDao {
      * @param receiver Callback for receiving the result.
      */
     fun getProjectTasks(project: Project, receiver: ChildEventListener) {
-        MyApplication.refToProject(project.ownerId, project.name)
-                .child("tasks/")
-                .addChildEventListener(receiver)
+        RealtimeDatabase.project(project.ownerId, project.name)
+            .child("tasks/")
+            .addChildEventListener(receiver)
     }
 
 }

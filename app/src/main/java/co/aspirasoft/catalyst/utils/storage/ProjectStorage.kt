@@ -39,10 +39,10 @@ class ProjectStorage(context: Context, project: Project) {
      * @param document The document to save.
      * @return The newly created document file on device.
      */
-    fun cache(document: Document): File {
+    fun cache(document: Document, context: Context): File {
         val file = FileUtils.createTempFile(document.toPdfName(), docsStorage.cache)
         FileOutputStream(file).use { fos ->
-            fos.write(document.toByteArray())
+            fos.write(document.toByteArray(context))
         }
         return file
     }
@@ -140,8 +140,8 @@ class ProjectStorage(context: Context, project: Project) {
      * @param document The document to upload.
      * @return The metadata of uploaded file, or null if cannot be uploaded.
      */
-    suspend fun upload(document: Document): StorageMetadata? {
-        return docsStorage.upload(document.toPdfName(), document.toByteArray())
+    suspend fun upload(document: Document, context: Context): StorageMetadata? {
+        return docsStorage.upload(document.toPdfName(), document.toByteArray(context))
     }
 
     /**

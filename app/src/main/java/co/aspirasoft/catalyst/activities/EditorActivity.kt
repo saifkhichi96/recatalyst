@@ -143,7 +143,7 @@ class EditorActivity : DashboardChildActivity() {
     }
 
     private fun shareProject() {
-        val file = projectStorage.cache(document)
+        val file = projectStorage.cache(document, this)
         file.openInExternalApp(this)
     }
 

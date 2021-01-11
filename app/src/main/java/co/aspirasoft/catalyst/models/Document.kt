@@ -1,8 +1,12 @@
 package co.aspirasoft.catalyst.models
 
+import android.content.Context
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
-import co.aspirasoft.catalyst.bo.PdfWriter
 import co.aspirasoft.catalyst.utils.FileUtils
+import dev.aspirasoft.scribe.DocumentTheme
+import dev.aspirasoft.scribe.PDFWriter
 import java.io.ByteArrayOutputStream
 import java.io.Serializable
 
@@ -13,11 +17,11 @@ import java.io.Serializable
  */
 class Document : Serializable {
 
-    lateinit var name: String
+    var name: String = ""
 
-    lateinit var projectId: String
+    var projectId: String = ""
 
-    lateinit var version: String
+    var version: String = ""
 
     val sections = ArrayList<DocumentSection>()
 
@@ -39,9 +43,9 @@ class Document : Serializable {
         }
     }
 
-    fun toByteArray(): ByteArray {
+    fun toByteArray(context: Context): ByteArray {
         val stream = ByteArrayOutputStream()
-        val pdf = toPdf()
+        val pdf = toPdf(context)
         pdf.writeTo(stream)
         pdf.close()
         return stream.toByteArray()
@@ -51,24 +55,31 @@ class Document : Serializable {
         return String.format("%s (v%s).pdf", this.name, this.version)
     }
 
-    private fun toPdf(): PdfDocument {
-        val writer = PdfWriter()
+    private fun toPdf(context: Context): PdfDocument {
+        val writer = PDFWriter.Builder()
+            .setDocumentTheme(DocumentTheme().apply {
+                title.alignment = Paint.Align.RIGHT
+                subtitle.alignment = Paint.Align.RIGHT
+                setFont(Typeface.createFromAsset(context.resources.assets, "fonts/OpenSans-Regular.ttf"))
+            })
+            .setMargin(19F)
+            .build()
 
         // Create cover page
-        writer.spacing(10)
+        writer.centerVertical()
         writer.title(this.projectId)
         writer.subtitle(this.name)
-        writer.heading("Version: ${this.version}")
+        writer.subtitle("Version: ${this.version}")
         writer.pageBreak()
 
         // Write document contents
         this.sections.forEachIndexed { index, section ->
             if (section.isSubsection) {
-                writer.sectionBreak()
-                writer.bold(section.name)
+                writer.vspace(2)
+                writer.h2(section.name)
             } else {
                 if (index > 0) writer.pageBreak()
-                writer.heading(section.name)
+                writer.h1(section.name)
             }
 
             if (section.body.isNotEmpty()) writer.normal(section.body)

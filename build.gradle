@@ -23,6 +23,9 @@ allprojects {
         maven {
             url "https://storage.googleapis.com/snap-kit-build/maven"
         }
+        maven {
+            url  "https://dl.bintray.com/saifkhichi96/maven"
+        }
     }
 }
 

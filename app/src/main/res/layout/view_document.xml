@@ -12,7 +12,7 @@
   <LinearLayout
       android:id="@+id/itemCard"
       android:layout_width="match_parent"
-      android:layout_height="160dp"
+      android:layout_height="128dp"
       android:background="@drawable/gradient_aqua_splash"
       android:gravity="center_horizontal"
       android:orientation="vertical"

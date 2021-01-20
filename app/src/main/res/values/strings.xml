@@ -48,6 +48,7 @@
   <string name="create_account">Create Account</string>
   <string name="create_drawing">Create Drawing</string>
   <string name="create_drawing_confirm">Any progress will be lost if you start a new drawing. Continue?</string>
+  <string name="create_document">Create New Document</string>
   <string name="create_project">New Project</string>
   <string name="create_project_error">Could not create new project.</string>
   <string name="deadline">Due Date</string>
@@ -62,6 +63,9 @@
   <string name="description">Description</string>
   <string name="description_short">Short Description</string>
   <string name="disconnect">Disconnect</string>
+  <string name="documentation">Documentation</string>
+  <string name="documentation_choose_template">Choose a Template</string>
+  <string name="documentation_version">Version: %s</string>
   <string name="dont_have_an_account">Don\'t have an account?</string>
   <string name="email">Email</string>
   <string name="email_error">Invalid email address.</string>

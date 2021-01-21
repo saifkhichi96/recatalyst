@@ -5,26 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.MyApplication
 import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.EditorActivity
 import co.aspirasoft.catalyst.activities.abs.SecureActivity
-import co.aspirasoft.catalyst.dao.ProjectsDao
+import co.aspirasoft.catalyst.dao.DocumentsDao
 import co.aspirasoft.catalyst.databinding.ViewDocumentBinding
+import co.aspirasoft.catalyst.databinding.ViewDocumentCreateBinding
 import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.DocumentType
 import co.aspirasoft.catalyst.models.Project
+import co.aspirasoft.catalyst.utils.FileUtils.getJsonFromAssets
 import co.aspirasoft.catalyst.views.holders.DocumentViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
+import java.util.*
 
 class DocumentAdapter(
     private val activity: SecureActivity,
+    private val documents: ArrayList<Document?>,
     private val project: Project,
-    private val documents: List<KClass<out DocumentType>>,
-) : ArrayAdapter<KClass<out DocumentType>>(activity, -1, documents) {
+) : ArrayAdapter<Document?>(activity, -1, documents) {
 
     private val gradients = arrayOf(
         R.drawable.gradient_aqua_splash,
@@ -33,36 +39,59 @@ class DocumentAdapter(
         R.drawable.gradient_plum_plate
     )
 
+    private var documentPickerDialog: AlertDialog? = null
+
+    init {
+        context.assets.list("templates/en/")?.let { files ->
+            val standards = files.map {
+                it.toUpperCase(Locale.getDefault())
+                    .replace('-', ' ')
+                    .replace(".JSON", "")
+            }.toTypedArray()
+            documentPickerDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.documentation_choose_template))
+                .setItems(standards) { _, i ->
+                    createNewDocument("templates/en/${files[i]}")
+                }
+                .create()
+        }
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
-        val viewHolder = when (view) {
-            null -> {
-                val binding = ViewDocumentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                val holder = DocumentViewHolder(binding)
+        val document = documents[position]
+        if (document == null) {
+            if (view == null) {
+                val binding = ViewDocumentCreateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 view = binding.root
-                view.tag = holder
-                holder
+                val l = View.OnClickListener { documentPickerDialog?.show() }
+                view.apply {
+                    setOnClickListener(l)
+                    (children.elementAt(0) as ViewGroup).children.forEach {
+                        it.setOnClickListener(l)
+                    }
+                }
             }
-            else -> view.tag as DocumentViewHolder
-        }
-
-        val documentType = documents[position].constructors.elementAt(0).call()
-        viewHolder.itemCard.setBackgroundResource(gradients[position % gradients.size])
-        viewHolder.nameView.text = documentType.name
-        when (val document = project.getDocument(documentType.name)) {
-            null -> showBlankDocument(viewHolder, documentType)
-            else -> showExistingDocument(viewHolder, document)
+        } else {
+            val viewHolder: DocumentViewHolder = when {
+                view == null || view.tag == null -> {
+                    val binding = ViewDocumentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    val holder = DocumentViewHolder(binding)
+                    view = binding.root
+                    view.tag = holder
+                    holder
+                }
+                else -> view.tag as DocumentViewHolder
+            }
+            viewHolder.itemCard.setBackgroundResource(gradients[position % gradients.size])
+            viewHolder.nameView.text = document.name
+            showExistingDocument(viewHolder, document)
         }
         return view
     }
 
-    private fun showBlankDocument(holder: DocumentViewHolder, type: DocumentType) {
-        holder.versionView.text = String.format("Version: N/A")
-        holder.itemCard.setOnClickListener { createNewDocument(type) }
-    }
-
     private fun showExistingDocument(holder: DocumentViewHolder, document: Document) {
-        holder.versionView.text = String.format("Version: ${document.version}")
+        holder.versionView.text = String.format(context.getString(R.string.documentation_version), document.version)
         holder.itemCard.setOnClickListener { openDocumentInEditor(document) }
         holder.itemCard.setOnLongClickListener {
             confirmDocumentDeletion(document)
@@ -73,23 +102,29 @@ class DocumentAdapter(
     private fun createNewDocument(type: DocumentType) = activity.lifecycleScope.launch {
         try {
             // Create a new document
-            val newDocument = Document.Builder()
+            val newDocument = Document.Builder(type)
                 .setProject(project.name)
-                .setType(type)
                 .setVersion("1.0.0")
                 .build()
 
             // Save document and upload it to database
-            project.addDocument(newDocument)
-            ProjectsDao.add(project)
-
-            // Reflect changes in UI
-            notifyDataSetChanged()
+            DocumentsDao.add(newDocument, project)
 
             // Open document in editor
             openDocumentInEditor(newDocument)
         } catch (ex: Exception) {
-            // TODO: Handle errors during document creation
+            Toast.makeText(
+                context,
+                ex.message ?: ex::class.java.simpleName,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun createNewDocument(assetsFile: String) {
+        getJsonFromAssets(context, assetsFile)?.let { json ->
+            val template = Gson().fromJson(json, DocumentType::class.java)
+            createNewDocument(template)
         }
     }
 
@@ -128,14 +163,13 @@ class DocumentAdapter(
      */
     private fun deleteDocument(document: Document) = activity.lifecycleScope.launch {
         try {
-            // Delete the document
-            val deleted = project.removeDocument(document.name) // Delete local document, and
-            if (deleted) ProjectsDao.add(project)               // also delete from remote database
-
-            // Reflect changes in the UI
-            notifyDataSetChanged()
+            DocumentsDao.delete(document.id, project)
         } catch (ex: Exception) {
-            // TODO: Show error message if document cannot be deleted
+            Toast.makeText(
+                context,
+                ex.message ?: ex::class.java.simpleName,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

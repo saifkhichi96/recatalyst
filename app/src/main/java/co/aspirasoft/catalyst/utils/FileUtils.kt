@@ -11,23 +11,12 @@ import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import co.aspirasoft.catalyst.utils.storage.LocalStorage
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.nio.charset.Charset
 
 object FileUtils {
-
-    private const val DEFAULT_BUFFER_SIZE = 2048
-
-    @Throws(IOException::class)
-    fun copy(input: InputStream, output: OutputStream): Long {
-        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-        var count: Long = 0
-        var n: Int
-        while (-1 != input.read(buffer).also { n = it }) {
-            output.write(buffer, 0, n)
-            count += n.toLong()
-        }
-        return count
-    }
 
     fun createTempFile(filename: String, parent: File? = null): File {
         val file = parent?.let { File(it, filename) } ?: File(filename)
@@ -44,9 +33,9 @@ object FileUtils {
             val extension = this.extension
             val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "*/*"
             val uri = FileProvider.getUriForFile(
-                    context,
-                    context.applicationContext.packageName + ".fileprovider",
-                    this
+                context,
+                context.applicationContext.packageName + ".fileprovider",
+                this
             )
 
             val i = Intent(Intent.ACTION_VIEW).apply {
@@ -105,25 +94,18 @@ object FileUtils {
         return name
     }
 
-    @Throws(IOException::class)
-    fun writeToFile(file: File, data: String?) {
-        // Delete existing metadata, if any
-        if (file.exists()) {
-            if (!file.delete()) {
-                throw IOException("Failed to delete existing metadata.")
-            }
+    fun getJsonFromAssets(context: Context, filename: String): String? {
+        return try {
+            val stream = context.assets.open(filename)
+            val size: Int = stream.available()
+            val buffer = ByteArray(size)
+            stream.read(buffer)
+            stream.close()
+            String(buffer, Charset.defaultCharset())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
         }
-
-        // Create new file
-        if (!file.createNewFile()) {
-            throw IOException("Failed to create new file.")
-        }
-
-        // Write file contents
-        val outputStream = FileOutputStream(file)
-        val outputStreamWriter = OutputStreamWriter(outputStream)
-        outputStreamWriter.write(data)
-        outputStreamWriter.close()
     }
 
 }

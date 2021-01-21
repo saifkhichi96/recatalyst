@@ -15,15 +15,17 @@ import java.io.Serializable
  * @version 1.0.0
  * @since 1.0.0 26/10/2018 3:00 AM
  */
-class Document : Serializable {
+data class Document(var id: String = "") : Serializable {
 
     var name: String = ""
 
     var projectId: String = ""
 
-    var version: String = ""
+    val versions = HashMap<String, ArrayList<DocumentSection>>()
 
-    val sections = ArrayList<DocumentSection>()
+    val version get() = (versions.keys.maxOrNull() ?: "1-0-0").replace('-', '.')
+
+    val sections get() = versions[version.replace('.', '-')].orEmpty()
 
     fun editableSections() = sections.filterIndexed { i, section ->
         section.isSubsection || !(sections.getOrNull(i + 1)?.isSubsection ?: false)
@@ -31,16 +33,6 @@ class Document : Serializable {
 
     fun headings() = ArrayList<String>().apply {
         sections.filterNot { it.isSubsection }.mapTo(this) { it.name }
-    }
-
-    fun updateWith(other: Document) {
-        this.name = other.name
-        this.projectId = other.projectId
-        this.version = other.version
-        this.sections.apply {
-            clear()
-            addAll(other.sections)
-        }
     }
 
     fun toByteArray(context: Context): ByteArray {
@@ -89,34 +81,29 @@ class Document : Serializable {
         return writer.finish()
     }
 
-    class Builder {
+    class Builder(private val type: DocumentType) {
 
         private val document = Document()
+        private var initialVersion = "1-0-0"
+
+        init {
+            document.id = type.standardId
+            document.name = type.name
+        }
 
         fun setProject(project: String): Builder {
             document.projectId = project
             return this
         }
 
-        fun setType(type: DocumentType): Builder {
-            document.name = type.name
-            document.sections.addAll(createSections(type))
-            return this
-        }
-
         fun setVersion(version: String): Builder {
-            document.version = version
+            initialVersion = version.replace('.', '-')
             return this
         }
 
         fun build(): Document {
+            document.versions[initialVersion] = type.sections
             return document
-        }
-
-        private fun createSections(type: DocumentType): List<DocumentSection> {
-            val sections = ArrayList<DocumentSection>()
-            type.headings.mapTo(sections) { DocumentSection(it) }
-            return sections
         }
 
     }

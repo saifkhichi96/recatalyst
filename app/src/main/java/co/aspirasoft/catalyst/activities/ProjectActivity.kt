@@ -17,8 +17,9 @@ import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardChildActivity
 import co.aspirasoft.catalyst.adapters.DocumentAdapter
 import co.aspirasoft.catalyst.adapters.FileAdapter
+import co.aspirasoft.catalyst.dao.DocumentsDao
 import co.aspirasoft.catalyst.databinding.ActivityProjectBinding
-import co.aspirasoft.catalyst.models.DocumentType
+import co.aspirasoft.catalyst.models.Document
 import co.aspirasoft.catalyst.models.Project
 import co.aspirasoft.catalyst.models.RemoteFile
 import co.aspirasoft.catalyst.models.UserAccount
@@ -28,6 +29,8 @@ import co.aspirasoft.util.PermissionUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
+import dev.aspirasoft.utils.firebase.database.DatabaseEvent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -55,10 +58,14 @@ class ProjectActivity : DashboardChildActivity() {
 
     private lateinit var binding: ActivityProjectBinding
     private lateinit var project: Project
+
     private lateinit var projectDocumentsAdapter: DocumentAdapter
+    private val projectDocuments = ArrayList<Document?>()
+
     private lateinit var projectFilesAdapter: FileAdapter
     private lateinit var projectStorage: ProjectStorage
     private val projectFiles = ArrayList<RemoteFile>()
+
     private var isEditable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,8 +83,15 @@ class ProjectActivity : DashboardChildActivity() {
         projectFilesAdapter = FileAdapter(this, projectFiles, projectStorage)
         binding.contentList.adapter = projectFilesAdapter
 
-        projectDocumentsAdapter = DocumentAdapter(this, project, DocumentType.values())
+        projectDocuments.add(null)
+        projectDocumentsAdapter = DocumentAdapter(this, projectDocuments, project)
         binding.documentsList.adapter = projectDocumentsAdapter
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun onStart() {
+        super.onStart()
+        initObservers()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -134,6 +148,41 @@ class ProjectActivity : DashboardChildActivity() {
         projectFiles.clear()
         lifecycleScope.launch {
             projectStorage.getAllFiles().forEach { onProjectFileReceived(it) }
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun initObservers() = lifecycleScope.launch {
+        DocumentsDao.observeDocuments(project) { event ->
+            when (event) {
+                is DatabaseEvent.Created -> onDocumentCreated(event.item)
+                is DatabaseEvent.Changed -> onDocumentChanged(event.item)
+                is DatabaseEvent.Deleted -> onDocumentDeleted(event.item)
+                is DatabaseEvent.Cancelled -> {
+                }
+            }
+        }
+    }
+
+    private fun onDocumentCreated(document: Document) {
+        if (!projectDocuments.contains(document)) {
+            projectDocuments.add(document)
+            projectDocumentsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun onDocumentChanged(document: Document) {
+        if (projectDocuments.contains(document)) {
+            projectDocuments.remove(document)
+            projectDocuments.add(document)
+            projectDocumentsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun onDocumentDeleted(document: Document) {
+        if (projectDocuments.contains(document)) {
+            projectDocuments.remove(document)
+            projectDocumentsAdapter.notifyDataSetChanged()
         }
     }
 

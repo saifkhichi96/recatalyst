@@ -2,6 +2,8 @@ package co.aspirasoft.catalyst.models
 
 import co.aspirasoft.model.BaseModel
 import java.util.*
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * Project is a model class representing a user project.
@@ -27,6 +29,13 @@ data class Project(val name: String = "", val ownerId: String = "") : BaseModel(
     var deadline = 0L
 
     var finished = false
+
+    fun getProgress(): Int {
+        // FIXME: Return "actual" project progress
+        // Calculate progress as number of completed milestones vs total milestones (i.e. tasks)
+        // or let user set the progress manually
+        return if (getStatus() == TaskStatus.COMPLETED) 100 else Random.nextInt(0..99)
+    }
 
     fun getStatus(): TaskStatus {
         return if (this.finished) {

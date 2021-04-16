@@ -1,11 +1,14 @@
 package co.aspirasoft.catalyst.activities
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import co.aspirasoft.adapter.ModelViewAdapter
 import co.aspirasoft.catalyst.MyApplication
+import co.aspirasoft.catalyst.R
 import co.aspirasoft.catalyst.activities.abs.DashboardActivity
 import co.aspirasoft.catalyst.activities.abs.SecureActivity
 import co.aspirasoft.catalyst.bo.AuthBO
@@ -19,6 +22,9 @@ import co.aspirasoft.catalyst.models.Team
 import co.aspirasoft.catalyst.models.UserAccount
 import co.aspirasoft.catalyst.views.ProjectView
 import co.aspirasoft.catalyst.views.TeamView
+import java.text.DateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Dashboard is the homepage of a user.
@@ -53,10 +59,28 @@ class DashboardActivity : DashboardActivity() {
      */
     private lateinit var teamAdapter: TeamAdapter
 
+    private val mGreetingPeriod = 10 * 60 * 1000L // every 10 minutes
+    private val mGreetingTask = object : TimerTask() {
+        override fun run() {
+            val now = Calendar.getInstance()
+            val formatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault())
+            binding.date.text = formatter.format(now.time)
+
+            val hour = now.get(Calendar.HOUR_OF_DAY)
+            binding.greeting.text = when (hour) {
+                in 4..11 -> getString(R.string.greeting_morning)
+                in 12..17 -> getString(R.string.greeting_afternoon)
+                in 18..22 -> getString(R.string.greeting_evening)
+                else -> getString(R.string.greeting_night)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Timer(true).scheduleAtFixedRate(mGreetingTask, 0, mGreetingPeriod)
 
         projectAdapter = ProjectAdapter(this, projects)
         binding.projectsList.adapter = projectAdapter
@@ -72,6 +96,9 @@ class DashboardActivity : DashboardActivity() {
 
         // Set other click listeners
         binding.createProjectButton.setOnClickListener { onCreateProjectClicked() }
+
+        binding.teamsButton.setOnClickListener { showTeamsFragment() }
+        binding.projectsButton.setOnClickListener { showProjectsFragment() }
     }
 
     override fun onResume() {
@@ -83,6 +110,9 @@ class DashboardActivity : DashboardActivity() {
     }
 
     override fun updateUI(currentUser: UserAccount) {
+        val firstName = currentUser.name.split(' ').first()
+        binding.username.text = String.format(getString(R.string.greeting), firstName)
+
         binding.userSummaryView.apply {
             this.bindWithModel(currentUser)
             this.setOnAvatarClickedListener {
@@ -129,6 +159,28 @@ class DashboardActivity : DashboardActivity() {
                 putExtra(MyApplication.EXTRA_PROJECT, project)
             })
         }
+    }
+
+    /**
+     * Brings the fragment with projects list to front.
+     */
+    private fun showProjectsFragment() {
+        binding.teamsButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+        binding.teamsSection.visibility = View.GONE
+
+        binding.projectsButton.setTextColor(Color.BLACK)
+        binding.projectsSection.visibility = View.VISIBLE
+    }
+
+    /**
+     * Brings the fragment with list of joined teams to front.
+     */
+    private fun showTeamsFragment() {
+        binding.projectsButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+        binding.projectsSection.visibility = View.GONE
+
+        binding.teamsButton.setTextColor(Color.BLACK)
+        binding.teamsSection.visibility = View.VISIBLE
     }
 
     private inner class ProjectAdapter(context: SecureActivity, val projects: List<Project>)

@@ -5,211 +5,252 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="?attr/colorPrimary"
     tools:context=".activities.DashboardActivity">
 
-  <LinearLayout
+  <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="horizontal">
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/activity_vertical_margin"
+      app:elevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="?actionBarSize"
+          android:layout_height="?actionBarSize"
+          app:navigationIcon="@drawable/ic_logo"/>
+
+      <co.aspirasoft.catalyst.views.UserAvatarView
+          android:id="@+id/user_summary_view"
+          android:layout_width="?actionBarSize"
+          android:layout_height="?actionBarSize"
+          android:layout_marginEnd="@dimen/activity_horizontal_margin"
+          android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="64dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        app:layout_scrollFlags="scroll">
 
-      <com.google.android.material.button.MaterialButton
-          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-          android:layout_width="64dp"
-          android:layout_height="64dp"
-          android:padding="16dp"
-          app:icon="@drawable/ic_home"
-          app:iconTint="?attr/colorAccent"
-          app:iconSize="32dp"
-          app:iconPadding="16dp"
-          app:rippleColor="@android:color/transparent"/>
+      <com.google.android.material.textview.MaterialTextView
+          android:id="@+id/username"
+          style="@style/TextAppearance.MaterialComponents.Body2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/greeting"
+          android:textStyle="bold"/>
 
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?attr/colorPrimary"/>
+      <com.google.android.material.textview.MaterialTextView
+          android:id="@+id/greeting"
+          style="@style/TextAppearance.MaterialComponents.Headline5"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          tools:text="@tools:sample/lorem"/>
 
-      <com.google.android.material.button.MaterialButton
-          android:id="@+id/connectionsButton"
-          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-          android:layout_width="64dp"
-          android:layout_height="64dp"
-          android:padding="16dp"
-          app:icon="@drawable/ic_connections"
-          app:iconTint="?attr/colorPrimaryDark"
-          app:iconSize="32dp"
-          app:iconPadding="16dp"
-          app:rippleColor="@android:color/transparent"/>
-
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?attr/colorPrimary"/>
-
-      <com.google.android.material.button.MaterialButton
-          android:id="@+id/invitesButton"
-          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-          android:layout_width="64dp"
-          android:layout_height="64dp"
-          android:padding="16dp"
-          app:icon="@drawable/ic_colab_invites"
-          app:iconTint="?attr/colorPrimaryDark"
-          app:iconSize="32dp"
-          app:iconPadding="16dp"
-          app:rippleColor="@android:color/transparent"/>
-
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?attr/colorPrimary"/>
-
-      <com.google.android.material.button.MaterialButton
-          android:id="@+id/notificationsButton"
-          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-          android:layout_width="64dp"
-          android:layout_height="64dp"
-          android:padding="16dp"
-          app:icon="@drawable/ic_announcements"
-          app:iconTint="?attr/colorPrimaryDark"
-          app:iconSize="32dp"
-          app:iconPadding="16dp"
-          app:rippleColor="@android:color/transparent"/>
-
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?attr/colorPrimary"/>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:minHeight="66dp"
-          android:gravity="center_horizontal|bottom"
-          android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?attr/colorPrimary"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settingsButton"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:padding="16dp"
-            app:icon="@drawable/ic_settings"
-            app:iconTint="?attr/colorPrimaryDark"
-            app:iconSize="32dp"
-            app:iconPadding="16dp"
-            app:rippleColor="@android:color/transparent"/>
-
-      </LinearLayout>
+      <com.google.android.material.textview.MaterialTextView
+          android:id="@+id/date"
+          style="@style/TextAppearance.MaterialComponents.Caption"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          tools:text="@tools:sample/date/ddmmyy"/>
 
     </LinearLayout>
 
-    <ScrollView
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:cardBackgroundColor="@color/white"
+      app:cardCornerRadius="24dp"
+      app:cardElevation="0dp"
+      app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:paddingBottom="80dp"
+        android:orientation="vertical">
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingHorizontal="@dimen/activity_horizontal_margin"
-          android:paddingVertical="@dimen/activity_vertical_margin"
-          android:orientation="vertical">
+          android:layout_marginHorizontal="24dp"
+          android:layout_marginTop="24dp"
+          android:layout_marginBottom="16dp"
+          android:orientation="horizontal">
 
-        <!-- User Details -->
-        <co.aspirasoft.catalyst.views.UserView
-            android:id="@+id/userSummaryView"
-            android:layout_width="match_parent"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/projectsButton"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:padding="-16dp"/>
+            android:layout_marginEnd="16dp"
+            android:text="@string/projects_mine"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/teamsButton"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/projects_shared"
+            android:textColor="?attr/colorPrimaryDark"/>
+
+      </LinearLayout>
+
+      <androidx.core.widget.NestedScrollView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="24dp"
             android:orientation="vertical">
 
           <LinearLayout
+              android:id="@+id/projectsSection"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginTop="@dimen/activity_vertical_margin"
-              android:gravity="center_vertical"
-              android:orientation="horizontal">
+              android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/projectsSection"
-                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="@string/projects"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/createProjectButton"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/projectsSpace"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:gravity="end"
-                android:padding="0dp"
-                android:text="@string/create"
-                android:textColor="?attr/colorAccent"
-                app:rippleColor="@android:color/transparent"/>
+                android:layout_height="match_parent"
+                android:layout_margin="24dp"
+                android:minHeight="96dp"
+                android:scaleType="centerInside"
+                android:alpha="0.5"
+                app:srcCompat="@drawable/no_data"
+                app:tint="?attr/colorPrimaryDark"/>
+
+            <co.aspirasoft.view.NestedListView
+                android:id="@+id/projectsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
           </LinearLayout>
 
-          <androidx.appcompat.widget.AppCompatImageView
-              android:id="@+id/projectsSpace"
-              android:layout_width="match_parent"
-              android:layout_height="96dp"
-              android:layout_margin="24dp"
-              android:scaleType="centerInside"
-              android:alpha="0.5"
-              app:srcCompat="@drawable/no_data"
-              app:tint="?attr/colorPrimaryDark"/>
-
-          <co.aspirasoft.view.NestedListView
-              android:id="@+id/projectsList"
+          <LinearLayout
+              android:id="@+id/teamsSection"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:divider="@null"/>
+              android:orientation="vertical"
+              android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/teamsSpace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:gravity="center"
+                android:text="@string/teams_none"/>
+
+            <co.aspirasoft.view.NestedListView
+                android:id="@+id/teamsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+          </LinearLayout>
 
         </LinearLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:textStyle="bold"
-            android:text="@string/teams"/>
+      </androidx.core.widget.NestedScrollView>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/teamsSpace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:gravity="center"
-            android:text="@string/teams_none"/>
+    </LinearLayout>
 
-        <co.aspirasoft.view.NestedListView
-            android:id="@+id/teamsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+  </com.google.android.material.card.MaterialCardView>
 
-      </LinearLayout>
+  <LinearLayout
+      android:id="@+id/footer"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_gravity="bottom"
+      android:background="?attr/colorPrimaryDark"
+      android:paddingVertical="@dimen/activity_vertical_margin"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
 
-    </ScrollView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createProjectButton"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="@string/create"
+        app:backgroundTint="@color/black"
+        app:cornerRadius="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/connectionsButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_marginEnd="16dp"
+          android:padding="0dp"
+          app:icon="@drawable/ic_connections"
+          app:iconSize="24dp"
+          app:iconTint="@color/white"
+          app:rippleColor="@android:color/transparent"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/invitesButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_marginEnd="16dp"
+          android:padding="0dp"
+          app:icon="@drawable/ic_colab_invites"
+          app:iconSize="24dp"
+          app:iconTint="@color/white"
+          app:rippleColor="@android:color/transparent"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/notificationsButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_marginEnd="16dp"
+          android:padding="0dp"
+          app:icon="@drawable/ic_announcements"
+          app:iconSize="24dp"
+          app:iconTint="@color/white"
+          app:rippleColor="@android:color/transparent"/>
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/settingsButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_marginEnd="@dimen/activity_horizontal_margin"
+          android:padding="0dp"
+          app:icon="@drawable/ic_settings"
+          app:iconSize="24dp"
+          app:iconTint="@color/white"
+          app:rippleColor="@android:color/transparent"/>
+
+    </LinearLayout>
 
   </LinearLayout>
 

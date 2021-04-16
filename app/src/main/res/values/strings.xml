@@ -75,6 +75,11 @@
   <string name="file_open_error">Could not open file.</string>
   <string name="file_upload" formatted="false">Add to %s (%s)</string>
   <string name="glossary">Glossary</string>
+  <string name="greeting">Hi %s!</string>
+  <string name="greeting_morning">Good morning</string>
+  <string name="greeting_afternoon">Good afternoon</string>
+  <string name="greeting_evening">Good evening</string>
+  <string name="greeting_night">It\'s getting late!</string>
   <string name="ignore_unsaved_changes">Any unsaved changes will be lost. Do you wish to continue?</string>
   <string name="invitations">Invitations</string>
   <string name="invite">Invite</string>
@@ -104,10 +109,13 @@
   <string name="profile">Profile</string>
   <string name="project_client">Client Info</string>
   <string name="project_details">Project Details</string>
+  <string name="project_due_date">%s · Due %s</string>
   <string name="project_tasks">Project Tasks</string>
   <string name="project_team">Project Team</string>
   <string name="project_team_invite">%s has invited you to join the %s project.</string>
   <string name="projects">Projects</string>
+  <string name="projects_mine">My Projects</string>
+  <string name="projects_shared">Shared with Me</string>
   <string name="reject">Reject</string>
   <string name="save">Save</string>
   <string name="save_drawing">Do you want to save the drawing for \'%s\'?</string>
@@ -159,4 +167,22 @@
   <string name="uploaded">Successfully uploaded.</string>
   <string name="uploading">Uploading…</string>
   <string name="url_error">Malformed link.</string>
+
+  <plurals name="days">
+    <item quantity="zero">%d days ago</item>
+    <item quantity="one">%d day ago</item>
+    <item quantity="other">%d days ago</item>
+  </plurals>
+
+  <plurals name="months">
+    <item quantity="zero">%d months ago</item>
+    <item quantity="one">over %d month ago</item>
+    <item quantity="other">over %d months ago</item>
+  </plurals>
+
+  <plurals name="years">
+    <item quantity="zero">%d years ago</item>
+    <item quantity="one">over %d year ago</item>
+    <item quantity="other">over %d years ago</item>
+  </plurals>
 </resources>

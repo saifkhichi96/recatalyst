@@ -146,6 +146,9 @@
   <string name="stakeholders">Stakeholders</string>
   <string name="storage_access_denied">Cannot access device storage.</string>
   <string name="task_details">Task Details</string>
+  <string name="task_status_completed">Completed</string>
+  <string name="task_status_ongoing">In-Progress</string>
+  <string name="task_status_overdue">Overdue</string>
   <string name="tasks">Tasks</string>
   <string name="teams">Teams</string>
   <string name="teams_none">You have not joined any teams yet.</string>

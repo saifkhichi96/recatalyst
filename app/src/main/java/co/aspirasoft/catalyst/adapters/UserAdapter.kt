@@ -21,7 +21,6 @@ class UserAdapter(private val activity: SecureActivity, private val users: List<
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val v = super.getView(position, convertView, parent)
         (v as UserView).apply {
-            openProfileOnClick = true
             setOnAvatarClickedListener {
                 activity.startSecurely(ProfileActivity::class.java, Intent().apply {
                     putExtra(MyApplication.EXTRA_PROFILE_USER, it)

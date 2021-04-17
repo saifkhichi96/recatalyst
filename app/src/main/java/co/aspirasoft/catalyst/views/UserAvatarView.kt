@@ -32,7 +32,6 @@ class UserAvatarView : BaseView<UserAccount> {
     override fun updateView(model: UserAccount) {
         binding.root.setOnClickListener { onAvatarClickedListener?.invoke(model) }
         ImageLoader.loadUserAvatar(
-            (context as AppCompatActivity),
             model.id,
             binding.root
         )

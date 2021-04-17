@@ -47,7 +47,6 @@ class ProfileAvatarActivity : DashboardChildActivity() {
 
         accountStorage = AccountStorage(this, currentUser.id)
         ImageLoader.loadUserAvatar(
-            this@ProfileAvatarActivity,
             currentUser.id,
             binding.accountAvatar
         )

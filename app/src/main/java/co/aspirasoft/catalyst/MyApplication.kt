@@ -1,6 +1,8 @@
 package co.aspirasoft.catalyst
 
 import android.app.Application
+import com.orhanobut.hawk.Hawk
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * An [Application] subclass represents this application.
@@ -8,7 +10,15 @@ import android.app.Application
  * Purpose of this class is to define default behaviours, perform
  * SDK initializations and declare any shared data.
  */
+@HiltAndroidApp
 class MyApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        // Init dependencies
+        Hawk.init(this).build()
+    }
 
     companion object {
         // the EXTRA_* strings are used as tags to pass

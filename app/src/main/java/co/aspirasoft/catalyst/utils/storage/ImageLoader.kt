@@ -1,11 +1,10 @@
 package co.aspirasoft.catalyst.utils.storage
 
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import co.aspirasoft.catalyst.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 object ImageLoader {
@@ -17,7 +16,8 @@ object ImageLoader {
      * @param uid The id of the user account.
      * @param view The [ImageView] where to show the avatar.
      */
-    fun loadUserAvatar(context: AppCompatActivity, uid: String, view: ImageView) = context.lifecycleScope.launch {
+    fun loadUserAvatar(uid: String, view: ImageView) = GlobalScope.launch {
+        val context = view.context
         val storage = AccountStorage(context, uid)
         try {
             // Quickly load and display the cached avatar
@@ -27,11 +27,11 @@ object ImageLoader {
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.drawable.placeholder_avatar)
-                .apply { context.runOnUiThread { this.into(view) } }
+                .apply { view.post { this.into(view) } }
         } catch (ex: Exception) {
             Glide.with(context)
                 .load(R.drawable.placeholder_avatar)
-                .apply { context.runOnUiThread { this.into(view) } }
+                .apply { view.post { this.into(view) } }
         }
     }
 

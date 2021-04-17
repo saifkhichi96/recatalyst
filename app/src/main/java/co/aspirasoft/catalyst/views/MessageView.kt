@@ -47,7 +47,6 @@ class MessageView : BaseView<Message> {
         timestamp?.text = model.datetime
         senderAvatar?.let {
             ImageLoader.loadUserAvatar(
-                (context as AppCompatActivity),
                 model.id,
                 it
             )

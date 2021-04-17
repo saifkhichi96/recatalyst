@@ -45,7 +45,7 @@ class ProfileActivity : DashboardChildActivity() {
         binding.isOwnProfile = user == currentUser
 
         // AVATAR
-        ImageLoader.loadUserAvatar(this, user.id, binding.accountAvatar)
+        ImageLoader.loadUserAvatar(user.id, binding.accountAvatar)
 
         // STATS SECTION
         ConnectionsDao.getUserConnections(user.id) { binding.connections = it.size }

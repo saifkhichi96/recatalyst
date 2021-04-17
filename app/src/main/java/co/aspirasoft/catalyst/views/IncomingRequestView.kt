@@ -42,7 +42,6 @@ class IncomingRequestView : BaseView<UserAccount> {
         binding.accountName.text = model.name
         binding.accountShortBio.text = model.headline
         ImageLoader.loadUserAvatar(
-            (context as AppCompatActivity),
             model.id,
             binding.accountAvatar
         )

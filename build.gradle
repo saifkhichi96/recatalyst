@@ -1,5 +1,6 @@
 buildscript {
-    ext.kotlin_version = '1.4.21'
+    ext.kotlin_version = '1.4.31'
+    ext.hilt_version = '2.31.2-alpha'
     repositories {
         google()
         jcenter()
@@ -7,11 +8,12 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.google.gms:google-services:4.3.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         // Add the Crashlytics Gradle plugin.
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
     }
 }
 
@@ -20,12 +22,7 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven {
-            url "https://storage.googleapis.com/snap-kit-build/maven"
-        }
-        maven {
-            url  "https://dl.bintray.com/saifkhichi96/maven"
-        }
+        maven { url "https://storage.googleapis.com/snap-kit-build/maven" }
     }
 }
 

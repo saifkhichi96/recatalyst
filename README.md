@@ -26,5 +26,6 @@ The app is written in Kotlin programming language, and uses a Firebase backend. 
 ## Supported Platforms
 - Android
 
+<br>
 ## Programming Languages
 - Kotlin

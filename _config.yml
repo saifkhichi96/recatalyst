@@ -2,8 +2,8 @@ theme: saifkhichi96/simple-material
 
 title: Saif Khan
 tagline: Mobile Developer and ML Engineer
+baseurl: https://saifkhichi96.github.io
 
-layout: project
 categories: app, featured
 keywords: developer tool, requirements engineering
 device: Mobile App
